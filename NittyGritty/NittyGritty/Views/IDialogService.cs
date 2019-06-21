@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace NittyGritty.Views
 {
-    public interface IDialogService
+    public interface IDialogService : IViewConfigurable<Type>
     {
 
         /// <summary>
@@ -102,11 +102,15 @@ namespace NittyGritty.Views
         /// <summary>
         /// Displays a custom dialog associated with the view model
         /// </summary>
-        /// <typeparam name="T">Type of the View Model</typeparam>
+        /// <typeparam name="T">Type of the View Model associated with a Dialog by using the <see cref="Configure(string, Type)"/> method</typeparam>
         /// <param name="viewModel">The View Model that the dialog will use as data context</param>
         /// <returns>A Task allowing this async method to be awaited. The task will return
         /// true or false depending on the dialog result.</returns>
         Task<bool> ShowDialog<T>(T viewModel) where T : new();
 
+        /// <summary>
+        /// Hides all the open dialogs.
+        /// </summary>
+        void HideDialogs();
     }
 }

@@ -36,7 +36,7 @@ namespace NittyGritty.Views
         /// corresponding to the given key, and passes a parameter
         /// to the new page.
         /// Depending on the platforms, the navigation service might 
-        /// have to be Configure with a key/page list.
+        /// have to be configured with a key/page list.
         /// </summary>
         /// <param name="pageKey">The key corresponding to the page
         /// that should be displayed.</param>
