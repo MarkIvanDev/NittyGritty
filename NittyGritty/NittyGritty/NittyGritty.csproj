@@ -8,8 +8,4 @@
     <None Remove="ObservableObject.cs~RF43e9911.TMP" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Collections\" />
-  </ItemGroup>
-
 </Project>
