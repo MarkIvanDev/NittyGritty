@@ -35,7 +35,9 @@ namespace NittyGritty.Collections
                 throw new ArgumentNullException(nameof(collection));
 
             foreach (var item in collection)
+            {
                 Items.Add(item);
+            }
 
             OnPropertyChanged(new PropertyChangedEventArgs(nameof(Count)));
             OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, collection.ToList()));
@@ -50,9 +52,11 @@ namespace NittyGritty.Collections
                 throw new ArgumentNullException(nameof(collection));
 
             foreach (var item in collection.ToList())
+            {
                 Items.Remove(item);
+            }
 
-            OnPropertyChanged(new PropertyChangedEventArgs("Count"));
+            OnPropertyChanged(new PropertyChangedEventArgs(nameof(Count)));
             OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove, collection.ToList()));
         }
 
@@ -66,7 +70,9 @@ namespace NittyGritty.Collections
 
             Items.Clear();
             foreach (var i in collection)
+            {
                 Items.Add(i);
+            }
 
             OnPropertyChanged(new PropertyChangedEventArgs(nameof(Count)));
             OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));

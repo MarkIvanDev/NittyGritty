@@ -12,9 +12,7 @@ namespace NittyGritty.Collections
     public class DynamicCollection<TItem> : TrackableCollection<TItem>, ICollection<TItem>, IDynamic<TItem>
         where TItem : INotifyPropertyChanged
     {
-        private ObservableCollection<TItem> _internalCollection = new ObservableCollection<TItem>();
         
-
         public DynamicCollection()
             : this(new ObservableCollection<TItem>())
         {
@@ -47,9 +45,6 @@ namespace NittyGritty.Collections
             Order = order;
             Ascending = ascending;
         }
-
-        /// <summary>Gets the original items source. </summary>
-        private IList<TItem> Items { get; set; }
 
         #region IDynamicCollection Implementation
 
@@ -115,129 +110,42 @@ namespace NittyGritty.Collections
 
         public override IEnumerable<TItem> GetItems()
         {
-            IEnumerable<TItem> items;
+            IEnumerable<TItem> items = Items;
 
-            if (Filter != null && Order != null && Ascending)
-                items = Items.Where(Filter).OrderBy(Order);
-            else if (Filter != null && Order != null && !Ascending)
-                items = Items.Where(Filter).OrderByDescending(Order);
-            else if (Filter == null && Order != null && Ascending)
-                items = Items.OrderBy(Order);
-            else if (Filter == null && Order != null && !Ascending)
-                items = Items.OrderByDescending(Order);
-            else if (Filter != null && Order == null)
-                items = Items.Where(Filter);
-            else if (Filter == null && Order == null)
-                items = Items;
-            else
-                throw new Exception();
+            //if (Filter != null && Order != null && Ascending)
+            //    items = Items.Where(Filter).OrderBy(Order);
+            //else if (Filter != null && Order != null && !Ascending)
+            //    items = Items.Where(Filter).OrderByDescending(Order);
+            //else if (Filter == null && Order != null && Ascending)
+            //    items = Items.OrderBy(Order);
+            //else if (Filter == null && Order != null && !Ascending)
+            //    items = Items.OrderByDescending(Order);
+            //else if (Filter != null && Order == null)
+            //    items = Items.Where(Filter);
+            //else if (Filter == null && Order == null)
+            //    items = Items;
+            //else
+            //    throw new Exception();
+
+            if(Filter != null)
+            {
+                items = items.Where(Filter);
+            }
+
+            if(Order != null)
+            {
+                items = Ascending ? items.OrderBy(Order) : items.OrderByDescending(Order);
+            }
 
             if (Limit > 0 || Offset > 0)
+            {
                 items = items.Skip(Offset).Take(Limit);
+            }
 
             return items;
         }
 
         #endregion
 
-        #region ICollection Implementation
-
-        public int Count
-        {
-            get
-            {
-                lock (SyncRoot)
-                    return _internalCollection.Count;
-            }
-        }
-
-        public bool IsReadOnly
-        {
-            get { return true; }
-        }
-
-        public bool IsSynchronized
-        {
-            get { return true; }
-        }
-
-        private object _syncRoot;
-
-        public object SyncRoot
-        {
-            get
-            {
-                return _syncRoot ?? (_syncRoot = new object());
-            }
-        }
-
-        public void Add(TItem item)
-        {
-            Items.Add(item);
-        }
-
-        public void Clear()
-        {
-            Items.Clear();
-        }
-
-        public bool Contains(TItem item)
-        {
-            lock(SyncRoot)
-            {
-                return _internalCollection.Contains(item);
-            }
-        }
-
-        public void CopyTo(Array array, int index)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void CopyTo(TItem[] array, int arrayIndex)
-        {
-            lock(SyncRoot)
-            {
-                _internalCollection.CopyTo(array, arrayIndex);
-            }
-        }
-
-        public bool Remove(TItem item)
-        {
-            return Items.Remove(item);
-        }
-
-        public IEnumerator<TItem> GetEnumerator()
-        {
-            lock(SyncRoot)
-            {
-                return _internalCollection.GetEnumerator();
-            }
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            lock (SyncRoot)
-            {
-                return _internalCollection.GetEnumerator();
-            }
-        }
-
-        #endregion
-
-        #region INotifyCollectionChanged
-
-        public event NotifyCollectionChangedEventHandler CollectionChanged;
-
-        #endregion
-
-        #region IDisposable Implementation
-
-        public void Dispose()
-        {
-            throw new NotImplementedException();
-        }
-
-        #endregion
     }
 }

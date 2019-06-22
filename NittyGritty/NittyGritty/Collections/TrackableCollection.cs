@@ -10,7 +10,7 @@ using System.Text;
 
 namespace NittyGritty.Collections
 {
-    public class TrackableCollection<TItem> : ITrackable<TItem>, ICollection<TItem>, ICollection, INotifyCollectionChanged
+    public class TrackableCollection<TItem> : ITrackable<TItem>, ICollection<TItem>, ICollection, INotifyCollectionChanged, IDisposable
         where TItem : INotifyPropertyChanged
     {
         private NotifyCollectionChangedEventHandler _itemsChangedHandler;
@@ -28,9 +28,10 @@ namespace NittyGritty.Collections
 
         public TrackableCollection(IEnumerable<TItem> items, bool trackItemChanges)
         {
-            var collection = items as INotifyCollectionChanged;
-            if (collection == null)
+            if (!(items is INotifyCollectionChanged collection))
+            {
                 throw new ArgumentException($"{items} must implement INotifyCollectionChanged", nameof(items));
+            }
 
             Items = items.ToList();
 
@@ -45,12 +46,12 @@ namespace NittyGritty.Collections
             _internalCollection.CollectionChanged += OnInternalCollectionChanged;
             _internalCollection.PropertyChanged += OnInternalPropertyChanged;
 
-            _isTracking = true;
+            IsTracking = true;
             Refresh();
         }
 
         /// <summary>Gets the original items source. </summary>
-        private IList<TItem> Items { get; set; }
+        protected IList<TItem> Items { get; private set; }
 
         #region Trackers
 
@@ -163,7 +164,7 @@ namespace NittyGritty.Collections
             set
             {
                 _isTracking = value;
-                if(value)
+                if (value)
                 {
                     Refresh();
                 }
@@ -176,7 +177,7 @@ namespace NittyGritty.Collections
         /// changed events on the underlying collection (default: true). </summary>
         public bool TrackCollectionChanges
         {
-            get { return _isTracking; }
+            get { return _trackCollectionChanges; }
             set
             {
                 if (value != _trackCollectionChanges)
@@ -329,6 +330,42 @@ namespace NittyGritty.Collections
 
         #endregion
 
+        #region Extra Collection Methods
+
+        public void AddRange(IEnumerable<TItem> items)
+        {
+            var old = TrackCollectionChanges;
+            TrackCollectionChanges = false;
+            
+            if (Items != null)
+            {
+                foreach (var item in items)
+                {
+                    Add(item);
+                }
+            }
+
+            TrackCollectionChanges = old;
+        }
+
+        public void RemoveRange(IEnumerable<TItem> items)
+        {
+            var old = TrackCollectionChanges;
+            TrackCollectionChanges = false;
+
+            if (Items != null)
+            {
+                foreach (var item in items)
+                {
+                    Remove(item);
+                }
+            }
+
+            TrackCollectionChanges = old;
+        }
+
+        #endregion
+
         #region INotifyChanged - Property and Collection
 
         public event NotifyCollectionChangedEventHandler CollectionChanged;
@@ -343,6 +380,20 @@ namespace NittyGritty.Collections
         private void OnInternalPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             PropertyChanged?.Invoke(this, e);
+        }
+
+        #endregion
+
+        #region IDisposable
+
+        public void Dispose()
+        {
+            IsTracking = false;
+            TrackCollectionChanges = false;
+            TrackItemChanges = false;
+
+            _internalCollection = null;
+            Items = null;
         }
 
         #endregion
