@@ -4,7 +4,7 @@ using System.Text;
 
 namespace NittyGritty.Validation.Configurations
 {
-    public class FloatPropertyConfiguration : PropertyConfiguration<float>
+    public class FloatPropertyConfiguration : ComparablePropertyConfiguration<FloatPropertyConfiguration, float>
     {
     }
 }

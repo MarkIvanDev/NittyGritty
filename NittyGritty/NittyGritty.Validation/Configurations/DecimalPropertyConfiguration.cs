@@ -4,7 +4,7 @@ using System.Text;
 
 namespace NittyGritty.Validation.Configurations
 {
-    public class DecimalPropertyConfiguration : PropertyConfiguration<decimal>
+    public class DecimalPropertyConfiguration : ComparablePropertyConfiguration<DecimalPropertyConfiguration, decimal>
     {
     }
 }

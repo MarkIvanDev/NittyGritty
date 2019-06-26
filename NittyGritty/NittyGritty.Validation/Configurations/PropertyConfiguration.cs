@@ -10,13 +10,19 @@ namespace NittyGritty.Validation.Configurations
     {
         public Type PropertyType => typeof(T);
 
-        private Collection<Func<T, bool>> _validators;
+        public Collection<Validator<T>> Validators { get; } = new Collection<Validator<T>>();
 
-        public Collection<Func<T, bool>> Validators
+        public ObservableCollection<string> Errors { get; } = new ObservableCollection<string>();
+
+        public async Task ValidateAsync(T property)
         {
-            get
+            foreach (var validator in Validators)
             {
-                return _validators ?? (_validators = new Collection<Func<T, bool>>());
+                var result = await validator.ValidateAsync(property);
+                if(!result.IsValid)
+                {
+                    Errors.Add(result.Error);
+                }
             }
         }
 
@@ -35,5 +41,6 @@ namespace NittyGritty.Validation.Configurations
 
             return this;
         }
+
     }
 }

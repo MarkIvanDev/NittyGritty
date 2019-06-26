@@ -4,7 +4,7 @@ using System.Text;
 
 namespace NittyGritty.Validation.Configurations
 {
-    public class DoublePropertyConfiguration : PropertyConfiguration<double>
+    public class DoublePropertyConfiguration : ComparablePropertyConfiguration<DoublePropertyConfiguration, double>
     {
     }
 }

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace NittyGritty.Validation.Configurations
 {
-    public class BoolPropertyConfiguration : PropertyConfiguration<bool>
+    public class BoolPropertyConfiguration : ComparablePropertyConfiguration<BoolPropertyConfiguration, bool>
     {
     }
 }

@@ -1,20 +1,22 @@
 ﻿using NittyGritty.Validation.Configurations;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Threading.Tasks;
 
 namespace NittyGritty.Validation
 {
-    public class ValidationManager<T> where T : class, INotifyPropertyChanged
+    public class ValidationManager<T> : ObservableObject where T : class, INotifyPropertyChanged
     {
         private readonly T context;
-        private Dictionary<string, IPropertyConfiguration> _configurations = new Dictionary<string, IPropertyConfiguration>();
 
         public ValidationManager(T context)
         {
             this.context = context ?? throw new ArgumentNullException(nameof(context));
         }
+
+        public Dictionary<string, IPropertyConfiguration> Configurations { get; } = new Dictionary<string, IPropertyConfiguration>();
 
         #region 
 
@@ -24,11 +26,15 @@ namespace NittyGritty.Validation
         public void Start()
         {
             context.PropertyChanged += Context_PropertyChanged;
+
         }
 
         private void Context_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            
+            if(Configurations.ContainsKey(e.PropertyName))
+            {
+
+            }
         }
 
         /// <summary>
@@ -82,7 +88,7 @@ namespace NittyGritty.Validation
             throw new NotImplementedException();
         }
 
-        public EntityPropertyConfiguration<TProperty> ConfigureProperty<TProperty>(Func<T, TProperty> property) where TProperty : class
+        public EntityPropertyConfiguration<TProperty> ConfigureProperty<TProperty>(Func<T, TProperty> property) where TProperty : class, INotifyPropertyChanged
         {
 
             throw new NotImplementedException();
