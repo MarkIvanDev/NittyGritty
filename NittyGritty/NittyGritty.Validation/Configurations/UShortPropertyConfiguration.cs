@@ -4,7 +4,7 @@ using System.Text;
 
 namespace NittyGritty.Validation.Configurations
 {
-    public class UShortPropertyConfiguration : PropertyConfiguration<ushort>
+    public class UShortPropertyConfiguration : ComparablePropertyConfiguration<UShortPropertyConfiguration, ushort>
     {
     }
 }

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace NittyGritty.Validation.Configurations
 {
-    public class EntityPropertyConfiguration<T> : PropertyConfiguration<T> where T : class
+    public class EntityPropertyConfiguration<T> : PropertyConfiguration<EntityPropertyConfiguration<T>, T> where T : class
     {
     }
 }

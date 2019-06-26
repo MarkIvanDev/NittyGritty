@@ -4,7 +4,7 @@ using System.Text;
 
 namespace NittyGritty.Validation.Configurations
 {
-    public class CharPropertyConfiguration : PropertyConfiguration<char>
+    public class CharPropertyConfiguration : ComparablePropertyConfiguration<CharPropertyConfiguration, char>
     {
     }
 }

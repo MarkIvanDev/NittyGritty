@@ -4,7 +4,7 @@ using System.Text;
 
 namespace NittyGritty.Validation.Configurations
 {
-    public class ULongPropertyConfiguration : ComparablePropertyConfiguration<ULongPropertyConfiguration, ulong>
+    public class DateTimePropertyConfiguration : ComparablePropertyConfiguration<DateTimePropertyConfiguration, DateTime>
     {
     }
 }

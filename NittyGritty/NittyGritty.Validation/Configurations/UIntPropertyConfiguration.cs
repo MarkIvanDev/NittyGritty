@@ -4,7 +4,7 @@ using System.Text;
 
 namespace NittyGritty.Validation.Configurations
 {
-    public class UIntPropertyConfiguration : PropertyConfiguration<uint>
+    public class UIntPropertyConfiguration : ComparablePropertyConfiguration<UIntPropertyConfiguration, uint>
     {
     }
 }

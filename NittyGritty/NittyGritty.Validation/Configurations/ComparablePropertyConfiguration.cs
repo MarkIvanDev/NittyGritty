@@ -4,7 +4,7 @@ using System.Text;
 
 namespace NittyGritty.Validation.Configurations
 {
-    public abstract class ComparablePropertyConfiguration<TConfig, TProperty> : PropertyConfiguration<TProperty>
+    public abstract class ComparablePropertyConfiguration<TConfig, TProperty> : PropertyConfiguration<TConfig, TProperty>
         where TConfig : class, IPropertyConfiguration
         where TProperty : IComparable<TProperty>
     {
@@ -12,7 +12,7 @@ namespace NittyGritty.Validation.Configurations
         {
             if(error == null)
             {
-                error = $"Has to be greater than {other}";
+                error = $"Must be greater than {other}";
             }
             var validator = new Validator<TProperty>(
                 new Func<TProperty, ValidationResult>(
@@ -28,7 +28,7 @@ namespace NittyGritty.Validation.Configurations
         {
             if (error == null)
             {
-                error = $"Has to be greater than or equal to {other}";
+                error = $"Must be greater than or equal to {other}";
             }
             var validator = new Validator<TProperty>(
                 new Func<TProperty, ValidationResult>(
@@ -44,7 +44,7 @@ namespace NittyGritty.Validation.Configurations
         {
             if (error == null)
             {
-                error = $"Has to be lesser than {other}";
+                error = $"Must be lesser than {other}";
             }
             var validator = new Validator<TProperty>(
                 new Func<TProperty, ValidationResult>(
@@ -60,7 +60,7 @@ namespace NittyGritty.Validation.Configurations
         {
             if (error == null)
             {
-                error = $"Has to be lesser than or equal to {other}";
+                error = $"Must be lesser than or equal to {other}";
             }
             var validator = new Validator<TProperty>(
                 new Func<TProperty, ValidationResult>(
@@ -76,13 +76,29 @@ namespace NittyGritty.Validation.Configurations
         {
             if (error == null)
             {
-                error = $"Has to be lesser than or equal to {other}";
+                error = $"Must be equal to {other}";
             }
             var validator = new Validator<TProperty>(
                 new Func<TProperty, ValidationResult>(
                     (prop) =>
                     {
                         return new ValidationResult(prop.CompareTo(other) == 0, error);
+                    }));
+            this.Validators.Add(validator);
+            return this as TConfig;
+        }
+
+        public TConfig NotEqualTo(TProperty other, string error = null)
+        {
+            if (error == null)
+            {
+                error = $"Must not be equal to {other}";
+            }
+            var validator = new Validator<TProperty>(
+                new Func<TProperty, ValidationResult>(
+                    (prop) =>
+                    {
+                        return new ValidationResult(prop.CompareTo(other) != 0, error);
                     }));
             this.Validators.Add(validator);
             return this as TConfig;
@@ -97,7 +113,7 @@ namespace NittyGritty.Validation.Configurations
                 {
                     exclusiveSetting = " including the two endpoints";
                 }
-                error = $"Has to be between {from} and {to}{exclusiveSetting}";
+                error = $"Must be between {from} and {to}{exclusiveSetting}";
             }
             var validator = new Validator<TProperty>(
                 new Func<TProperty, ValidationResult>(
@@ -117,10 +133,6 @@ namespace NittyGritty.Validation.Configurations
             this.Validators.Add(validator);
             return this as TConfig;
         }
-
-
-
-
 
     }
 }

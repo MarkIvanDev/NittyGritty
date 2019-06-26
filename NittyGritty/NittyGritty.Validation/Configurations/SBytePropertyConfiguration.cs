@@ -4,7 +4,7 @@ using System.Text;
 
 namespace NittyGritty.Validation.Configurations
 {
-    public class SBytePropertyConfiguration : PropertyConfiguration<sbyte>
+    public class SBytePropertyConfiguration : ComparablePropertyConfiguration<SBytePropertyConfiguration, sbyte>
     {
     }
 }
