@@ -15,7 +15,7 @@ namespace NittyGritty.Utilities
         public static string GetPropertyName<TClass, TProperty>(Expression<Func<TClass, TProperty>> expression)
         {
             return expression.Body is UnaryExpression
-                ? ((MemberExpression)(((UnaryExpression)expression.Body).Operand)).Member.Name
+                ? ((MemberExpression)((UnaryExpression)expression.Body).Operand).Member.Name
                 : ((MemberExpression)expression.Body).Member.Name;
         }
 
@@ -26,7 +26,7 @@ namespace NittyGritty.Utilities
         public static string GetPropertyName<TProperty>(Expression<Func<TProperty>> expression)
         {
             return expression.Body is UnaryExpression
-                ? ((MemberExpression)(((UnaryExpression)expression.Body).Operand)).Member.Name
+                ? ((MemberExpression)((UnaryExpression)expression.Body).Operand).Member.Name
                 : ((MemberExpression)expression.Body).Member.Name;
         }
 
@@ -37,7 +37,7 @@ namespace NittyGritty.Utilities
         public static string GetPropertyName<TClass>(Expression<Func<TClass, object>> expression)
         {
             return expression.Body is UnaryExpression
-                ? ((MemberExpression)(((UnaryExpression)expression.Body).Operand)).Member.Name
+                ? ((MemberExpression)((UnaryExpression)expression.Body).Operand).Member.Name
                 : ((MemberExpression)expression.Body).Member.Name;
         }
     }

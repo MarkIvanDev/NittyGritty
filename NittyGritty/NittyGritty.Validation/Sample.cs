@@ -127,9 +127,26 @@ namespace NittyGritty.Validation
             ValidationManager = new ValidationManager<Sample>(this);
             ValidationManager
                 .ConfigureProperty(c => c.Int)
-                    .IsGreaterThan(0)
-                    ;
+                    .GreaterThan(0)
+                    .Is(i =>
+                    {
+                        if(string.IsNullOrWhiteSpace(String) && i == 1)
+                        {
+                            return true;
+                        }
+                        return false;
+                    })
+                    .DependsOn(c => c.String);
             
         }
     }
+
+    public class SampleValidationManager : ValidationManager<Sample>
+    {
+        public SampleValidationManager(Sample context) : base(context)
+        {
+            
+        }
+    }
+
 }

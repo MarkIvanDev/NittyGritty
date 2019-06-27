@@ -4,9 +4,14 @@ using System.Text;
 
 namespace NittyGritty.Validation.Configurations
 {
-    public class StringPropertyConfiguration : ComparablePropertyConfiguration<StringPropertyConfiguration, string>
+    public class StringPropertyConfiguration<TOwner> : ComparablePropertyConfiguration<TOwner, string, StringPropertyConfiguration<TOwner>>
+        where TOwner : class
     {
-        public StringPropertyConfiguration Empty(string error = null)
+        public StringPropertyConfiguration(Func<TOwner, string> propertyFunc) : base(propertyFunc)
+        {
+        }
+
+        public StringPropertyConfiguration<TOwner> Empty(string error = null)
         {
             if (error == null)
             {
@@ -18,11 +23,11 @@ namespace NittyGritty.Validation.Configurations
                     {
                         return new ValidationResult(string.IsNullOrEmpty(prop), error);
                     }));
-            this.Validators.Add(validator);
+            Validators.Add(validator);
             return this;
         }
 
-        public StringPropertyConfiguration NotEmpty(string error = null)
+        public StringPropertyConfiguration<TOwner> NotEmpty(string error = null)
         {
             if (error == null)
             {
@@ -34,11 +39,11 @@ namespace NittyGritty.Validation.Configurations
                     {
                         return new ValidationResult(!string.IsNullOrEmpty(prop), error);
                     }));
-            this.Validators.Add(validator);
+            Validators.Add(validator);
             return this;
         }
 
-        public StringPropertyConfiguration Whitespace(string error = null)
+        public StringPropertyConfiguration<TOwner> Whitespace(string error = null)
         {
             if (error == null)
             {
@@ -50,11 +55,11 @@ namespace NittyGritty.Validation.Configurations
                     {
                         return new ValidationResult(string.IsNullOrWhiteSpace(prop), error);
                     }));
-            this.Validators.Add(validator);
+            Validators.Add(validator);
             return this;
         }
 
-        public StringPropertyConfiguration NotWhitespace(string error = null)
+        public StringPropertyConfiguration<TOwner> NotWhitespace(string error = null)
         {
             if (error == null)
             {
@@ -66,7 +71,23 @@ namespace NittyGritty.Validation.Configurations
                     {
                         return new ValidationResult(!string.IsNullOrWhiteSpace(prop), error);
                     }));
-            this.Validators.Add(validator);
+            Validators.Add(validator);
+            return this;
+        }
+
+        public StringPropertyConfiguration<TOwner> MaxLength(int maxLength, string error = null)
+        {
+            if (error == null)
+            {
+                error = $"Must not exceed {maxLength} character(s)";
+            }
+            var validator = new Validator<string>(
+                new Func<string, ValidationResult>(
+                    (prop) =>
+                    {
+                        return new ValidationResult(prop != null && prop.Length <= maxLength, error);
+                    }));
+            Validators.Add(validator);
             return this;
         }
 

@@ -4,7 +4,12 @@ using System.Text;
 
 namespace NittyGritty.Validation.Configurations
 {
-    public class EntityPropertyConfiguration<T> : PropertyConfiguration<EntityPropertyConfiguration<T>, T> where T : class
+    public class EntityPropertyConfiguration<TOwner, TProperty> : BasePropertyConfiguration<TOwner, TProperty, EntityPropertyConfiguration<TOwner, TProperty>>
+        where TOwner : class
+        where TProperty : class
     {
+        public EntityPropertyConfiguration(Func<TOwner, TProperty> propertyFunc) : base(propertyFunc)
+        {
+        }
     }
 }

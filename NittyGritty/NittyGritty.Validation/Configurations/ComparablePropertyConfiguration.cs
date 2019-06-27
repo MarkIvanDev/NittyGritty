@@ -4,13 +4,18 @@ using System.Text;
 
 namespace NittyGritty.Validation.Configurations
 {
-    public abstract class ComparablePropertyConfiguration<TConfig, TProperty> : PropertyConfiguration<TConfig, TProperty>
-        where TConfig : class, IPropertyConfiguration
+    public abstract class ComparablePropertyConfiguration<TOwner, TProperty, TConfig> : BasePropertyConfiguration<TOwner, TProperty, TConfig>
+        where TOwner : class
         where TProperty : IComparable<TProperty>
+        where TConfig : BasePropertyConfiguration<TOwner, TProperty, TConfig>
     {
+        public ComparablePropertyConfiguration(Func<TOwner, TProperty> propertyFunc) : base(propertyFunc)
+        {
+        }
+
         public TConfig GreaterThan(TProperty other, string error = null)
         {
-            if(error == null)
+            if (error == null)
             {
                 error = $"Must be greater than {other}";
             }
@@ -20,7 +25,7 @@ namespace NittyGritty.Validation.Configurations
                     {
                         return new ValidationResult(prop.CompareTo(other) > 0, error);
                     }));
-            this.Validators.Add(validator);
+            Validators.Add(validator);
             return this as TConfig;
         }
 
@@ -36,7 +41,7 @@ namespace NittyGritty.Validation.Configurations
                     {
                         return new ValidationResult(prop.CompareTo(other) >= 0, error);
                     }));
-            this.Validators.Add(validator);
+            Validators.Add(validator);
             return this as TConfig;
         }
 
@@ -52,7 +57,7 @@ namespace NittyGritty.Validation.Configurations
                     {
                         return new ValidationResult(prop.CompareTo(other) < 0, error);
                     }));
-            this.Validators.Add(validator);
+            Validators.Add(validator);
             return this as TConfig;
         }
 
@@ -68,7 +73,7 @@ namespace NittyGritty.Validation.Configurations
                     {
                         return new ValidationResult(prop.CompareTo(other) <= 0, error);
                     }));
-            this.Validators.Add(validator);
+            Validators.Add(validator);
             return this as TConfig;
         }
 
@@ -84,7 +89,7 @@ namespace NittyGritty.Validation.Configurations
                     {
                         return new ValidationResult(prop.CompareTo(other) == 0, error);
                     }));
-            this.Validators.Add(validator);
+            Validators.Add(validator);
             return this as TConfig;
         }
 
@@ -100,7 +105,7 @@ namespace NittyGritty.Validation.Configurations
                     {
                         return new ValidationResult(prop.CompareTo(other) != 0, error);
                     }));
-            this.Validators.Add(validator);
+            Validators.Add(validator);
             return this as TConfig;
         }
 
@@ -120,7 +125,7 @@ namespace NittyGritty.Validation.Configurations
                     (prop) =>
                     {
                         var result = false;
-                        if(isExclusive)
+                        if (isExclusive)
                         {
                             result = prop.CompareTo(from) > 0 && prop.CompareTo(to) < 0;
                         }
@@ -130,9 +135,8 @@ namespace NittyGritty.Validation.Configurations
                         }
                         return new ValidationResult(result, error);
                     }));
-            this.Validators.Add(validator);
+            Validators.Add(validator);
             return this as TConfig;
         }
-
     }
 }
