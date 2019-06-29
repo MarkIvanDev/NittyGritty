@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace NittyGritty.Validation.Configurations
 {
-    public abstract class BasePropertyConfiguration<TOwner, TProperty, TConfig> : IPropertyConfiguration<TOwner, TProperty>
+    public abstract class BasePropertyConfiguration<TOwner, TProperty, TConfig> : ObservableObject, IPropertyConfiguration<TOwner, TProperty>
         where TOwner : class
         where TConfig : BasePropertyConfiguration<TOwner, TProperty, TConfig>
     {
@@ -17,10 +17,6 @@ namespace NittyGritty.Validation.Configurations
         {
             PropertyFunc = propertyFunc;
         }
-
-        public Type OwnerType { get; } = typeof(TOwner);
-
-        public Type PropertyType { get; } = typeof(TProperty);
 
         public Collection<string> Triggers { get; } = new Collection<string>();
 
@@ -42,7 +38,7 @@ namespace NittyGritty.Validation.Configurations
             }
         }
 
-        public async Task ValidateAsync(TOwner owner)
+        public virtual async Task ValidateAsync(TOwner owner)
         {
             foreach (var validator in Validators)
             {

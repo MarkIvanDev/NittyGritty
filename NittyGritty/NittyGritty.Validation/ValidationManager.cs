@@ -1,5 +1,6 @@
 ﻿using NittyGritty.Utilities;
 using NittyGritty.Validation.Configurations;
+using NittyGritty.Validation.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -12,24 +13,46 @@ namespace NittyGritty.Validation
 {
     public class ValidationManager<T> : ObservableObject where T : class, INotifyPropertyChanged
     {
-        public ValidationManager(T context)
+        private bool started = false;
+
+        public ValidationManager()
         {
-            Context = context ?? throw new ArgumentNullException(nameof(context));
+            
         }
 
-        public T Context { get; }
+        public T Context { get; private set; }
 
         public Dictionary<string, IPropertyConfiguration> Configurations { get; } = new Dictionary<string, IPropertyConfiguration>();
+
+        public void ResetContext(T context)
+        {
+            Stop();
+            Context = context ?? throw new ArgumentNullException(nameof(context));
+            Start(Context);
+        }
 
         #region 
 
         /// <summary>
         /// Start listening to property changes of the context
         /// </summary>
-        public void Start()
+        public void Start(T context)
         {
-            Context.PropertyChanged += Context_PropertyChanged;
-
+            if(!started)
+            {
+                started = true;
+                Context = context ?? throw new ArgumentNullException(nameof(context));
+                Context.PropertyChanged += Context_PropertyChanged;
+                var entities = Configurations.Values.OfType<IEntityPropertyContract>();
+                foreach (var entity in entities)
+                {
+                    
+                }
+            }
+            else
+            {
+                throw new InvalidOperationException("Validation Manager already started");
+            }
         }
 
         private async void Context_PropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -53,6 +76,7 @@ namespace NittyGritty.Validation
         public void Stop()
         {
             Context.PropertyChanged -= Context_PropertyChanged;
+            started = false;
         }
 
         /// <summary>
@@ -131,27 +155,29 @@ namespace NittyGritty.Validation
             }
         }
 
-        public EntityPropertyConfiguration<T, TProperty> ConfigureEntityProperty<TProperty>(Expression<Func<T, TProperty>> property)
+        public ValidationManager<TProperty> ConfigureEntityProperty<TProperty>(Expression<Func<T, TProperty>> property)
             where TProperty : class, INotifyPropertyChanged
         {
+            var propertyName = ExpressionUtilities.GetPropertyName(property);
+            if (!TryGetConfiguration<EntityPropertyConfiguration<T, TProperty>>(propertyName, out var config))
+            {
+                config = new EntityPropertyConfiguration<T, TProperty>(property.Compile());
 
-            throw new NotImplementedException();
+            }
+            Configurations.Add(propertyName, config);
+            return config.ValidationManager;
         }
 
         public NumericPropertyConfiguration<T, TProperty> ConfigureProperty<TProperty>(Expression<Func<T, TProperty>> property)
             where TProperty : struct, IComparable, IComparable<TProperty>, IConvertible, IEquatable<TProperty>, IFormattable
         {
             var propertyName = ExpressionUtilities.GetPropertyName(property);
-            if (TryGetConfiguration<NumericPropertyConfiguration<T, TProperty>>(propertyName, out var config))
+            if (!TryGetConfiguration<NumericPropertyConfiguration<T, TProperty>>(propertyName, out var config))
             {
-                return config;
+                config = new NumericPropertyConfiguration<T, TProperty>(property.Compile());
             }
-            else
-            {
-                var c = new NumericPropertyConfiguration<T, TProperty>(property.Compile());
-                Configurations.Add(propertyName, c);
-                return c;
-            }
+            Configurations.Add(propertyName, config);
+            return config;
         }
 
         #region Numeric

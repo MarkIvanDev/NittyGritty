@@ -8,10 +8,6 @@ namespace NittyGritty.Validation.Configurations
 {
     public interface IPropertyConfiguration
     {
-        Type OwnerType { get; }
-
-        Type PropertyType { get; }
-
         Collection<string> Triggers { get; }
 
         ObservableCollection<string> Errors { get; }

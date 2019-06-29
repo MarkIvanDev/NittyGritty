@@ -120,24 +120,27 @@ namespace NittyGritty.Validation
             set { Set(ref _ushort, value); }
         }
 
+        private DateTime _dateTime;
+
+        public DateTime DateTime
+        {
+            get { return _dateTime; }
+            set { Set(ref _dateTime, value); }
+        }
+
         public ValidationManager<Sample> ValidationManager { get; private set; }
 
         public override void OnLoading()
         {
             ValidationManager = new ValidationManager<Sample>(this);
             ValidationManager
-                .ConfigureProperty(c => c.Int)
-                    .GreaterThan(0)
-                    .Is(i =>
-                    {
-                        if(string.IsNullOrWhiteSpace(String) && i == 1)
-                        {
-                            return true;
-                        }
-                        return false;
-                    })
-                    .DependsOn(c => c.String);
+                .ConfigureProperty(c => c.DateTime);
             
+        }
+
+        public override void LoadState(object parameter, Dictionary<string, object> state)
+        {
+            base.LoadState(parameter, state);
         }
     }
 
