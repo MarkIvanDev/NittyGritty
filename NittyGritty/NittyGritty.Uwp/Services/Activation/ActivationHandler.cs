@@ -7,25 +7,18 @@ using Windows.ApplicationModel.Activation;
 
 namespace NittyGritty.Uwp.Services.Activation
 {
-    public abstract class ActivationHandler
+    public class ActivationHandler<T> where T : class, IActivatedEventArgs
     {
-        public abstract bool CanHandle(object args);
+        public Func<T, Task> Handler { get; set; }
 
-        public abstract Task HandleAsync(object args);
-    }
-
-    public abstract class ActivationHandler<T> : ActivationHandler where T : class, IActivatedEventArgs
-    {
-        public Func<T, Task> Handle { get; set; }
-
-        public override async Task HandleAsync(object args)
+        public async Task HandleAsync(T args)
         {
-            await Handle.Invoke(args as T);
+            await Handler?.Invoke(args);
         }
 
-        public override bool CanHandle(object args)
+        public virtual bool CanHandle(T args)
         {
-            return args is T;
+            return true;
         }
     }
 }

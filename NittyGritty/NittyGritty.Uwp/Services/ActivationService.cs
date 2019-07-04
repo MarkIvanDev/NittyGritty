@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NittyGritty.Uwp.Services.Activation;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,13 +14,13 @@ namespace NittyGritty.Uwp.Services
     {
         private readonly Application app;
         private readonly Func<Task> initialization;
-        private readonly IEnumerable<ActivationHandler> handlers;
+        private readonly IEnumerable<ActivationHandler<IActivatedEventArgs>> handlers;
         private readonly Lazy<UIElement> shell;
         private readonly Func<Task> startup;
 
         public ActivationService(Application app,
                                  Func<Task> initialization,
-                                 IEnumerable<ActivationHandler> handlers,
+                                 IEnumerable<ActivationHandler<IActivatedEventArgs>> handlers,
                                  Lazy<UIElement> shell,
                                  Func<Task> startup)
         {
@@ -51,10 +52,10 @@ namespace NittyGritty.Uwp.Services
                     Window.Current.Content = shell?.Value ?? new Frame();
                 }
 
-                ActivationHandler activationHandler = null;
+                ActivationHandler<IActivatedEventArgs> activationHandler = null;
                 foreach (var handler in handlers)
                 {
-                    if (await handler.CanHandle(e))
+                    if (handler.CanHandle(e))
                     {
                         activationHandler = handler;
                         break;
