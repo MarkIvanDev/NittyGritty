@@ -9,7 +9,7 @@ namespace NittyGritty.Uwp.Services.Activation
 {
     public class ActivationHandler<T> where T : class, IActivatedEventArgs
     {
-        public Func<T, Task> Handler { get; set; }
+        protected Func<T, Task> Handler { get; set; }
 
         public async Task HandleAsync(T args)
         {

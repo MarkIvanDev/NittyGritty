@@ -43,5 +43,42 @@ namespace NittyGritty.Uwp.Services.Activation
         public Func<LaunchActivatedEventArgs, Task> Jumplist { get; set; }
 
         public Func<LaunchActivatedEventArgs, Task> Chaseable { get; set; }
+
+        public override bool CanHandle(LaunchActivatedEventArgs args)
+        {
+            if (args.TileId == "App" && string.IsNullOrEmpty(args.Arguments))
+            {
+                // Primary Tile
+                if(Primary != null)
+                {
+                    return true;
+                }
+            }
+            else if (!string.IsNullOrEmpty(args.TileId) && args.TileId != "App")
+            {
+                // Secondary Tile
+                if(Secondary != null)
+                {
+                    return true;
+                }
+            }
+            else if (args.TileId == "App" && !string.IsNullOrEmpty(args.Arguments))
+            {
+                // Jumplist
+                if(Jumplist != null)
+                {
+                    return true;
+                }
+            }
+            else if (args.TileActivatedInfo != null)
+            {
+                // Chaseable Tile
+                if(Chaseable != null)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
     }
 }

@@ -206,7 +206,7 @@ namespace NittyGritty.ViewModels
 
         public virtual void OnSaving()
         {
-
+            CancelAll();
         }
 
         public virtual void SaveState(Dictionary<string, object> state)
