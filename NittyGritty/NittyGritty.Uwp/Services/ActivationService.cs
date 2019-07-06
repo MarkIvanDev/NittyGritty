@@ -16,13 +16,15 @@ namespace NittyGritty.Uwp.Services
         private readonly Application app;
         private readonly Func<Task> initialization;
         private readonly IEnumerable<IActivationHandler> handlers;
+        private readonly Lazy<DefaultActivationHandler> defaultHandler;
         private readonly Lazy<UIElement> shell;
         private readonly Func<Task> startup;
 
         public ActivationService(Application app,
                                  Func<Task> initialization,
-                                 IEnumerable<IActivationHandler> handlers,
                                  Lazy<UIElement> shell,
+                                 IEnumerable<IActivationHandler> handlers,
+                                 Lazy<DefaultActivationHandler> defaultHandler,
                                  Func<Task> startup)
         {
             if (!handlers.Any())
@@ -33,11 +35,13 @@ namespace NittyGritty.Uwp.Services
             this.app = app;
             this.initialization = initialization;
             this.handlers = handlers;
+            this.defaultHandler = defaultHandler;
             this.shell = shell;
             this.startup = startup;
         }
 
-        public ActivationService(App app) : this(app, app.Initialization, app.GetActivationHandlers(), new Lazy<UIElement>(app.CreateShell), app.Startup)
+        public ActivationService(App app) : this(
+            app, app.Initialization, new Lazy<UIElement>(app.CreateShell), app.GetActivationHandlers(), new Lazy<DefaultActivationHandler>(app.GetDefaultHandler), app.Startup)
         {
 
         }
@@ -72,7 +76,7 @@ namespace NittyGritty.Uwp.Services
             }
             else
             {
-                throw new Exception("No Activation handler detected");
+                await defaultHandler?.Value.HandleAsync(args);
             }
 
             if(args is IActivatedEventArgs)

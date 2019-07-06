@@ -23,6 +23,8 @@ namespace NittyGritty.Uwp.Views
             _activationService = new Lazy<ActivationService>(CreateActivationService);
         }
 
+        public static new App Current { get; private set; }
+
         private async void App_Suspending(object sender, SuspendingEventArgs e)
         {
             var deferral = e.SuspendingOperation.GetDeferral();
@@ -31,8 +33,6 @@ namespace NittyGritty.Uwp.Views
         }
 
         #region ActivationService Initialization Requirements
-
-        public static new App Current { get; private set; }
 
         private Lazy<ActivationService> _activationService;
 
@@ -47,6 +47,8 @@ namespace NittyGritty.Uwp.Views
         }
 
         public abstract IEnumerable<IActivationHandler> GetActivationHandlers();
+
+        public abstract DefaultActivationHandler GetDefaultHandler();
 
         public virtual UIElement CreateShell()
         {
