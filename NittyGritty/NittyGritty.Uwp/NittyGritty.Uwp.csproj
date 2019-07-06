@@ -153,6 +153,8 @@
     <Compile Include="Services\DialogService.cs" />
     <Compile Include="Services\NavigationService.cs" />
     <Compile Include="Views\App.cs" />
+    <Compile Include="Views\SuspensionManager.cs" />
+    <Compile Include="Views\ViewBase.cs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">

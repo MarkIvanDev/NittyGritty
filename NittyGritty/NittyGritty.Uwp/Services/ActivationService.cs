@@ -1,4 +1,5 @@
 ﻿using NittyGritty.Uwp.Services.Activation;
+using NittyGritty.Uwp.Views;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,13 +15,13 @@ namespace NittyGritty.Uwp.Services
     {
         private readonly Application app;
         private readonly Func<Task> initialization;
-        private readonly IEnumerable<ActivationHandler<IActivatedEventArgs>> handlers;
+        private readonly IEnumerable<IActivationHandler> handlers;
         private readonly Lazy<UIElement> shell;
         private readonly Func<Task> startup;
 
         public ActivationService(Application app,
                                  Func<Task> initialization,
-                                 IEnumerable<ActivationHandler<IActivatedEventArgs>> handlers,
+                                 IEnumerable<IActivationHandler> handlers,
                                  Lazy<UIElement> shell,
                                  Func<Task> startup)
         {
@@ -36,47 +37,55 @@ namespace NittyGritty.Uwp.Services
             this.startup = startup;
         }
 
+        public ActivationService(App app) : this(app, app.Initialization, app.GetActivationHandlers(), new Lazy<UIElement>(app.CreateShell), app.Startup)
+        {
+
+        }
+
         public async Task ActivateAsync(object args)
         {
-            if (args is IActivatedEventArgs e)
-            {
-                
-                // Initialize things like registering background task before the app is loaded
-                await initialization.Invoke();
-
-                // Do not repeat app initialization when the Window already has content,
-                // just ensure that the window is active
-                if (Window.Current.Content == null)
+            if (args is IActivatedEventArgs)
+            {   
+                if(args is ShareTargetActivatedEventArgs)
                 {
-                    // Create a Frame to act as the navigation context and navigate to the first page
-                    Window.Current.Content = shell?.Value ?? new Frame();
-                }
-
-                ActivationHandler<IActivatedEventArgs> activationHandler = null;
-                foreach (var handler in handlers)
-                {
-                    if (handler.CanHandle(e))
-                    {
-                        activationHandler = handler;
-                        break;
-                    }
-                }
-
-                if (activationHandler != null)
-                {
-                    await activationHandler.HandleAsync(e);
+                    Window.Current.Content = new Frame();
                 }
                 else
                 {
-                    throw new Exception("No Activation handler detected");
+                    // Initialize things like registering background task before the app is loaded
+                    await initialization.Invoke();
+
+                    // Do not repeat app initialization when the Window already has content,
+                    // just ensure that the window is active
+                    if (Window.Current.Content == null)
+                    {
+                        // Create a Frame to act as the navigation context and navigate to the first page
+                        Window.Current.Content = shell?.Value ?? new Frame();
+                    }
                 }
             }
 
-            // Ensure the current window is active
-            Window.Current.Activate();
+            var activationHandler = handlers.FirstOrDefault(h => h.CanHandle(args));
+            if (activationHandler != null)
+            {
+                await activationHandler.HandleAsync(args);
+            }
+            else
+            {
+                throw new Exception("No Activation handler detected");
+            }
 
-            // Tasks after activation
-            await startup.Invoke();
+            if(args is IActivatedEventArgs)
+            {
+                // Ensure the current window is active
+                Window.Current.Activate();
+
+                if(!(args is ShareTargetActivatedEventArgs))
+                {
+                    // Tasks after activation
+                    await startup.Invoke();
+                }
+            }
         }
 
     }

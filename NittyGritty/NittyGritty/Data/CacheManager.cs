@@ -33,16 +33,18 @@ namespace NittyGritty.Data
 
         public static async void SaveCache(string path, Dictionary<string, object> cache)
         {
-            // Serialize the session state synchronously to avoid asynchronous access to shared state
-            var cacheStream = new MemoryStream();
-            var serializer = new DataContractSerializer(typeof(Dictionary<string, object>), KnownTypes);
-            serializer.WriteObject(cacheStream, cache);
-
-            // Get an output stream for the SessionState file and write the state asynchronously
-            using (var fileStream = File.OpenWrite(path))
+            using (var cacheStream = new MemoryStream())
             {
-                cacheStream.Seek(0, SeekOrigin.Begin);
-                await cacheStream.CopyToAsync(fileStream);
+                // Serialize the session state synchronously to avoid asynchronous access to shared state
+                var serializer = new DataContractSerializer(typeof(Dictionary<string, object>), KnownTypes);
+                serializer.WriteObject(cacheStream, cache);
+
+                // Get an output stream for the SessionState file and write the state asynchronously
+                using (var fileStream = File.OpenWrite(path))
+                {
+                    cacheStream.Seek(0, SeekOrigin.Begin);
+                    await cacheStream.CopyToAsync(fileStream);
+                }
             }
         }
     }
