@@ -11,10 +11,6 @@ namespace NittyGritty.Uwp.Views
     {
         public abstract void Register();
 
-        public abstract Task RunAsyncInternal(IBackgroundTaskInstance taskInstance);
-
-        public abstract void OnCanceled(IBackgroundTaskInstance sender, BackgroundTaskCancellationReason reason);
-
         public bool Match(string name)
         {
             return name == GetType().Name;
@@ -22,14 +18,18 @@ namespace NittyGritty.Uwp.Views
 
         public Task RunAsync(IBackgroundTaskInstance taskInstance)
         {
-            SubscribeToEvents(taskInstance);
+            Attach(taskInstance);
 
             return RunAsyncInternal(taskInstance);
         }
 
-        public void SubscribeToEvents(IBackgroundTaskInstance taskInstance)
+        private void Attach(IBackgroundTaskInstance taskInstance)
         {
             taskInstance.Canceled += new BackgroundTaskCanceledEventHandler(OnCanceled);
         }
+
+        protected abstract Task RunAsyncInternal(IBackgroundTaskInstance taskInstance);
+
+        protected abstract void OnCanceled(IBackgroundTaskInstance sender, BackgroundTaskCancellationReason reason);
     }
 }

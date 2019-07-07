@@ -27,7 +27,7 @@ namespace NittyGritty.Uwp.Services
                                  Lazy<DefaultActivationHandler> defaultHandler,
                                  Func<Task> startup)
         {
-            if (!handlers.Any())
+            if (!handlers.Any() && defaultHandler == null)
             {
                 throw new Exception("Activation Handlers can not be empty");
             }

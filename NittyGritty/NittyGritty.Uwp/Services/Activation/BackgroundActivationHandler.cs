@@ -12,9 +12,12 @@ namespace NittyGritty.Uwp.Services.Activation
 {
     public class BackgroundActivationHandler : ActivationHandler<BackgroundActivatedEventArgs>
     {
+        private readonly IEnumerable<BackgroundTask> backgroundTasks;
 
-        public BackgroundActivationHandler()
+        public BackgroundActivationHandler(IEnumerable<BackgroundTask> backgroundTasks)
         {
+            this.backgroundTasks = backgroundTasks ?? Enumerable.Empty<BackgroundTask>();
+
             Handler = async (e) =>
             {
                 Start(e.TaskInstance);
@@ -22,9 +25,7 @@ namespace NittyGritty.Uwp.Services.Activation
             };
         }
 
-        private static List<BackgroundTask> backgroundTasks = new List<BackgroundTask>();
-
-        public static BackgroundTaskRegistration GetBackgroundTasksRegistration<T>()
+        public static BackgroundTaskRegistration GetBackgroundTaskRegistration<T>()
             where T : BackgroundTask
         {
             if (!BackgroundTaskRegistration.AllTasks.Any(t => t.Value.Name == typeof(T).Name))
@@ -37,9 +38,7 @@ namespace NittyGritty.Uwp.Services.Activation
             return (BackgroundTaskRegistration)BackgroundTaskRegistration.AllTasks.FirstOrDefault(t => t.Value.Name == typeof(T).Name).Value;
         }
 
-
-
-        public async Task Register(params BackgroundTask[] tasks)
+        public async Task RegisterAll()
         {
             BackgroundExecutionManager.RemoveAccess();
             var result = await BackgroundExecutionManager.RequestAccessAsync();
@@ -48,11 +47,6 @@ namespace NittyGritty.Uwp.Services.Activation
                 || result == BackgroundAccessStatus.DeniedByUser)
             {
                 return;
-            }
-
-            foreach (var task in tasks)
-            {
-                backgroundTasks.Add(task);
             }
 
             foreach (var task in backgroundTasks)
