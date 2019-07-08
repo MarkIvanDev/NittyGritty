@@ -14,9 +14,9 @@ namespace NittyGritty.Uwp.Views
 {
     public class ViewBase : Page
     {
-        private ViewModelBase PageViewModel
+        private IStateManager PageViewModel
         {
-            get { return this.DataContext as ViewModelBase; }
+            get { return this.DataContext as IStateManager; }
         }
 
         private string _pageKey;

@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Background;
 
-namespace NittyGritty.Uwp.Views
+namespace NittyGritty.Uwp.Declarations
 {
     public abstract class BackgroundTask
     {
@@ -16,7 +16,7 @@ namespace NittyGritty.Uwp.Views
             return name == GetType().Name;
         }
 
-        public Task RunAsync(IBackgroundTaskInstance taskInstance)
+        public Task Run(IBackgroundTaskInstance taskInstance)
         {
             Attach(taskInstance);
 

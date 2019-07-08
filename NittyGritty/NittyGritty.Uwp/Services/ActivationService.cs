@@ -13,35 +13,27 @@ namespace NittyGritty.Uwp.Services
 {
     public class ActivationService
     {
-        private readonly Application app;
         private readonly Func<Task> initialization;
         private readonly IEnumerable<IActivationHandler> handlers;
         private readonly Lazy<DefaultActivationHandler> defaultHandler;
         private readonly Lazy<UIElement> shell;
         private readonly Func<Task> startup;
 
-        public ActivationService(Application app,
-                                 Func<Task> initialization,
+        public ActivationService(Func<Task> initialization,
                                  Lazy<UIElement> shell,
                                  IEnumerable<IActivationHandler> handlers,
                                  Lazy<DefaultActivationHandler> defaultHandler,
                                  Func<Task> startup)
         {
-            if (!handlers.Any() && defaultHandler == null)
-            {
-                throw new Exception("Activation Handlers can not be empty");
-            }
-
-            this.app = app;
             this.initialization = initialization;
             this.handlers = handlers;
-            this.defaultHandler = defaultHandler;
+            this.defaultHandler = defaultHandler ?? throw new ArgumentNullException(nameof(defaultHandler), "Default activation handler can not be null");
             this.shell = shell;
             this.startup = startup;
         }
 
-        public ActivationService(App app) : this(
-            app, app.Initialization, new Lazy<UIElement>(app.CreateShell), app.GetActivationHandlers(), new Lazy<DefaultActivationHandler>(app.GetDefaultHandler), app.Startup)
+        public ActivationService(INittyGrittyApp app) : this(
+            app.Initialization, new Lazy<UIElement>(app.CreateShell), app.GetActivationHandlers(), new Lazy<DefaultActivationHandler>(app.GetDefaultHandler), app.Startup)
         {
 
         }
@@ -57,7 +49,7 @@ namespace NittyGritty.Uwp.Services
                 else
                 {
                     // Initialize things like registering background task before the app is loaded
-                    await initialization.Invoke();
+                    await initialization?.Invoke();
 
                     // Do not repeat app initialization when the Window already has content,
                     // just ensure that the window is active
@@ -69,7 +61,7 @@ namespace NittyGritty.Uwp.Services
                 }
             }
 
-            var activationHandler = handlers.FirstOrDefault(h => h.CanHandle(args));
+            var activationHandler = handlers?.FirstOrDefault(h => h.CanHandle(args));
             if (activationHandler != null)
             {
                 await activationHandler.HandleAsync(args);
@@ -87,7 +79,7 @@ namespace NittyGritty.Uwp.Services
                 if(!(args is ShareTargetActivatedEventArgs))
                 {
                     // Tasks after activation
-                    await startup.Invoke();
+                    await startup?.Invoke();
                 }
             }
         }

@@ -17,14 +17,9 @@ namespace NittyGritty.Uwp.Services.Activation
     public class ActivationHandler<T> : IActivationHandler
         where T : class
     {
-        protected Func<T, Task> Handler { get; set; }
-
-        public async Task HandleAsync(T args)
+        public virtual async Task HandleAsync(T args)
         {
-            if(CanHandle(args))
-            {
-                await Handler?.Invoke(args);
-            }
+            await Task.CompletedTask;
         }
 
         public virtual bool CanHandle(T args)

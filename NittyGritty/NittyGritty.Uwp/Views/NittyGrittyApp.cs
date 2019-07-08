@@ -12,9 +12,9 @@ using Windows.UI.Xaml.Controls;
 
 namespace NittyGritty.Uwp.Views
 {
-    public abstract class App : Application
+    public abstract class NittyGrittyApp : Application, INittyGrittyApp
     {
-        public App()
+        public NittyGrittyApp()
         {
             Current = this;
 
@@ -23,7 +23,7 @@ namespace NittyGritty.Uwp.Views
             _activationService = new Lazy<ActivationService>(CreateActivationService);
         }
 
-        public static new App Current { get; private set; }
+        public static new NittyGrittyApp Current { get; private set; }
 
         private async void App_Suspending(object sender, SuspendingEventArgs e)
         {
@@ -34,7 +34,7 @@ namespace NittyGritty.Uwp.Views
 
         #region ActivationService Initialization Requirements
 
-        private Lazy<ActivationService> _activationService;
+        private readonly Lazy<ActivationService> _activationService;
 
         protected ActivationService ActivationService
         {
@@ -46,7 +46,10 @@ namespace NittyGritty.Uwp.Views
             return new ActivationService(this);
         }
 
-        public abstract IEnumerable<IActivationHandler> GetActivationHandlers();
+        public virtual IEnumerable<IActivationHandler> GetActivationHandlers()
+        {
+            return Enumerable.Empty<IActivationHandler>();
+        }
 
         public abstract DefaultActivationHandler GetDefaultHandler();
 

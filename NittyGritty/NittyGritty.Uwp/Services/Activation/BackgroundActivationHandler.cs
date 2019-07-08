@@ -1,5 +1,5 @@
 ﻿using NittyGritty.Extensions;
-using NittyGritty.Uwp.Views;
+using NittyGritty.Uwp.Declarations;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,17 +12,20 @@ namespace NittyGritty.Uwp.Services.Activation
 {
     public class BackgroundActivationHandler : ActivationHandler<BackgroundActivatedEventArgs>
     {
-        private readonly IEnumerable<BackgroundTask> backgroundTasks;
+        private readonly List<BackgroundTask> backgroundTasks;
 
         public BackgroundActivationHandler(IEnumerable<BackgroundTask> backgroundTasks)
         {
-            this.backgroundTasks = backgroundTasks ?? Enumerable.Empty<BackgroundTask>();
-
-            Handler = async (e) =>
+            foreach (var task in backgroundTasks ?? Enumerable.Empty<BackgroundTask>())
             {
-                Start(e.TaskInstance);
-                await Task.CompletedTask;
-            };
+                this.backgroundTasks.Add(task);
+            }
+        }
+
+        public sealed override async Task HandleAsync(BackgroundActivatedEventArgs args)
+        {
+            Start(args.TaskInstance);
+            await Task.CompletedTask;
         }
 
         public static BackgroundTaskRegistration GetBackgroundTaskRegistration<T>()
@@ -66,7 +69,7 @@ namespace NittyGritty.Uwp.Services.Activation
                 return;
             }
 
-            task.RunAsync(taskInstance).FireAndForget();
+            task.Run(taskInstance).FireAndForget();
         }
 
     }
