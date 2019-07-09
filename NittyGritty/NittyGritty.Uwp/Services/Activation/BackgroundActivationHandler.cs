@@ -16,12 +16,14 @@ namespace NittyGritty.Uwp.Services.Activation
 
         public BackgroundActivationHandler(IEnumerable<BackgroundTask> backgroundTasks)
         {
+            Strategy = ActivationStrategy.Background;
+
             foreach (var task in backgroundTasks ?? Enumerable.Empty<BackgroundTask>())
             {
                 this.backgroundTasks.Add(task);
             }
         }
-
+        
         public sealed override async Task HandleAsync(BackgroundActivatedEventArgs args)
         {
             Start(args.TaskInstance);

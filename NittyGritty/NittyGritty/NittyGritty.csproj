@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
@@ -15,8 +15,5 @@
     <PackageTags>c# mvvm helpers extensions utilities view viewmodel model collections data nittygritty markivan</PackageTags>
   </PropertyGroup>
 
-  <ItemGroup>
-    <None Remove="ObservableObject.cs~RF43e9911.TMP" />
-  </ItemGroup>
 
 </Project>

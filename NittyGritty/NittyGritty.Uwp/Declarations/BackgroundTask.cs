@@ -20,7 +20,7 @@ namespace NittyGritty.Uwp.Declarations
         {
             Attach(taskInstance);
 
-            return RunAsyncInternal(taskInstance);
+            return Process(taskInstance);
         }
 
         private void Attach(IBackgroundTaskInstance taskInstance)
@@ -28,7 +28,7 @@ namespace NittyGritty.Uwp.Declarations
             taskInstance.Canceled += new BackgroundTaskCanceledEventHandler(OnCanceled);
         }
 
-        protected abstract Task RunAsyncInternal(IBackgroundTaskInstance taskInstance);
+        protected abstract Task Process(IBackgroundTaskInstance taskInstance);
 
         protected abstract void OnCanceled(IBackgroundTaskInstance sender, BackgroundTaskCancellationReason reason);
     }

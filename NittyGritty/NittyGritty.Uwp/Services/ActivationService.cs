@@ -40,28 +40,28 @@ namespace NittyGritty.Uwp.Services
 
         public async Task ActivateAsync(object args)
         {
-            if (args is IActivatedEventArgs)
-            {   
-                if(args is ShareTargetActivatedEventArgs)
-                {
-                    Window.Current.Content = new Frame();
-                }
-                else
-                {
-                    // Initialize things like registering background task before the app is loaded
-                    await initialization?.Invoke();
+            var activationHandler = handlers?.FirstOrDefault(h => h.CanHandle(args));
 
-                    // Do not repeat app initialization when the Window already has content,
-                    // just ensure that the window is active
-                    if (Window.Current.Content == null)
-                    {
-                        // Create a Frame to act as the navigation context and navigate to the first page
-                        Window.Current.Content = shell?.Value ?? new Frame();
-                    }
+            // Default activation and All normal activations (exclude Background and Custom activations)
+            if (activationHandler == null || activationHandler.Strategy == ActivationStrategy.Normal)
+            {
+                // Initialize things like registering background task before the app is loaded
+                await initialization?.Invoke();
+
+                // Do not repeat app initialization when the Window already has content,
+                // just ensure that the window is active
+                if (Window.Current.Content == null)
+                {
+                    // Create a Frame to act as the navigation context and navigate to the first page
+                    Window.Current.Content = shell?.Value ?? new Frame();
                 }
             }
+            //  Share Target, File Open Picker, File Save Picker, Contact Panel activation
+            else if(activationHandler.Strategy == ActivationStrategy.Picker)
+            {
+                Window.Current.Content = new Frame();
+            }
 
-            var activationHandler = handlers?.FirstOrDefault(h => h.CanHandle(args));
             if (activationHandler != null)
             {
                 await activationHandler.HandleAsync(args);
@@ -83,6 +83,5 @@ namespace NittyGritty.Uwp.Services
                 }
             }
         }
-
     }
 }

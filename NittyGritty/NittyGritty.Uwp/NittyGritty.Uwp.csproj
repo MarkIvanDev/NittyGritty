@@ -141,6 +141,7 @@
     <Compile Include="Converters\StringVisibilityConverter.cs" />
     <Compile Include="Converters\UppercaseConverter.cs" />
     <Compile Include="Converters\ValueWhenConverter.cs" />
+    <Compile Include="Declarations\Protocol.cs" />
     <Compile Include="Extensions\NavigationViewExtensions.cs" />
     <Compile Include="Interactivity\Actions\CloseFlyoutAction.cs" />
     <Compile Include="Interactivity\Actions\ConditionalAction.cs" />
@@ -159,7 +160,10 @@
     <Compile Include="Services\Activation\ContactPanelActivationHandler.cs" />
     <Compile Include="Services\Activation\DefaultActivationHandler.cs" />
     <Compile Include="Services\Activation\FileActivationHandler.cs" />
+    <Compile Include="Services\Activation\FileOpenPickerActivationHandler.cs" />
+    <Compile Include="Services\Activation\FileSavePickerActivationHandler.cs" />
     <Compile Include="Services\Activation\LaunchActivationHandler.cs" />
+    <Compile Include="Services\Activation\ProtocolActivationHandler.cs" />
     <Compile Include="Services\Activation\ToastNotificationActivationHandler.cs" />
     <Compile Include="Services\DialogService.cs" />
     <Compile Include="Services\NavigationService.cs" />

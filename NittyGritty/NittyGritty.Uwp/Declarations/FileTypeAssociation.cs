@@ -20,12 +20,13 @@ namespace NittyGritty.Uwp.Declarations
 
         private Dictionary<string, IStorageFile> files = new Dictionary<string, IStorageFile>();
 
-        public void Add(IStorageFile file)
+        public IStorageFile Add(IStorageFile file)
         {
             if(file.FileType.Equals(FileType))
             {
                 files.TryAdd(file.Path, file);
             }
+            return Get(file.Path);
         }
 
         public IStorageFile Get(string path)
@@ -37,11 +38,16 @@ namespace NittyGritty.Uwp.Declarations
             return null;
         }
 
+        public void Remove(string path)
+        {
+            files.Remove(path);
+        }
+
         public async Task Run(IStorageFile file)
         {
-            Add(file);
+            var storageFile = Add(file);
 
-            await Process(file);
+            await Process(storageFile);
         }
 
         protected abstract Task Process(IStorageFile storageFile);

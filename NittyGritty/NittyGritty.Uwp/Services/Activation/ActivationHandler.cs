@@ -9,6 +9,8 @@ namespace NittyGritty.Uwp.Services.Activation
 {
     public interface IActivationHandler
     {
+        ActivationStrategy Strategy { get; }
+
         bool CanHandle(object args);
 
         Task HandleAsync(object args);
@@ -17,6 +19,8 @@ namespace NittyGritty.Uwp.Services.Activation
     public class ActivationHandler<T> : IActivationHandler
         where T : class
     {
+        public ActivationStrategy Strategy { get; protected set; } = ActivationStrategy.Normal;
+
         public virtual async Task HandleAsync(T args)
         {
             await Task.CompletedTask;
@@ -36,5 +40,14 @@ namespace NittyGritty.Uwp.Services.Activation
         {
             await HandleAsync(args as T);
         }
+    }
+
+    public enum ActivationStrategy
+    {
+        Normal = 0,
+        Background = 1,
+        Picker = 2,
+        NewView = 3,
+        Other = 9
     }
 }
