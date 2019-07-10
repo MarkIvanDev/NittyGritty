@@ -1,5 +1,5 @@
 ﻿using NittyGritty.ViewModels;
-using NittyGritty.Views;
+using NittyGritty.Views.Events;
 using System;
 using System.Collections.Generic;
 using System.Linq;

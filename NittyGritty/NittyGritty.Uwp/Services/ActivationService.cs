@@ -42,7 +42,7 @@ namespace NittyGritty.Uwp.Services
         {
             var activationHandler = handlers?.FirstOrDefault(h => h.CanHandle(args));
 
-            // Default activation and All normal activations (exclude Background and Custom activations)
+            // Default activation and All normal activations (exclude Background, Picker and Custom activations)
             if (activationHandler == null || activationHandler.Strategy == ActivationStrategy.Normal)
             {
                 // Initialize things like registering background task before the app is loaded
@@ -76,7 +76,8 @@ namespace NittyGritty.Uwp.Services
                 // Ensure the current window is active
                 Window.Current.Activate();
 
-                if(!(args is ShareTargetActivatedEventArgs))
+                // Default activation and All normal activations (exclude Background, Picker and Custom activations)
+                if (activationHandler == null || activationHandler.Strategy == ActivationStrategy.Normal)
                 {
                     // Tasks after activation
                     await startup?.Invoke();

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace NittyGritty.Views
+namespace NittyGritty.Views.Events
 {
     /// <summary>
     /// Class used to hold the event data required when a page attempts to load state.

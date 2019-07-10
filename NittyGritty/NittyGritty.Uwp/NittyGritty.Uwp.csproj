@@ -164,6 +164,7 @@
     <Compile Include="Services\Activation\FileSavePickerActivationHandler.cs" />
     <Compile Include="Services\Activation\LaunchActivationHandler.cs" />
     <Compile Include="Services\Activation\ProtocolActivationHandler.cs" />
+    <Compile Include="Services\Activation\ProtocolForResultsActivationHandler.cs" />
     <Compile Include="Services\Activation\ToastNotificationActivationHandler.cs" />
     <Compile Include="Services\DialogService.cs" />
     <Compile Include="Services\NavigationService.cs" />
