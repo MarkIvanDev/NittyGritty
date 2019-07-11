@@ -2,6 +2,7 @@
 using NittyGritty.Uwp.Declarations;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,38 +13,48 @@ namespace NittyGritty.Uwp.Services.Activation
 {
     public class BackgroundActivationHandler : ActivationHandler<BackgroundActivatedEventArgs>
     {
-        private readonly List<BackgroundTask> backgroundTasks;
+        private static Dictionary<string, BackgroundTask> _backgroundTasks;
 
-        public BackgroundActivationHandler(IEnumerable<BackgroundTask> backgroundTasks)
+        static BackgroundActivationHandler()
+        {
+            _backgroundTasks = new Dictionary<string, BackgroundTask>();
+        }
+
+        public BackgroundActivationHandler()
         {
             Strategy = ActivationStrategy.Background;
-
-            foreach (var task in backgroundTasks ?? Enumerable.Empty<BackgroundTask>())
-            {
-                this.backgroundTasks.Add(task);
-            }
-        }
-        
-        public sealed override async Task HandleAsync(BackgroundActivatedEventArgs args)
-        {
-            Start(args.TaskInstance);
-            await Task.CompletedTask;
         }
 
-        public static BackgroundTaskRegistration GetBackgroundTaskRegistration<T>()
-            where T : BackgroundTask
+        public static ReadOnlyDictionary<string, BackgroundTask> BackgroundTasks
         {
-            if (!BackgroundTaskRegistration.AllTasks.Any(t => t.Value.Name == typeof(T).Name))
+            get { return new ReadOnlyDictionary<string, BackgroundTask>(_backgroundTasks); }
+        }
+
+        public static BackgroundTaskRegistration GetBackgroundTaskRegistration(string taskName)
+        {
+            if (!BackgroundTaskRegistration.AllTasks.Any(t => t.Value.Name == taskName))
             {
                 // This condition should not be met. If it is, it means the background task was not registered correctly.
                 // Please check CreateInstances to see if the background task was properly added to the BackgroundTasks property.
                 return null;
             }
 
-            return (BackgroundTaskRegistration)BackgroundTaskRegistration.AllTasks.FirstOrDefault(t => t.Value.Name == typeof(T).Name).Value;
+            return (BackgroundTaskRegistration)BackgroundTaskRegistration.AllTasks.FirstOrDefault(t => t.Value.Name == taskName).Value;
         }
 
-        public async Task RegisterAll()
+        public static void AddTask(BackgroundTask task)
+        {
+            if(!_backgroundTasks.ContainsKey(task.GetName()))
+            {
+                _backgroundTasks.Add(task.GetName(), task);
+            }
+            else
+            {
+                throw new ArgumentException("You only have to register for a background task once");
+            }
+        }
+
+        public static async Task Register()
         {
             BackgroundExecutionManager.RemoveAccess();
             var result = await BackgroundExecutionManager.RequestAccessAsync();
@@ -54,24 +65,30 @@ namespace NittyGritty.Uwp.Services.Activation
                 return;
             }
 
-            foreach (var task in backgroundTasks)
+            foreach (var task in _backgroundTasks)
             {
-                task.Register();
+                task.Value.Register();
             }
         }
 
-        public void Start(IBackgroundTaskInstance taskInstance)
+        public override async Task HandleAsync(BackgroundActivatedEventArgs args)
         {
-            var task = backgroundTasks.FirstOrDefault(b => b.Match(taskInstance?.Task?.Name));
+            Start(args.TaskInstance);
+            await Task.CompletedTask;
+        }
 
-            if (task == null)
+        private void Start(IBackgroundTaskInstance taskInstance)
+        {
+            if(_backgroundTasks.TryGetValue(taskInstance?.Task?.Name ?? string.Empty, out var task))
+            {
+                task.Run(taskInstance).FireAndForget();
+            }
+            else
             {
                 // This condition should not be met. If it is, it means the background task to start was not found in the background tasks managed by this service.
-                // Please check CreateInstances to see if the background task was properly added to the BackgroundTasks property.
+                // Please check AddTask to see if the background task was properly added to the BackgroundTasks property.
                 return;
             }
-
-            task.Run(taskInstance).FireAndForget();
         }
 
     }

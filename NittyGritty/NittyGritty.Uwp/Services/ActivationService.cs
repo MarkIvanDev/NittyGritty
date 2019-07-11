@@ -42,7 +42,7 @@ namespace NittyGritty.Uwp.Services
         {
             var activationHandler = handlers?.FirstOrDefault(h => h.CanHandle(args));
 
-            // Default activation and All normal activations (exclude Background, Picker and Custom activations)
+            // Default activation and ALL Normal activations (exclude Background, Picker and Custom activations)
             if (activationHandler == null || activationHandler.Strategy == ActivationStrategy.Normal)
             {
                 // Initialize things like registering background task before the app is loaded
@@ -61,6 +61,9 @@ namespace NittyGritty.Uwp.Services
             {
                 Window.Current.Content = new Frame();
             }
+
+            // Background activations do not need UI so we are not going to initialize the current Window's content
+            // NewView and Other activations must handle their own UI logic in their implementations (HandleAsync)
 
             if (activationHandler != null)
             {

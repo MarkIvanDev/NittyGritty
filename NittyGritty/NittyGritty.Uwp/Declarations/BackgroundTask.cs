@@ -11,9 +11,9 @@ namespace NittyGritty.Uwp.Declarations
     {
         public abstract void Register();
 
-        public bool Match(string name)
+        public virtual string GetName()
         {
-            return name == GetType().Name;
+            return GetType().FullName;
         }
 
         public Task Run(IBackgroundTaskInstance taskInstance)
