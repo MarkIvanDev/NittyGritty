@@ -13,5 +13,10 @@ namespace NittyGritty.Uwp.Services.Activation
         {
 
         }
+
+        public override async Task HandleAsync(ProtocolForResultsActivatedEventArgs args)
+        {
+            
+        }
     }
 }

@@ -13,7 +13,7 @@ namespace NittyGritty.Uwp.Services.Activation
 {
     public class FileActivationHandler : ActivationHandler<FileActivatedEventArgs>
     {
-        private static Dictionary<string, FileTypeAssociation> _fileTypeAssociations;
+        private static readonly Dictionary<string, FileTypeAssociation> _fileTypeAssociations;
 
         static FileActivationHandler()
         {

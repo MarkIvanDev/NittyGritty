@@ -15,7 +15,6 @@ namespace NittyGritty.Uwp.Services.Activation
 {
     public class ShareTargetActivationHandler : ActivationHandler<ShareTargetActivatedEventArgs>
     {
-        private ShareOperation shareOperation;
         private static Dictionary<string, ShareTarget> _shareTargets;
 
         static ShareTargetActivationHandler()
@@ -26,7 +25,6 @@ namespace NittyGritty.Uwp.Services.Activation
         public ShareTargetActivationHandler()
         {
             Strategy = ActivationStrategy.Picker;
-            SetDefaultDataFormatPicker();
         }
 
         public static ReadOnlyDictionary<string, ShareTarget> ShareTargets
@@ -38,7 +36,14 @@ namespace NittyGritty.Uwp.Services.Activation
         {
             if (!_shareTargets.ContainsKey(target.DataFormat))
             {
-                _shareTargets.Add(target.DataFormat, target);
+                if (!_shareTargets.Values.Any(s => s.Priority == target.Priority) && target.View != null)
+                {
+                    _shareTargets.Add(target.DataFormat, target);
+                }
+                else
+                {
+                    throw new ArgumentException("Share Targets must have unique priorities and views.");
+                }
             }
             else
             {
@@ -46,56 +51,27 @@ namespace NittyGritty.Uwp.Services.Activation
             }
         }
 
-        public Func<IEnumerable<string>, string> DataFormatPicker { get; set; }
-
         public override async Task HandleAsync(ShareTargetActivatedEventArgs args)
         {
-            shareOperation = args.ShareOperation;
-
-            // Since this is marked as a Picker activation, it is assumed that the current window's content has been initialized with a frame by the ActivationService
-            if (Window.Current.Content is Frame frame)
+            var supported = new List<ShareTarget>();
+            foreach (var item in args.ShareOperation.Data.AvailableFormats)
             {
-                
+                if(_shareTargets.TryGetValue(item, out var target))
+                {
+                    supported.Add(target);
+                }
+            }
+            var picked = supported.OrderByDescending(s => s.Priority).FirstOrDefault();
+            if(picked != null)
+            {
+                await picked.Run(args.ShareOperation);
+            }
+            else
+            {
+                // We should not reach this part. Please check if you have registered all of your share targets
             }
         }
 
-        public void SetDefaultDataFormatPicker()
-        {
-            DataFormatPicker = (available) =>
-            {
-                var supported = _shareTargets.Keys.Intersect(available).ToHashSet();
-                if (supported.Contains(StandardDataFormats.StorageItems))
-                {
-                    return StandardDataFormats.StorageItems;
-                }
-
-                if (supported.Contains(StandardDataFormats.Bitmap))
-                {
-                    return StandardDataFormats.Bitmap;
-                }
-
-                if (supported.Contains(StandardDataFormats.Rtf))
-                {
-                    return StandardDataFormats.Rtf;
-                }
-
-                if (supported.Contains(StandardDataFormats.Html))
-                {
-                    return StandardDataFormats.Html;
-                }
-
-                if (supported.Contains(StandardDataFormats.WebLink))
-                {
-                    return StandardDataFormats.WebLink;
-                }
-
-                if (supported.Contains(StandardDataFormats.ApplicationLink))
-                {
-                    return StandardDataFormats.ApplicationLink;
-                }
-
-                return StandardDataFormats.Text;
-            };
-        }
     }
+
 }

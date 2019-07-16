@@ -29,9 +29,10 @@ namespace NittyGritty.Utilities
             @delegate = converter(
                 (s, e) =>
                 {
-                    var strongReference = weakReference.Target as TSubscriber;
-                    if (strongReference != null)
+                    if (weakReference.Target is TSubscriber strongReference)
+                    {
                         handler(strongReference, s, e);
+                    }
                     else
                     {
                         deregister(@delegate);

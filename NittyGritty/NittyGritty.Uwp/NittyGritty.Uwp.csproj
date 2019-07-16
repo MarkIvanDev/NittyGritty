@@ -143,6 +143,7 @@
     <Compile Include="Converters\ValueWhenConverter.cs" />
     <Compile Include="Declarations\Protocol.cs" />
     <Compile Include="Declarations\ShareTarget.cs" />
+    <Compile Include="Extensions\DataPackageViewExtensions.cs" />
     <Compile Include="Extensions\NavigationViewExtensions.cs" />
     <Compile Include="Interactivity\Actions\CloseFlyoutAction.cs" />
     <Compile Include="Interactivity\Actions\ConditionalAction.cs" />

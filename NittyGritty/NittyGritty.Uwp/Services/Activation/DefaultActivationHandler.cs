@@ -10,17 +10,16 @@ namespace NittyGritty.Uwp.Services.Activation
     public class DefaultActivationHandler : ActivationHandler<object>
     {
         private readonly Type defaultView;
-        private readonly Frame context;
 
-        public DefaultActivationHandler(Type defaultView, Frame context)
+        public DefaultActivationHandler(Type defaultView)
         {
             this.defaultView = defaultView;
-            this.context = context;
+            NeedsNavigationContext = true;
         }
 
         public override async Task HandleAsync(object args)
         {
-            context.Navigate(defaultView);
+            NavigationContext?.Navigate(defaultView);
             await Task.CompletedTask;
         }
     }

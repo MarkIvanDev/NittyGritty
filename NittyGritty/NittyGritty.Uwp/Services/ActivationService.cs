@@ -14,13 +14,15 @@ namespace NittyGritty.Uwp.Services
     public class ActivationService
     {
         private readonly Func<Task> initialization;
+        private readonly Lazy<UIElement> shell;
+        private readonly Lazy<Frame> navigationContext;
         private readonly IEnumerable<IActivationHandler> handlers;
         private readonly Lazy<DefaultActivationHandler> defaultHandler;
-        private readonly Lazy<UIElement> shell;
         private readonly Func<Task> startup;
 
         public ActivationService(Func<Task> initialization,
                                  Lazy<UIElement> shell,
+                                 Lazy<Frame> navigationContext,
                                  IEnumerable<IActivationHandler> handlers,
                                  Lazy<DefaultActivationHandler> defaultHandler,
                                  Func<Task> startup)
@@ -33,9 +35,13 @@ namespace NittyGritty.Uwp.Services
         }
 
         public ActivationService(INittyGrittyApp app) : this(
-            app.Initialization, new Lazy<UIElement>(app.CreateShell), app.GetActivationHandlers(), new Lazy<DefaultActivationHandler>(app.GetDefaultHandler), app.Startup)
+            app.Initialization,
+            new Lazy<UIElement>(app.CreateShell),
+            new Lazy<Frame>(app.GetNavigationContext),
+            app.GetActivationHandlers(),
+            new Lazy<DefaultActivationHandler>(app.GetDefaultHandler),
+            app.Startup)
         {
-
         }
 
         public async Task ActivateAsync(object args)
@@ -67,6 +73,10 @@ namespace NittyGritty.Uwp.Services
 
             if (activationHandler != null)
             {
+                if(activationHandler.NeedsNavigationContext)
+                {
+                    activationHandler.SetNavigationContext(navigationContext.Value);
+                }
                 await activationHandler.HandleAsync(args);
             }
             else

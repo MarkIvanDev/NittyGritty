@@ -46,17 +46,19 @@ namespace NittyGritty.Uwp.Views
             return new ActivationService(this);
         }
 
+        public virtual UIElement CreateShell()
+        {
+            return new Frame();
+        }
+
+        public abstract Frame GetNavigationContext();
+
         public virtual IEnumerable<IActivationHandler> GetActivationHandlers()
         {
             return Enumerable.Empty<IActivationHandler>();
         }
 
         public abstract DefaultActivationHandler GetDefaultHandler();
-
-        public virtual UIElement CreateShell()
-        {
-            return new Frame();
-        }
 
         public virtual async Task Initialization()
         {
