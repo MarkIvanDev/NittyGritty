@@ -9,6 +9,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NittyGritty.Validation", "N
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NittyGritty.Uwp", "NittyGritty.Uwp\NittyGritty.Uwp.csproj", "{F54F6DF8-8CDE-42C8-B96E-E0305F5D2480}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sample", "Sample", "{45AB8857-6521-45EC-B28E-452B666182FE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NittyGritty.Sample.Uwp", "Sample\NittyGritty.Sample.Uwp\NittyGritty.Sample.Uwp.csproj", "{333DC346-F66A-4C91-A95E-7C2618724B7C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -83,9 +87,38 @@ Global
 		{F54F6DF8-8CDE-42C8-B96E-E0305F5D2480}.Release|x64.Build.0 = Release|x64
 		{F54F6DF8-8CDE-42C8-B96E-E0305F5D2480}.Release|x86.ActiveCfg = Release|x86
 		{F54F6DF8-8CDE-42C8-B96E-E0305F5D2480}.Release|x86.Build.0 = Release|x86
+		{333DC346-F66A-4C91-A95E-7C2618724B7C}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{333DC346-F66A-4C91-A95E-7C2618724B7C}.Debug|ARM.ActiveCfg = Debug|ARM
+		{333DC346-F66A-4C91-A95E-7C2618724B7C}.Debug|ARM.Build.0 = Debug|ARM
+		{333DC346-F66A-4C91-A95E-7C2618724B7C}.Debug|ARM.Deploy.0 = Debug|ARM
+		{333DC346-F66A-4C91-A95E-7C2618724B7C}.Debug|ARM64.ActiveCfg = Debug|ARM64
+		{333DC346-F66A-4C91-A95E-7C2618724B7C}.Debug|ARM64.Build.0 = Debug|ARM64
+		{333DC346-F66A-4C91-A95E-7C2618724B7C}.Debug|ARM64.Deploy.0 = Debug|ARM64
+		{333DC346-F66A-4C91-A95E-7C2618724B7C}.Debug|x64.ActiveCfg = Debug|x64
+		{333DC346-F66A-4C91-A95E-7C2618724B7C}.Debug|x64.Build.0 = Debug|x64
+		{333DC346-F66A-4C91-A95E-7C2618724B7C}.Debug|x64.Deploy.0 = Debug|x64
+		{333DC346-F66A-4C91-A95E-7C2618724B7C}.Debug|x86.ActiveCfg = Debug|x86
+		{333DC346-F66A-4C91-A95E-7C2618724B7C}.Debug|x86.Build.0 = Debug|x86
+		{333DC346-F66A-4C91-A95E-7C2618724B7C}.Debug|x86.Deploy.0 = Debug|x86
+		{333DC346-F66A-4C91-A95E-7C2618724B7C}.Release|Any CPU.ActiveCfg = Release|x86
+		{333DC346-F66A-4C91-A95E-7C2618724B7C}.Release|ARM.ActiveCfg = Release|ARM
+		{333DC346-F66A-4C91-A95E-7C2618724B7C}.Release|ARM.Build.0 = Release|ARM
+		{333DC346-F66A-4C91-A95E-7C2618724B7C}.Release|ARM.Deploy.0 = Release|ARM
+		{333DC346-F66A-4C91-A95E-7C2618724B7C}.Release|ARM64.ActiveCfg = Release|ARM64
+		{333DC346-F66A-4C91-A95E-7C2618724B7C}.Release|ARM64.Build.0 = Release|ARM64
+		{333DC346-F66A-4C91-A95E-7C2618724B7C}.Release|ARM64.Deploy.0 = Release|ARM64
+		{333DC346-F66A-4C91-A95E-7C2618724B7C}.Release|x64.ActiveCfg = Release|x64
+		{333DC346-F66A-4C91-A95E-7C2618724B7C}.Release|x64.Build.0 = Release|x64
+		{333DC346-F66A-4C91-A95E-7C2618724B7C}.Release|x64.Deploy.0 = Release|x64
+		{333DC346-F66A-4C91-A95E-7C2618724B7C}.Release|x86.ActiveCfg = Release|x86
+		{333DC346-F66A-4C91-A95E-7C2618724B7C}.Release|x86.Build.0 = Release|x86
+		{333DC346-F66A-4C91-A95E-7C2618724B7C}.Release|x86.Deploy.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{333DC346-F66A-4C91-A95E-7C2618724B7C} = {45AB8857-6521-45EC-B28E-452B666182FE}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {42E6A8A3-F635-474D-A27F-022AF42A0B16}

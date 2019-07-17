@@ -20,9 +20,8 @@ namespace NittyGritty.Uwp.Services.Activation
             _fileTypeAssociations = new Dictionary<string, FileTypeAssociation>();
         }
 
-        public FileActivationHandler(bool createsNewView)
+        public FileActivationHandler()
         {
-            Strategy = createsNewView ? ActivationStrategy.NewView : ActivationStrategy.Normal;
         }
 
         public static ReadOnlyDictionary<string, FileTypeAssociation> FileTypeAssociations

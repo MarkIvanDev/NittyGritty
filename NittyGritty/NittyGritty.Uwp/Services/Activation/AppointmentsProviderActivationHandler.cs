@@ -4,39 +4,49 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Activation;
+using Windows.ApplicationModel.Appointments.AppointmentsProvider;
 
 namespace NittyGritty.Uwp.Services.Activation
 {
     public class AppointmentsProviderActivationHandler : ActivationHandler<IAppointmentsProviderActivatedEventArgs>
     {
-        public Func<AppointmentsProviderAddAppointmentActivatedEventArgs, Task> AddAppointment { get; set; }
+        public AppointmentsProviderActivationHandler()
+        {
 
-        public Func<AppointmentsProviderRemoveAppointmentActivatedEventArgs, Task> RemoveAppointment { get; set; }
+        }
 
-        public Func<AppointmentsProviderReplaceAppointmentActivatedEventArgs, Task> ReplaceAppointment { get; set; }
+        public Func<AddAppointmentOperation, Task> AddCallback { get; private set; }
 
-        public Func<AppointmentsProviderShowAppointmentDetailsActivatedEventArgs, Task> ShowAppointmentDetails { get; set; }
+        public Func<RemoveAppointmentOperation, Task> RemoveCallback { get; private set; }
 
-        public Func<AppointmentsProviderShowTimeFrameActivatedEventArgs, Task> ShowTimeFrame { get; set; }
+        public Func<ReplaceAppointmentOperation, Task> ReplaceCallback { get; private set; }
+
+        public Func<AppointmentsProviderShowAppointmentDetailsActivatedEventArgs, Task> ShowDetailsCallback { get; private set; }
+
+        public Func<AppointmentsProviderShowTimeFrameActivatedEventArgs, Task> ShowTimeFrameCallback { get; private set; }
 
         public sealed override async Task HandleAsync(IAppointmentsProviderActivatedEventArgs args)
         {
             switch (args)
             {
                 case AppointmentsProviderAddAppointmentActivatedEventArgs add:
-                    await AddAppointment?.Invoke(add);
+                    await AddCallback?.Invoke(add.AddAppointmentOperation);
                     break;
+
                 case AppointmentsProviderRemoveAppointmentActivatedEventArgs remove:
-                    await RemoveAppointment?.Invoke(remove);
+                    await RemoveCallback?.Invoke(remove.RemoveAppointmentOperation);
                     break;
+
                 case AppointmentsProviderReplaceAppointmentActivatedEventArgs replace:
-                    await ReplaceAppointment?.Invoke(replace);
+                    await ReplaceCallback?.Invoke(replace.ReplaceAppointmentOperation);
                     break;
+
                 case AppointmentsProviderShowAppointmentDetailsActivatedEventArgs showDetails:
-                    await ShowAppointmentDetails?.Invoke(showDetails);
+                    await ShowDetailsCallback?.Invoke(showDetails);
                     break;
+
                 case AppointmentsProviderShowTimeFrameActivatedEventArgs showTimeFrame:
-                    await ShowTimeFrame?.Invoke(showTimeFrame);
+                    await ShowTimeFrameCallback?.Invoke(showTimeFrame);
                     break;
             }
         }
@@ -46,37 +56,55 @@ namespace NittyGritty.Uwp.Services.Activation
             switch (args)
             {
                 case AppointmentsProviderAddAppointmentActivatedEventArgs add:
-                    if(AddAppointment != null)
-                    {
-                        return true;
-                    }
-                    break;
+                    return AddCallback != null;
+
                 case AppointmentsProviderRemoveAppointmentActivatedEventArgs remove:
-                    if(RemoveAppointment != null)
-                    {
-                        return true;
-                    }
-                    break;
+                    return RemoveCallback != null;
+
                 case AppointmentsProviderReplaceAppointmentActivatedEventArgs replace:
-                    if(ReplaceAppointment != null)
-                    {
-                        return true;
-                    }
-                    break;
+                    return ReplaceCallback != null;
+
                 case AppointmentsProviderShowAppointmentDetailsActivatedEventArgs showDetails:
-                    if(ShowAppointmentDetails != null)
-                    {
-                        return true;
-                    }
-                    break;
+                    return ShowDetailsCallback != null;
+
                 case AppointmentsProviderShowTimeFrameActivatedEventArgs showTimeFrame:
-                    if(ShowTimeFrame != null)
-                    {
-                        return true;
-                    }
-                    break;
+                    return ShowTimeFrameCallback != null;
+
+                default:
+                    return false;
             }
-            return false;
         }
+
+        public AppointmentsProviderActivationHandler SetAddCallback(Func<AddAppointmentOperation, Task> addCallback)
+        {
+            AddCallback = addCallback;
+            return this;
+        }
+
+        public AppointmentsProviderActivationHandler SetRemoveCallback(Func<RemoveAppointmentOperation, Task> removeCallback)
+        {
+            RemoveCallback = removeCallback;
+            return this;
+        }
+
+        public AppointmentsProviderActivationHandler SetReplaceCallback(Func<ReplaceAppointmentOperation, Task> replaceCallback)
+        {
+            ReplaceCallback = replaceCallback;
+            return this;
+        }
+
+        public AppointmentsProviderActivationHandler SetShowDetailsCallback(Func<AppointmentsProviderShowAppointmentDetailsActivatedEventArgs, Task> showDetailsCallback)
+        {
+            ShowDetailsCallback = showDetailsCallback;
+            return this;
+        }
+
+        public AppointmentsProviderActivationHandler SetShowTimeFrameCallback(Func<AppointmentsProviderShowTimeFrameActivatedEventArgs, Task> showTimeFrameCallback)
+        {
+            ShowTimeFrameCallback = showTimeFrameCallback;
+            return this;
+        }
+
+
     }
 }

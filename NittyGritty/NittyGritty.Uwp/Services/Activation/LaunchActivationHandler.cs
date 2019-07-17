@@ -47,34 +47,22 @@ namespace NittyGritty.Uwp.Services.Activation
             if (args.TileId == "App" && string.IsNullOrEmpty(args.Arguments))
             {
                 // Primary Tile
-                if(Primary != null)
-                {
-                    return true;
-                }
+                return Primary != null;
             }
             else if (!string.IsNullOrEmpty(args.TileId) && args.TileId != "App")
             {
                 // Secondary Tile
-                if(Secondary != null)
-                {
-                    return true;
-                }
+                return Secondary != null;
             }
             else if (args.TileId == "App" && !string.IsNullOrEmpty(args.Arguments))
             {
                 // Jumplist
-                if(Jumplist != null)
-                {
-                    return true;
-                }
+                return Jumplist != null;
             }
             else if (args.TileActivatedInfo != null)
             {
                 // Chaseable Tile
-                if(Chaseable != null)
-                {
-                    return true;
-                }
+                return Chaseable != null;
             }
             return false;
         }

@@ -17,14 +17,14 @@ namespace NittyGritty.Uwp.Services
         private readonly Lazy<UIElement> shell;
         private readonly Lazy<Frame> navigationContext;
         private readonly IEnumerable<IActivationHandler> handlers;
-        private readonly Lazy<DefaultActivationHandler> defaultHandler;
+        private readonly DefaultActivationHandler defaultHandler;
         private readonly Func<Task> startup;
 
         public ActivationService(Func<Task> initialization,
                                  Lazy<UIElement> shell,
                                  Lazy<Frame> navigationContext,
                                  IEnumerable<IActivationHandler> handlers,
-                                 Lazy<DefaultActivationHandler> defaultHandler,
+                                 DefaultActivationHandler defaultHandler,
                                  Func<Task> startup)
         {
             this.initialization = initialization;
@@ -39,7 +39,7 @@ namespace NittyGritty.Uwp.Services
             new Lazy<UIElement>(app.CreateShell),
             new Lazy<Frame>(app.GetNavigationContext),
             app.GetActivationHandlers(),
-            new Lazy<DefaultActivationHandler>(app.GetDefaultHandler),
+            app.GetDefaultHandler(),
             app.Startup)
         {
         }
@@ -62,7 +62,8 @@ namespace NittyGritty.Uwp.Services
                     Window.Current.Content = shell?.Value ?? new Frame();
                 }
             }
-            //  Share Target, File Open Picker, File Save Picker, Contact Panel activation
+            // Share Target, File Open Picker, File Save Picker, Contact Panel activation
+            // Picker handlers must be assured that they can use the current Window's content as a Frame for their navigation context
             else if(activationHandler.Strategy == ActivationStrategy.Picker)
             {
                 Window.Current.Content = new Frame();
@@ -70,18 +71,22 @@ namespace NittyGritty.Uwp.Services
 
             // Background activations do not need UI so we are not going to initialize the current Window's content
             // NewView and Other activations must handle their own UI logic in their implementations (HandleAsync)
-
+            
             if (activationHandler != null)
             {
+                // Handlers can request for a navigation context (in this case, a Frame) to be used in their HandleAsync logic
+                // We used a Lazy object for this because the navigation context is only relevant after setting the content of the current Window with a Shell or a Frame
                 if(activationHandler.NeedsNavigationContext)
                 {
                     activationHandler.SetNavigationContext(navigationContext.Value);
                 }
                 await activationHandler.HandleAsync(args);
             }
-            else
+
+            if(activationHandler == null || navigationContext.Value.Content == null)
             {
-                await defaultHandler?.Value.HandleAsync(args);
+                defaultHandler.SetNavigationContext(navigationContext.Value);
+                await defaultHandler.HandleAsync(args);
             }
 
             if(args is IActivatedEventArgs)

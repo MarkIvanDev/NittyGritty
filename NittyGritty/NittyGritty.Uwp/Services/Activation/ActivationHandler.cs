@@ -34,7 +34,7 @@ namespace NittyGritty.Uwp.Services.Activation
 
         public virtual async Task HandleAsync(T args)
         {
-            await Task.CompletedTask;
+            await Task.FromResult(false);
         }
 
         public virtual bool CanHandle(T args)
@@ -64,7 +64,6 @@ namespace NittyGritty.Uwp.Services.Activation
         Normal = 0,
         Background = 1,
         Picker = 2,
-        NewView = 3,
         Other = 9
     }
 }

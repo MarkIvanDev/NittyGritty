@@ -142,6 +142,7 @@
     <Compile Include="Converters\UppercaseConverter.cs" />
     <Compile Include="Converters\ValueWhenConverter.cs" />
     <Compile Include="Declarations\Protocol.cs" />
+    <Compile Include="Declarations\ProtocolForResults.cs" />
     <Compile Include="Declarations\ShareTarget.cs" />
     <Compile Include="Extensions\DataPackageViewExtensions.cs" />
     <Compile Include="Extensions\NavigationViewExtensions.cs" />

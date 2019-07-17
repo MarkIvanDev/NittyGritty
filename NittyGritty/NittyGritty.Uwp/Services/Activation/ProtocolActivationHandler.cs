@@ -36,7 +36,7 @@ namespace NittyGritty.Uwp.Services.Activation
             }
             else
             {
-                throw new ArgumentException("You only have to register for a file type association once.");
+                throw new ArgumentException("You only have to register for a protocol once.");
             }
         }
 

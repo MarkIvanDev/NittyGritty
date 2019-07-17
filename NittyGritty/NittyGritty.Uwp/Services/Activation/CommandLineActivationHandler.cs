@@ -17,14 +17,21 @@ namespace NittyGritty.Uwp.Services.Activation
 
         }
 
-        public Func<ReadOnlyCollection<ParsedCommand>, string, Task<int>> ExecuteCommands { get; set; }
+        public Func<ReadOnlyCollection<ParsedCommand>, string, Task<int>> ExecuteCallback { get; private set; }
 
         public override async Task HandleAsync(CommandLineActivatedEventArgs args)
         {
             var deferral = args.Operation.GetDeferral();
             var commands = CommandLineUtilities.Parse(args.Operation.Arguments);
-            args.Operation.ExitCode = await ExecuteCommands?.Invoke(commands, args.Operation.CurrentDirectoryPath);
+            args.Operation.ExitCode = await ExecuteCallback?.Invoke(commands, args.Operation.CurrentDirectoryPath);
             deferral.Complete();
         }
+
+        public CommandLineActivationHandler SetExecuteCallback(Func<ReadOnlyCollection<ParsedCommand>, string, Task<int>> executeCallback)
+        {
+            ExecuteCallback = executeCallback;
+            return this;
+        }
+
     }
 }
