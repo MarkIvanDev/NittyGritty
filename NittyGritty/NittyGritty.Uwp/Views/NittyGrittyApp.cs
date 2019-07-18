@@ -46,6 +46,11 @@ namespace NittyGritty.Uwp.Views
             return new ActivationService(this);
         }
 
+        public virtual async Task Initialization()
+        {
+            await Task.CompletedTask;
+        }
+
         public virtual UIElement CreateShell()
         {
             return new Frame();
@@ -58,12 +63,7 @@ namespace NittyGritty.Uwp.Views
             return Enumerable.Empty<IActivationHandler>();
         }
 
-        public abstract DefaultActivationHandler GetDefaultHandler();
-
-        public virtual async Task Initialization()
-        {
-            await Task.CompletedTask;
-        }
+        public Type DefaultView { get; protected set; }
 
         public virtual async Task Startup()
         {

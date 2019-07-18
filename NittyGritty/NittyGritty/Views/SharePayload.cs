@@ -5,7 +5,7 @@ using System.Text;
 
 namespace NittyGritty.Views
 {
-    public class SharePayload : ObservableObject
+    public class SharePayload
     {
         private SharePayload(string title)
         {

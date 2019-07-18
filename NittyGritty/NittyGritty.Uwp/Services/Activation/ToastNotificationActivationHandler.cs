@@ -13,7 +13,7 @@ namespace NittyGritty.Uwp.Services.Activation
     {
         public Func<QueryString, ValueSet, Task> ProcessToast { get; set; }
 
-        public override async Task HandleAsync(ToastNotificationActivatedEventArgs args)
+        public override async Task HandleInternal(ToastNotificationActivatedEventArgs args)
         {
             await ProcessToast?.Invoke(QueryString.Parse(args.Argument), args.UserInput);
         }

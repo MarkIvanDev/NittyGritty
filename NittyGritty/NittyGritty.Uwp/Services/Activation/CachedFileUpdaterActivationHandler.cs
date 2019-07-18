@@ -21,7 +21,7 @@ namespace NittyGritty.Uwp.Services.Activation
             Strategy = ActivationStrategy.Other;
         }
 
-        public override async Task HandleAsync(CachedFileUpdaterActivatedEventArgs args)
+        public override async Task HandleInternal(CachedFileUpdaterActivatedEventArgs args)
         {
             cachedFileUpdaterUI = args.CachedFileUpdaterUI;
             
@@ -70,17 +70,17 @@ namespace NittyGritty.Uwp.Services.Activation
             });
         }
 
-        public override bool CanHandle(CachedFileUpdaterActivatedEventArgs args)
+        public override bool CanHandleInternal(CachedFileUpdaterActivatedEventArgs args)
         {
             if(args.CachedFileUpdaterUI.UIStatus == UIStatus.Visible)
             {
-                Strategy = ActivationStrategy.Picker;
+                Strategy = ActivationStrategy.Hosted;
             }
             else
             {
                 Strategy = ActivationStrategy.Background;
             }
-            return base.CanHandle(args);
+            return base.CanHandleInternal(args);
         }
     }
 }

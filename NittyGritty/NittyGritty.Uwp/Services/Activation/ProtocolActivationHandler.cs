@@ -1,4 +1,4 @@
-﻿using NittyGritty.Uwp.Declarations;
+﻿using NittyGritty.Uwp.Operations;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -11,11 +11,11 @@ namespace NittyGritty.Uwp.Services.Activation
 {
     public class ProtocolActivationHandler : ActivationHandler<ProtocolActivatedEventArgs>
     {
-        private static readonly Dictionary<string, Protocol> _protocols;
+        private static readonly Dictionary<string, ProtocolOperation> _protocols;
 
         static ProtocolActivationHandler()
         {
-            _protocols = new Dictionary<string, Protocol>();
+            _protocols = new Dictionary<string, ProtocolOperation>();
         }
 
         public ProtocolActivationHandler()
@@ -23,12 +23,12 @@ namespace NittyGritty.Uwp.Services.Activation
             NeedsNavigationContext = true;
         }
 
-        public static ReadOnlyDictionary<string, Protocol> Protocols
+        public static ReadOnlyDictionary<string, ProtocolOperation> Protocols
         {
-            get { return new ReadOnlyDictionary<string, Protocol>(_protocols); }
+            get { return new ReadOnlyDictionary<string, ProtocolOperation>(_protocols); }
         }
 
-        public static void AddProtocol(Protocol protocol)
+        public static void AddProtocol(ProtocolOperation protocol)
         {
             if (!_protocols.ContainsKey(protocol.Scheme))
             {
@@ -42,7 +42,7 @@ namespace NittyGritty.Uwp.Services.Activation
 
         public Func<Uri, Task> UnknownProtocol { get; set; }
 
-        public override async Task HandleAsync(ProtocolActivatedEventArgs args)
+        public override async Task HandleInternal(ProtocolActivatedEventArgs args)
         {
             if(_protocols.TryGetValue(args.Uri.Scheme, out var protocol))
             {

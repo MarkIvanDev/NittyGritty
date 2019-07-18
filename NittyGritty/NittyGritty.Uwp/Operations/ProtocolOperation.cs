@@ -4,21 +4,36 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.ApplicationModel.Activation;
 using Windows.UI.Xaml.Controls;
 
-namespace NittyGritty.Uwp.Declarations
+namespace NittyGritty.Uwp.Operations
 {
-    public abstract class Protocol
+    public class ProtocolOperation
     {
         private readonly Dictionary<string, Type> _viewsByPath = new Dictionary<string, Type>();
 
-        public Protocol(string scheme)
+        /// <summary>
+        /// Creates a ProtocolOperation to handle the protocol that activated the app
+        /// </summary>
+        /// <param name="scheme">The scheme this ProtocolOperation can handle. Cannot be null or empty or whitespace</param>
+        public ProtocolOperation(string scheme)
         {
+            if(string.IsNullOrWhiteSpace(scheme))
+            {
+                throw new ArgumentException("Scheme cannot be null, empty, or whitespace.", nameof(scheme));
+            }
+
             Scheme = scheme;
         }
 
         public string Scheme { get; }
 
+        /// <summary>
+        /// Configures the paths that this scheme can handle with the appropriate view
+        /// </summary>
+        /// <param name="path">The path that this scheme can handle. A path can be configured with an empty string</param>
+        /// <param name="view">The type of the view that the path leads to</param>
         public void Configure(string path, Type view)
         {
             lock (_viewsByPath)
@@ -40,18 +55,22 @@ namespace NittyGritty.Uwp.Declarations
             }
         }
 
-        public async Task Run(Uri deepLink, Frame frame)
+        public virtual async Task Run(ProtocolActivatedEventArgs args, Frame frame)
         {
-            if(deepLink.Scheme != Scheme)
+            if(args.Uri.Scheme != Scheme)
             {
                 return;
             }
 
-            var path = deepLink.LocalPath;
-            var parameters = QueryString.Parse(deepLink.GetComponents(UriComponents.Query, UriFormat.UriEscaped));
+            var path = args.Uri.LocalPath;
+            var parameters = QueryString.Parse(args.Uri.GetComponents(UriComponents.Query, UriFormat.UriEscaped));
             lock (_viewsByPath)
             {
-                if (!_viewsByPath.ContainsKey(path))
+                if(_viewsByPath.TryGetValue(path, out var view))
+                {
+                    frame.Navigate(view, parameters);
+                }
+                else
                 {
                     throw new ArgumentException(
                         string.Format(
@@ -59,8 +78,6 @@ namespace NittyGritty.Uwp.Declarations
                             path),
                         nameof(path));
                 }
-
-                frame.Navigate(_viewsByPath[path], parameters);
             }
             await Task.CompletedTask;
         }

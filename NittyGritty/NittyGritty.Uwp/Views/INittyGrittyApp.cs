@@ -17,7 +17,7 @@ namespace NittyGritty.Uwp.Views
 
         IEnumerable<IActivationHandler> GetActivationHandlers();
 
-        DefaultActivationHandler GetDefaultHandler();
+        Type DefaultView { get; }
 
         Task Initialization();
 

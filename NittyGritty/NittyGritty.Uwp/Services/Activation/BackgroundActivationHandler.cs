@@ -1,5 +1,5 @@
 ﻿using NittyGritty.Extensions;
-using NittyGritty.Uwp.Declarations;
+using NittyGritty.Uwp.Operations;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -20,9 +20,9 @@ namespace NittyGritty.Uwp.Services.Activation
             _backgroundTasks = new Dictionary<string, BackgroundTask>();
         }
 
-        public BackgroundActivationHandler()
+        public BackgroundActivationHandler() : base(ActivationStrategy.Background)
         {
-            Strategy = ActivationStrategy.Background;
+            
         }
 
         public static ReadOnlyDictionary<string, BackgroundTask> BackgroundTasks
@@ -71,7 +71,7 @@ namespace NittyGritty.Uwp.Services.Activation
             }
         }
 
-        public override async Task HandleAsync(BackgroundActivatedEventArgs args)
+        protected override async Task HandleInternal(BackgroundActivatedEventArgs args)
         {
             Start(args.TaskInstance);
             await Task.CompletedTask;

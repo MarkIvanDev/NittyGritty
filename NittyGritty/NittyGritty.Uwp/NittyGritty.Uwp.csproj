@@ -141,9 +141,11 @@
     <Compile Include="Converters\StringVisibilityConverter.cs" />
     <Compile Include="Converters\UppercaseConverter.cs" />
     <Compile Include="Converters\ValueWhenConverter.cs" />
-    <Compile Include="Declarations\Protocol.cs" />
-    <Compile Include="Declarations\ProtocolForResults.cs" />
-    <Compile Include="Declarations\ShareTarget.cs" />
+    <Compile Include="Operations\CommandLineOperation.cs" />
+    <Compile Include="Operations\LaunchOperation.cs" />
+    <Compile Include="Operations\ProtocolOperation.cs" />
+    <Compile Include="Operations\ProtocolForResultsOperation.cs" />
+    <Compile Include="Operations\ShareTarget.cs" />
     <Compile Include="Extensions\DataPackageViewExtensions.cs" />
     <Compile Include="Extensions\NavigationViewExtensions.cs" />
     <Compile Include="Interactivity\Actions\CloseFlyoutAction.cs" />
@@ -174,10 +176,10 @@
     <Compile Include="Services\Activation\ToastNotificationActivationHandler.cs" />
     <Compile Include="Services\DialogService.cs" />
     <Compile Include="Services\NavigationService.cs" />
-    <Compile Include="Declarations\FileTypeAssociation.cs" />
+    <Compile Include="Operations\FileOperation.cs" />
     <Compile Include="Views\INittyGrittyApp.cs" />
     <Compile Include="Views\NittyGrittyApp.cs" />
-    <Compile Include="Declarations\BackgroundTask.cs" />
+    <Compile Include="Operations\BackgroundTask.cs" />
     <Compile Include="Views\SuspensionManager.cs" />
     <Compile Include="Views\ViewBase.cs" />
   </ItemGroup>

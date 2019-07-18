@@ -1,4 +1,4 @@
-﻿using NittyGritty.Uwp.Declarations;
+﻿using NittyGritty.Uwp.Operations;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -11,24 +11,24 @@ namespace NittyGritty.Uwp.Services.Activation
 {
     public class ProtocolForResultsActivationHandler : ActivationHandler<ProtocolForResultsActivatedEventArgs>
     {
-        private static readonly Dictionary<string, ProtocolForResults> _protocols;
+        private static readonly Dictionary<string, ProtocolForResultsOperation> _protocols;
 
         static ProtocolForResultsActivationHandler()
         {
-            _protocols = new Dictionary<string, ProtocolForResults>();
+            _protocols = new Dictionary<string, ProtocolForResultsOperation>();
         }
 
         public ProtocolForResultsActivationHandler()
         {
-            Strategy = ActivationStrategy.Picker;
+            Strategy = ActivationStrategy.Hosted;
         }
 
-        public static ReadOnlyDictionary<string, ProtocolForResults> Protocols
+        public static ReadOnlyDictionary<string, ProtocolForResultsOperation> Protocols
         {
-            get { return new ReadOnlyDictionary<string, ProtocolForResults>(_protocols); }
+            get { return new ReadOnlyDictionary<string, ProtocolForResultsOperation>(_protocols); }
         }
 
-        public static void AddProtocol(ProtocolForResults protocol)
+        public static void AddProtocol(ProtocolForResultsOperation protocol)
         {
             if (!_protocols.ContainsKey(protocol.Scheme))
             {
@@ -40,7 +40,7 @@ namespace NittyGritty.Uwp.Services.Activation
             }
         }
 
-        public override async Task HandleAsync(ProtocolForResultsActivatedEventArgs args)
+        public override async Task HandleInternal(ProtocolForResultsActivatedEventArgs args)
         {
             if (_protocols.TryGetValue(args.Uri.Scheme, out var protocol))
             {

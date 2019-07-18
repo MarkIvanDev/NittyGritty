@@ -1,4 +1,4 @@
-﻿using NittyGritty.Uwp.Declarations;
+﻿using NittyGritty.Uwp.Operations;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -24,7 +24,7 @@ namespace NittyGritty.Uwp.Services.Activation
 
         public ShareTargetActivationHandler()
         {
-            Strategy = ActivationStrategy.Picker;
+            Strategy = ActivationStrategy.Hosted;
         }
 
         public static ReadOnlyDictionary<string, ShareTarget> ShareTargets
@@ -51,7 +51,7 @@ namespace NittyGritty.Uwp.Services.Activation
             }
         }
 
-        public override async Task HandleAsync(ShareTargetActivatedEventArgs args)
+        public override async Task HandleInternal(ShareTargetActivatedEventArgs args)
         {
             var supported = new List<ShareTarget>();
             foreach (var item in args.ShareOperation.Data.AvailableFormats)

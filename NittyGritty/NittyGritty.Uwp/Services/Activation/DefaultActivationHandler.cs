@@ -7,17 +7,16 @@ using Windows.UI.Xaml.Controls;
 
 namespace NittyGritty.Uwp.Services.Activation
 {
-    public class DefaultActivationHandler : ActivationHandler<object>
+    internal class DefaultActivationHandler : ActivationHandler<object>
     {
         private readonly Type defaultView;
 
-        public DefaultActivationHandler(Type defaultView)
+        public DefaultActivationHandler(Type defaultView) : base(ActivationStrategy.Normal)
         {
             this.defaultView = defaultView;
-            NeedsNavigationContext = true;
         }
 
-        public override async Task HandleAsync(object args)
+        protected override async Task HandleInternal(object args)
         {
             NavigationContext?.Navigate(defaultView);
             await Task.CompletedTask;

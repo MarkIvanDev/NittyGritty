@@ -24,13 +24,14 @@ namespace NittyGritty.Uwp.Services
                                  Lazy<UIElement> shell,
                                  Lazy<Frame> navigationContext,
                                  IEnumerable<IActivationHandler> handlers,
-                                 DefaultActivationHandler defaultHandler,
+                                 Type defaultView,
                                  Func<Task> startup)
         {
             this.initialization = initialization;
-            this.handlers = handlers;
-            this.defaultHandler = defaultHandler ?? throw new ArgumentNullException(nameof(defaultHandler), "Default activation handler can not be null");
             this.shell = shell;
+            this.navigationContext = navigationContext;
+            this.handlers = handlers;
+            this.defaultHandler = defaultView != null ? new DefaultActivationHandler(defaultView) : throw new ArgumentNullException(nameof(defaultView), "Default activation handler can not be null");
             this.startup = startup;
         }
 
@@ -39,7 +40,7 @@ namespace NittyGritty.Uwp.Services
             new Lazy<UIElement>(app.CreateShell),
             new Lazy<Frame>(app.GetNavigationContext),
             app.GetActivationHandlers(),
-            app.GetDefaultHandler(),
+            app.DefaultView,
             app.Startup)
         {
         }
@@ -48,7 +49,7 @@ namespace NittyGritty.Uwp.Services
         {
             var activationHandler = handlers?.FirstOrDefault(h => h.CanHandle(args));
 
-            // Default activation and ALL Normal activations (exclude Background, Picker and Custom activations)
+            // Default activation and ALL Normal activations (exclude Background, Hosted and Custom activations)
             if (activationHandler == null || activationHandler.Strategy == ActivationStrategy.Normal)
             {
                 // Initialize things like registering background task before the app is loaded
@@ -63,30 +64,32 @@ namespace NittyGritty.Uwp.Services
                 }
             }
             // Share Target, File Open Picker, File Save Picker, Contact Panel activation
-            // Picker handlers must be assured that they can use the current Window's content as a Frame for their navigation context
-            else if(activationHandler.Strategy == ActivationStrategy.Picker)
+            // Hosted handlers must be assured that they can use the current Window's content as a Frame for their navigation context
+            else if(activationHandler.Strategy == ActivationStrategy.Hosted)
             {
                 Window.Current.Content = new Frame();
             }
-
             // Background activations do not need UI so we are not going to initialize the current Window's content
-            // NewView and Other activations must handle their own UI logic in their implementations (HandleAsync)
+            // Other activations must handle their own UI logic in their implementations (HandleAsync)
             
             if (activationHandler != null)
             {
-                // Handlers can request for a navigation context (in this case, a Frame) to be used in their HandleAsync logic
+                // Normal activations can request for a navigation context (in this case, a Frame) to be used in their HandleAsync logic
+                // Pickers can just use Window.Current.Content as Frame to have a navigation context
+                // Background activation does not show any UI so can continue without navigation context
                 // We used a Lazy object for this because the navigation context is only relevant after setting the content of the current Window with a Shell or a Frame
-                if(activationHandler.NeedsNavigationContext)
+                if(activationHandler.Strategy == ActivationStrategy.Normal)
                 {
                     activationHandler.SetNavigationContext(navigationContext.Value);
                 }
-                await activationHandler.HandleAsync(args);
+                await activationHandler.Handle(args);
             }
 
-            if(activationHandler == null || navigationContext.Value.Content == null)
+            // If no handler was found or a handler with a normal strategy was found but did not set a content to the navigation context, the default handler kicks in
+            if(activationHandler == null || (activationHandler.Strategy == ActivationStrategy.Normal && navigationContext.Value.Content == null))
             {
                 defaultHandler.SetNavigationContext(navigationContext.Value);
-                await defaultHandler.HandleAsync(args);
+                await defaultHandler.Handle(args);
             }
 
             if(args is IActivatedEventArgs)
@@ -94,7 +97,7 @@ namespace NittyGritty.Uwp.Services
                 // Ensure the current window is active
                 Window.Current.Activate();
 
-                // Default activation and All normal activations (exclude Background, Picker and Custom activations)
+                // Default activation and All normal activations (exclude Background, Hosted and Custom activations)
                 if (activationHandler == null || activationHandler.Strategy == ActivationStrategy.Normal)
                 {
                     // Tasks after activation

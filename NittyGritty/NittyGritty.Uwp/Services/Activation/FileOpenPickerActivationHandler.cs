@@ -23,7 +23,7 @@ namespace NittyGritty.Uwp.Services.Activation
 
         public FileOpenPickerActivationHandler(Type openPickerView)
         {
-            Strategy = ActivationStrategy.Picker;
+            Strategy = ActivationStrategy.Hosted;
             OpenPickerView = openPickerView;
         }
 
@@ -33,7 +33,7 @@ namespace NittyGritty.Uwp.Services.Activation
 
         public Func<PickedFile, Task<IStorageFile>> UnknownFileSource { get; set; }
 
-        public override async Task HandleAsync(FileOpenPickerActivatedEventArgs args)
+        public override async Task HandleInternal(FileOpenPickerActivatedEventArgs args)
         {
             fileOpenPickerUI = args.FileOpenPickerUI;
 

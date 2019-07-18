@@ -25,7 +25,7 @@ namespace NittyGritty.Uwp.Services.Activation
 
         public Func<AppointmentsProviderShowTimeFrameActivatedEventArgs, Task> ShowTimeFrameCallback { get; private set; }
 
-        public sealed override async Task HandleAsync(IAppointmentsProviderActivatedEventArgs args)
+        public sealed override async Task HandleInternal(IAppointmentsProviderActivatedEventArgs args)
         {
             switch (args)
             {
@@ -51,7 +51,7 @@ namespace NittyGritty.Uwp.Services.Activation
             }
         }
 
-        public sealed override bool CanHandle(IAppointmentsProviderActivatedEventArgs args)
+        public sealed override bool CanHandleInternal(IAppointmentsProviderActivatedEventArgs args)
         {
             switch (args)
             {

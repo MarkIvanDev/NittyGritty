@@ -10,60 +10,64 @@ namespace NittyGritty.Uwp.Services.Activation
 {
     public interface IActivationHandler
     {
-        bool NeedsNavigationContext { get; }
-
         Frame NavigationContext { get; }
 
         ActivationStrategy Strategy { get; }
 
         bool CanHandle(object args);
 
-        Task HandleAsync(object args);
+        Task Handle(object args);
 
         void SetNavigationContext(Frame frame);
     }
 
-    public class ActivationHandler<T> : IActivationHandler
+    public abstract class ActivationHandler<T> : IActivationHandler
         where T : class
     {
-        public ActivationStrategy Strategy { get; protected set; } = ActivationStrategy.Normal;
-
-        public bool NeedsNavigationContext { get; protected set; }
-
-        public Frame NavigationContext { get; protected set; }
-
-        public virtual async Task HandleAsync(T args)
+        public ActivationHandler(ActivationStrategy strategy)
         {
-            await Task.FromResult(false);
+            Strategy = strategy;
         }
 
-        public virtual bool CanHandle(T args)
-        {
-            return args != null;
-        }
+        public ActivationStrategy Strategy { get; }
+
+        public Frame NavigationContext { get; private set; }
 
         public void SetNavigationContext(Frame frame)
         {
             NavigationContext = frame ?? throw new ArgumentNullException(nameof(frame));
         }
 
-        bool IActivationHandler.CanHandle(object args)
+        public bool CanHandle(object args)
         {
-            return CanHandle(args as T);
+            return args is T t && CanHandleInternal(t);
         }
 
-        async Task IActivationHandler.HandleAsync(object args)
+        public async Task Handle(object args)
         {
-            await HandleAsync(args as T);
+            if(args is T t)
+            {
+                await HandleInternal(t);
+            }
+        }
+
+        protected virtual async Task HandleInternal(T args)
+        {
+            await Task.CompletedTask;
+        }
+
+        protected virtual bool CanHandleInternal(T args)
+        {
+            return true;
         }
 
     }
 
     public enum ActivationStrategy
     {
-        Normal = 0,
-        Background = 1,
-        Picker = 2,
-        Other = 9
+        Unknown = 0,
+        Normal = 2,
+        Background = 4,
+        Hosted = 8
     }
 }

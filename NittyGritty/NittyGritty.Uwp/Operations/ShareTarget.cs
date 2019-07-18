@@ -13,7 +13,7 @@ using Windows.Foundation.Metadata;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
-namespace NittyGritty.Uwp.Declarations
+namespace NittyGritty.Uwp.Operations
 {
     public abstract class ShareTarget
     {

@@ -1,4 +1,4 @@
-﻿using NittyGritty.Uwp.Declarations;
+﻿using NittyGritty.Uwp.Operations;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -13,49 +13,36 @@ namespace NittyGritty.Uwp.Services.Activation
 {
     public class FileActivationHandler : ActivationHandler<FileActivatedEventArgs>
     {
-        private static readonly Dictionary<string, FileTypeAssociation> _fileTypeAssociations;
+        private readonly Dictionary<string, FileOperation> operations;
 
-        static FileActivationHandler()
+        public FileActivationHandler(params FileOperation[] operations) : base(ActivationStrategy.Normal)
         {
-            _fileTypeAssociations = new Dictionary<string, FileTypeAssociation>();
-        }
-
-        public FileActivationHandler()
-        {
-        }
-
-        public static ReadOnlyDictionary<string, FileTypeAssociation> FileTypeAssociations
-        {
-            get { return new ReadOnlyDictionary<string, FileTypeAssociation>(_fileTypeAssociations); }
-        }
-
-        public static void AddAssociation(FileTypeAssociation association)
-        {
-            if(!_fileTypeAssociations.ContainsKey(association.FileType))
+            this.operations = new Dictionary<string, FileOperation>();
+            foreach (var operation in operations)
             {
-                _fileTypeAssociations.Add(association.FileType, association);
+                this.operations.Add(operation.FileType, operation);
             }
-            else
-            {
-                throw new ArgumentException("You only have to register for a file type association once.");
-            }
+            Operations = new ReadOnlyDictionary<string, FileOperation>(this.operations);
         }
 
-        public Func<IStorageFile, Task> UnknownFile { get; set; }
+        public ReadOnlyDictionary<string, FileOperation> Operations { get; }
 
-        public override async Task HandleAsync(FileActivatedEventArgs args)
+        protected override async Task HandleInternal(FileActivatedEventArgs args)
         {
             foreach (var file in args.Files)
             {
-                if(file is IStorageFile storageFile)
+                if(file is StorageFile storageFile)
                 {
-                    if(_fileTypeAssociations.TryGetValue(storageFile.FileType, out var fileTypeAssociation))
+                    if(operations.TryGetValue(storageFile.FileType, out var operation))
                     {
-                        await fileTypeAssociation.Run(storageFile);
+                        await operation.Run(args, storageFile, NavigationContext);
                     }
                     else
                     {
-                        await UnknownFile?.Invoke(storageFile);
+                        if(operations.TryGetValue(string.Empty, out var fallback))
+                        {
+                            await fallback.Run(args, storageFile, NavigationContext);
+                        }
                     }
                 }
             }

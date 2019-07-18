@@ -22,7 +22,7 @@ namespace NittyGritty.Uwp.Services.Activation
 
         public FileSavePickerActivationHandler(Type savePickerView)
         {
-            Strategy = ActivationStrategy.Picker;
+            Strategy = ActivationStrategy.Hosted;
             SavePickerView = savePickerView;
         }
 
@@ -32,7 +32,7 @@ namespace NittyGritty.Uwp.Services.Activation
 
         public Func<string, Task<IStorageFile>> GenerateFile { get; set; }
 
-        public override async Task HandleAsync(FileSavePickerActivatedEventArgs args)
+        public override async Task HandleInternal(FileSavePickerActivatedEventArgs args)
         {
             fileSavePickerUI = args.FileSavePickerUI;
 

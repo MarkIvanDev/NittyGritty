@@ -1,5 +1,6 @@
 ﻿using NittyGritty.Models;
 using NittyGritty.Utilities;
+using NittyGritty.Uwp.Operations;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -12,26 +13,18 @@ namespace NittyGritty.Uwp.Services.Activation
 {
     public class CommandLineActivationHandler : ActivationHandler<CommandLineActivatedEventArgs>
     {
-        public CommandLineActivationHandler()
-        {
+        private readonly CommandLineOperation operation;
 
+        public CommandLineActivationHandler(CommandLineOperation operation) : base(ActivationStrategy.Normal)
+        {
+            this.operation = operation;
         }
 
-        public Func<ReadOnlyCollection<ParsedCommand>, string, Task<int>> ExecuteCallback { get; private set; }
-
-        public override async Task HandleAsync(CommandLineActivatedEventArgs args)
+        protected override async Task HandleInternal(CommandLineActivatedEventArgs args)
         {
             var deferral = args.Operation.GetDeferral();
-            var commands = CommandLineUtilities.Parse(args.Operation.Arguments);
-            args.Operation.ExitCode = await ExecuteCallback?.Invoke(commands, args.Operation.CurrentDirectoryPath);
+            await operation.Run(args, NavigationContext);
             deferral.Complete();
         }
-
-        public CommandLineActivationHandler SetExecuteCallback(Func<ReadOnlyCollection<ParsedCommand>, string, Task<int>> executeCallback)
-        {
-            ExecuteCallback = executeCallback;
-            return this;
-        }
-
     }
 }
