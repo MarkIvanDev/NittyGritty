@@ -7,12 +7,12 @@ namespace NittyGritty.Views.Events
 {
     public class ProtocolResultCompletedEventArgs : EventArgs
     {
-        public ProtocolResultCompletedEventArgs(IDictionary<string, string> result)
+        public ProtocolResultCompletedEventArgs(IDictionary<string, object> result)
         {
-            Result = new ReadOnlyDictionary<string, string>(result);
+            Result = new ReadOnlyDictionary<string, object>(result);
         }
 
-        public ReadOnlyDictionary<string, string> Result { get; }
+        public ReadOnlyDictionary<string, object> Result { get; }
     }
 
     public delegate void ProtocolResultCompletedEventHandler(object sender, ProtocolResultCompletedEventArgs e);

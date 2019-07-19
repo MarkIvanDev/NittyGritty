@@ -1,4 +1,5 @@
 ﻿using NittyGritty.Models;
+using NittyGritty.Views;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,7 +17,8 @@ namespace NittyGritty.Uwp.Operations
         /// <summary>
         /// Creates a ProtocolOperation to handle the protocol that activated the app
         /// </summary>
-        /// <param name="scheme">The scheme this ProtocolOperation can handle. Cannot be null or empty or whitespace</param>
+        /// <param name="scheme">The scheme this ProtocolOperation can handle.
+        /// Cannot be null or empty or whitespace</param>
         public ProtocolOperation(string scheme)
         {
             if(string.IsNullOrWhiteSpace(scheme))
@@ -32,7 +34,8 @@ namespace NittyGritty.Uwp.Operations
         /// <summary>
         /// Configures the paths that this scheme can handle with the appropriate view
         /// </summary>
-        /// <param name="path">The path that this scheme can handle. A path can be configured with an empty string</param>
+        /// <param name="path">The path that this scheme can handle. A path can be configured with an empty string
+        /// A path with a value of * will be used as fallback for unknown paths</param>
         /// <param name="view">The type of the view that the path leads to</param>
         public void Configure(string path, Type view)
         {
@@ -41,6 +44,11 @@ namespace NittyGritty.Uwp.Operations
                 if (_viewsByPath.ContainsKey(path))
                 {
                     throw new ArgumentException("This path is already used: " + path);
+                }
+
+                if (view == null)
+                {
+                    throw new ArgumentNullException(nameof(view), "View cannot be null");
                 }
 
                 if (_viewsByPath.Any(p => p.Value == view))
@@ -57,26 +65,34 @@ namespace NittyGritty.Uwp.Operations
 
         public virtual async Task Run(ProtocolActivatedEventArgs args, Frame frame)
         {
-            if(args.Uri.Scheme != Scheme)
+            if(args.Uri.Scheme != Scheme && Scheme != "*")
             {
                 return;
             }
 
             var path = args.Uri.LocalPath;
             var parameters = QueryString.Parse(args.Uri.GetComponents(UriComponents.Query, UriFormat.UriEscaped));
+            var payload = new ProtocolPayload(args.Data, parameters);
             lock (_viewsByPath)
             {
                 if(_viewsByPath.TryGetValue(path, out var view))
                 {
-                    frame.Navigate(view, parameters);
+                    frame.Navigate(view, payload);
                 }
                 else
                 {
-                    throw new ArgumentException(
-                        string.Format(
-                            "No such path: {0}. Did you forget to call Protocol.Configure?",
-                            path),
-                        nameof(path));
+                    if(_viewsByPath.TryGetValue("*", out var fallbackView))
+                    {
+                        frame.Navigate(fallbackView, payload);
+                    }
+                    else
+                    {
+                        throw new ArgumentException(
+                            string.Format(
+                                "No such path: {0}. Did you forget to call Protocol.Configure?",
+                                path),
+                            nameof(path));
+                    }
                 }
             }
             await Task.CompletedTask;

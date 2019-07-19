@@ -43,5 +43,18 @@ namespace NittyGritty.Utilities
             return @delegate;
         }
 
+        public static void SubscribeOneShot(
+            Action<EventHandler> subscribe,
+            Action<EventHandler> unsubscribe,
+            EventHandler handler)
+        {
+            EventHandler actualHandler = null;
+            actualHandler = (sender, e) =>
+            {
+                unsubscribe(actualHandler);
+                handler(sender, e);
+            };
+            subscribe(actualHandler);
+        }
     }
 }

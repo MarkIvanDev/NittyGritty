@@ -13,17 +13,24 @@ namespace NittyGritty.Uwp.Services.Activation
 {
     public class CommandLineActivationHandler : ActivationHandler<CommandLineActivatedEventArgs>
     {
-        private readonly CommandLineOperation operation;
+        private readonly Dictionary<string, CommandLineOperation> operations;
 
-        public CommandLineActivationHandler(CommandLineOperation operation) : base(ActivationStrategy.Normal)
+        public CommandLineActivationHandler(params CommandLineOperation[] operations) : base(ActivationStrategy.Normal)
         {
-            this.operation = operation;
+            this.operations = new Dictionary<string, CommandLineOperation>();
+            foreach (var operation in operations)
+            {
+                this.operations.Add(operation.Command, operation);
+            }
+            Operations = new ReadOnlyDictionary<string, CommandLineOperation>(this.operations);
         }
+
+        public ReadOnlyDictionary<string, CommandLineOperation> Operations { get; }
 
         protected override async Task HandleInternal(CommandLineActivatedEventArgs args)
         {
             var deferral = args.Operation.GetDeferral();
-            await operation.Run(args, NavigationContext);
+            await operations.Run(args, NavigationContext);
             deferral.Complete();
         }
     }

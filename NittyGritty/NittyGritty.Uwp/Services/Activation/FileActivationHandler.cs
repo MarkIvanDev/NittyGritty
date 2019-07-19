@@ -39,10 +39,7 @@ namespace NittyGritty.Uwp.Services.Activation
                     }
                     else
                     {
-                        if(operations.TryGetValue(string.Empty, out var fallback))
-                        {
-                            await fallback.Run(args, storageFile, NavigationContext);
-                        }
+                        // We should not reach this part. Please check if you have added all the file types that this app can handle
                     }
                 }
             }

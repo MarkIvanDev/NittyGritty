@@ -39,6 +39,6 @@ namespace NittyGritty.Views.Events
         }
     }
 
-    public delegate void PickFileChangedEventHandler(object sender, PickedFileChangedEventArgs e);
+    public delegate void PickedFileChangedEventHandler(object sender, PickedFileChangedEventArgs e);
 
 }

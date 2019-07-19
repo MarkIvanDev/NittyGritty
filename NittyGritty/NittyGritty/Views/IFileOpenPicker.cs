@@ -7,7 +7,7 @@ namespace NittyGritty.Views
 {
     public interface IFileOpenPicker
     {
-        event PickFileChangedEventHandler PickFileChanged;
+        event PickedFileChangedEventHandler PickedFileChanged;
     }
 
 }

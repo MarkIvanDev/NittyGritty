@@ -10,16 +10,19 @@ namespace NittyGritty.Uwp.Operations
 {
     public class CommandLineOperation
     {
-        private readonly Func<CommandLineActivatedEventArgs, Frame, Task> callback;
-
-        public CommandLineOperation(Func<CommandLineActivatedEventArgs, Frame, Task> callback = null)
+        public CommandLineOperation(string command, Type view)
         {
-            this.callback = callback;
+            Command = command;
+            View = view;
         }
+
+        public string Command { get; }
+
+        public Type View { get; }
 
         public virtual async Task Run(CommandLineActivatedEventArgs args, Frame frame)
         {
-            await callback?.Invoke(args, frame);
+            
         }
     }
 }

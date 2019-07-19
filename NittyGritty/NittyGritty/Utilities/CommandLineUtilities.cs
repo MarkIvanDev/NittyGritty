@@ -17,6 +17,11 @@ namespace NittyGritty.Utilities
             {
                 for (int i = 0; i < args.Length; i++)
                 {
+                    if(i == 0 && !args[i].StartsWith("-") && !args[i].StartsWith("/"))
+                    {
+
+                    }
+
                     if (args[i].StartsWith("-") || args[i].StartsWith("/"))
                     {
                         var data = ParseData(args, i);
@@ -37,7 +42,7 @@ namespace NittyGritty.Utilities
             return new ReadOnlyCollection<ParsedCommand>(parsedArgs);
         }
 
-        private static ParsedCommand ParseData(string[] args, int index)
+        private static ParsedCommand ParseData(string[] args, ref int index)
         {
             string command = null;
             string parameter = null;
@@ -54,11 +59,12 @@ namespace NittyGritty.Utilities
                 }
                 else
                 {
-                    command = args[index];
+                    command = args[index].Substring(1);     // trim the '/' and the ':'
                     int argIndex = 1 + index;
                     if (argIndex < args.Length && !(args[argIndex].StartsWith("-") || args[argIndex].StartsWith("/")))
                     {
                         parameter = args[argIndex];
+                        ++index; 
                     }
                     else
                     {

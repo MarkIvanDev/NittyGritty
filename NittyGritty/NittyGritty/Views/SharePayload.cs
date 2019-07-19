@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Text;
 
@@ -7,14 +8,9 @@ namespace NittyGritty.Views
 {
     public class SharePayload
     {
-        private SharePayload(string title)
+        public SharePayload(string title)
         {
             Title = title;
-        }
-
-        public static SharePayload Create(string title)
-        {
-            return new SharePayload(title);
         }
 
         public string Title { get; }
@@ -31,7 +27,7 @@ namespace NittyGritty.Views
 
         public Stream Bitmap { get; private set; }
 
-        public IEnumerable<Stream> Files { get; private set; }
+        public ReadOnlyCollection<Stream> Files { get; private set; }
 
         public SharePayload SetText(string text)
         {
@@ -69,9 +65,9 @@ namespace NittyGritty.Views
             return this;
         }
 
-        public SharePayload SetFiles(IEnumerable<Stream> files)
+        public SharePayload SetFiles(IList<Stream> files)
         {
-            Files = files;
+            Files = new ReadOnlyCollection<Stream>(files);
             return this;
         }
 

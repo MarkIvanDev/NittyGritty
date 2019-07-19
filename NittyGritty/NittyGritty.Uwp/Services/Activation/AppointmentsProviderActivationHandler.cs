@@ -1,5 +1,7 @@
-﻿using System;
+﻿using NittyGritty.Uwp.Operations;
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,101 +12,102 @@ namespace NittyGritty.Uwp.Services.Activation
 {
     public class AppointmentsProviderActivationHandler : ActivationHandler<IAppointmentsProviderActivatedEventArgs>
     {
-        public AppointmentsProviderActivationHandler()
+        private readonly Dictionary<AppointmentAction, AppointmentOperation> operations;
+
+        public AppointmentsProviderActivationHandler(params AppointmentOperation[] operations) : base(ActivationStrategy.Hosted)
         {
-
-        }
-
-        public Func<AddAppointmentOperation, Task> AddCallback { get; private set; }
-
-        public Func<RemoveAppointmentOperation, Task> RemoveCallback { get; private set; }
-
-        public Func<ReplaceAppointmentOperation, Task> ReplaceCallback { get; private set; }
-
-        public Func<AppointmentsProviderShowAppointmentDetailsActivatedEventArgs, Task> ShowDetailsCallback { get; private set; }
-
-        public Func<AppointmentsProviderShowTimeFrameActivatedEventArgs, Task> ShowTimeFrameCallback { get; private set; }
-
-        public sealed override async Task HandleInternal(IAppointmentsProviderActivatedEventArgs args)
-        {
-            switch (args)
+            this.operations = new Dictionary<AppointmentAction, AppointmentOperation>();
+            foreach (var operation in operations)
             {
-                case AppointmentsProviderAddAppointmentActivatedEventArgs add:
-                    await AddCallback?.Invoke(add.AddAppointmentOperation);
-                    break;
-
-                case AppointmentsProviderRemoveAppointmentActivatedEventArgs remove:
-                    await RemoveCallback?.Invoke(remove.RemoveAppointmentOperation);
-                    break;
-
-                case AppointmentsProviderReplaceAppointmentActivatedEventArgs replace:
-                    await ReplaceCallback?.Invoke(replace.ReplaceAppointmentOperation);
-                    break;
-
-                case AppointmentsProviderShowAppointmentDetailsActivatedEventArgs showDetails:
-                    await ShowDetailsCallback?.Invoke(showDetails);
-                    break;
-
-                case AppointmentsProviderShowTimeFrameActivatedEventArgs showTimeFrame:
-                    await ShowTimeFrameCallback?.Invoke(showTimeFrame);
-                    break;
+                this.operations.Add(operation.Action, operation);
             }
+            Operations = new ReadOnlyDictionary<AppointmentAction, AppointmentOperation>(this.operations);
         }
 
-        public sealed override bool CanHandleInternal(IAppointmentsProviderActivatedEventArgs args)
+        public ReadOnlyDictionary<AppointmentAction, AppointmentOperation> Operations { get; }
+
+        protected sealed override async Task HandleInternal(IAppointmentsProviderActivatedEventArgs args)
         {
             switch (args)
             {
                 case AppointmentsProviderAddAppointmentActivatedEventArgs add:
-                    return AddCallback != null;
+                    {
+                        if (operations.TryGetValue(AppointmentAction.Add, out var operation))
+                        {
+                            await operation.Run(add);
+                        }
+                    }
+                    break;
 
                 case AppointmentsProviderRemoveAppointmentActivatedEventArgs remove:
-                    return RemoveCallback != null;
+                    {
+                        if (operations.TryGetValue(AppointmentAction.Remove, out var operation))
+                        {
+                            await operation.Run(remove);
+                        }
+                    }
+                    break;
 
                 case AppointmentsProviderReplaceAppointmentActivatedEventArgs replace:
-                    return ReplaceCallback != null;
+                    {
+                        if (operations.TryGetValue(AppointmentAction.Replace, out var operation))
+                        {
+                            await operation.Run(replace);
+                        }
+                    }
+                    break;
 
                 case AppointmentsProviderShowAppointmentDetailsActivatedEventArgs showDetails:
-                    return ShowDetailsCallback != null;
+                    {
+                        if (operations.TryGetValue(AppointmentAction.ShowDetails, out var operation))
+                        {
+                            await operation.Run(showDetails);
+                        }
+                    }
+                    break;
 
                 case AppointmentsProviderShowTimeFrameActivatedEventArgs showTimeFrame:
-                    return ShowTimeFrameCallback != null;
+                    {
+                        if (operations.TryGetValue(AppointmentAction.ShowTimeFrame, out var operation))
+                        {
+                            await operation.Run(showTimeFrame);
+                        }
+                    }
+                    break;
 
                 default:
-                    return false;
+                    // We should not reach this part. Please check if you have added all of the appointment operations this app can handle
+                    break;
             }
         }
 
-        public AppointmentsProviderActivationHandler SetAddCallback(Func<AddAppointmentOperation, Task> addCallback)
+        protected sealed override bool CanHandleInternal(IAppointmentsProviderActivatedEventArgs args)
         {
-            AddCallback = addCallback;
-            return this;
+            if(args.Verb == AppointmentsProviderLaunchActionVerbs.AddAppointment)
+            {
+                return operations.ContainsKey(AppointmentAction.Add);
+            }
+            else if (args.Verb == AppointmentsProviderLaunchActionVerbs.RemoveAppointment)
+            {
+                return operations.ContainsKey(AppointmentAction.Remove);
+            }
+            else if (args.Verb == AppointmentsProviderLaunchActionVerbs.ReplaceAppointment)
+            {
+                return operations.ContainsKey(AppointmentAction.Replace);
+            }
+            else if (args.Verb == AppointmentsProviderLaunchActionVerbs.ShowAppointmentDetails)
+            {
+                return operations.ContainsKey(AppointmentAction.ShowDetails);
+            }
+            else if (args.Verb == AppointmentsProviderLaunchActionVerbs.ShowTimeFrame)
+            {
+                return operations.ContainsKey(AppointmentAction.ShowTimeFrame);
+            }
+            else
+            {
+                return false;
+            }
         }
-
-        public AppointmentsProviderActivationHandler SetRemoveCallback(Func<RemoveAppointmentOperation, Task> removeCallback)
-        {
-            RemoveCallback = removeCallback;
-            return this;
-        }
-
-        public AppointmentsProviderActivationHandler SetReplaceCallback(Func<ReplaceAppointmentOperation, Task> replaceCallback)
-        {
-            ReplaceCallback = replaceCallback;
-            return this;
-        }
-
-        public AppointmentsProviderActivationHandler SetShowDetailsCallback(Func<AppointmentsProviderShowAppointmentDetailsActivatedEventArgs, Task> showDetailsCallback)
-        {
-            ShowDetailsCallback = showDetailsCallback;
-            return this;
-        }
-
-        public AppointmentsProviderActivationHandler SetShowTimeFrameCallback(Func<AppointmentsProviderShowTimeFrameActivatedEventArgs, Task> showTimeFrameCallback)
-        {
-            ShowTimeFrameCallback = showTimeFrameCallback;
-            return this;
-        }
-
 
     }
 }

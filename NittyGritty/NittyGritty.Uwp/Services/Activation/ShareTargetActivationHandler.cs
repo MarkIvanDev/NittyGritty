@@ -1,4 +1,6 @@
 ﻿using NittyGritty.Uwp.Operations;
+using NittyGritty.Views;
+using NittyGritty.Views.Events;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -15,63 +17,52 @@ namespace NittyGritty.Uwp.Services.Activation
 {
     public class ShareTargetActivationHandler : ActivationHandler<ShareTargetActivatedEventArgs>
     {
-        private static Dictionary<string, ShareTarget> _shareTargets;
+        private readonly Dictionary<string, ShareTargetOperation> operations;
 
-        static ShareTargetActivationHandler()
+        public ShareTargetActivationHandler(params ShareTargetOperation[] operations) : base(ActivationStrategy.Hosted)
         {
-            _shareTargets = new Dictionary<string, ShareTarget>();
-        }
-
-        public ShareTargetActivationHandler()
-        {
-            Strategy = ActivationStrategy.Hosted;
-        }
-
-        public static ReadOnlyDictionary<string, ShareTarget> ShareTargets
-        {
-            get { return new ReadOnlyDictionary<string, ShareTarget>(_shareTargets); }
-        }
-
-        public static void AddTarget(ShareTarget target)
-        {
-            if (!_shareTargets.ContainsKey(target.DataFormat))
+            this.operations = new Dictionary<string, ShareTargetOperation>();
+            foreach (var operation in operations)
             {
-                if (!_shareTargets.Values.Any(s => s.Priority == target.Priority) && target.View != null)
-                {
-                    _shareTargets.Add(target.DataFormat, target);
-                }
-                else
-                {
-                    throw new ArgumentException("Share Targets must have unique priorities and views.");
-                }
+                this.operations.Add(operation.DataFormat, operation);
             }
-            else
-            {
-                throw new ArgumentException("You only have to register for a share target once.");
-            }
+            Operations = new ReadOnlyDictionary<string, ShareTargetOperation>(this.operations);
         }
 
-        public override async Task HandleInternal(ShareTargetActivatedEventArgs args)
+        public ReadOnlyDictionary<string, ShareTargetOperation> Operations { get; }
+
+        protected override async Task HandleInternal(ShareTargetActivatedEventArgs args)
         {
-            var supported = new List<ShareTarget>();
+            var supported = new List<ShareTargetOperation>();
             foreach (var item in args.ShareOperation.Data.AvailableFormats)
             {
-                if(_shareTargets.TryGetValue(item, out var target))
+                if(operations.TryGetValue(item, out var target))
                 {
                     supported.Add(target);
                 }
             }
-            var picked = supported.OrderByDescending(s => s.Priority).FirstOrDefault();
+            var picked = supported.OrderByDescending(s => s.Priority).ThenBy(s => s.DataFormat).FirstOrDefault();
             if(picked != null)
             {
-                await picked.Run(args.ShareOperation);
+                await picked.Run(args);
+                if (Window.Current.Content is Frame frame)
+                {
+                    if (frame.Content is Page page)
+                    {
+                        if (page.DataContext is IShareTarget context)
+                        {
+                            context.ShareStarted += (s, e) => args.ShareOperation.ReportStarted();
+                            context.ShareFailed += (s, e) => args.ShareOperation.ReportError(e.Error);
+                            context.ShareCompleted += (s, e) => args.ShareOperation.ReportCompleted();
+                        }
+                    }
+                }
             }
             else
             {
                 // We should not reach this part. Please check if you have registered all of your share targets
             }
         }
-
     }
 
 }

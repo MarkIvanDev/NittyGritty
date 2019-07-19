@@ -141,11 +141,12 @@
     <Compile Include="Converters\StringVisibilityConverter.cs" />
     <Compile Include="Converters\UppercaseConverter.cs" />
     <Compile Include="Converters\ValueWhenConverter.cs" />
+    <Compile Include="Operations\AppointmentOperation.cs" />
     <Compile Include="Operations\CommandLineOperation.cs" />
     <Compile Include="Operations\LaunchOperation.cs" />
     <Compile Include="Operations\ProtocolOperation.cs" />
     <Compile Include="Operations\ProtocolForResultsOperation.cs" />
-    <Compile Include="Operations\ShareTarget.cs" />
+    <Compile Include="Operations\ShareTargetOperation.cs" />
     <Compile Include="Extensions\DataPackageViewExtensions.cs" />
     <Compile Include="Extensions\NavigationViewExtensions.cs" />
     <Compile Include="Interactivity\Actions\CloseFlyoutAction.cs" />

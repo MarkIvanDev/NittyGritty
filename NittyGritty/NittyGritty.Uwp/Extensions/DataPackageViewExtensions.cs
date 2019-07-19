@@ -1,54 +1,68 @@
 ﻿using NittyGritty.Views;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.Storage;
 using Windows.Storage.Streams;
+using System.Runtime.InteropServices.WindowsRuntime;
+using System.Collections.ObjectModel;
 
 namespace NittyGritty.Uwp.Extensions
 {
     public static class DataPackageViewExtensions
     {
 
-        public static async Task<string> GetTextAsync(this DataPackageView data)
+        public static async Task<string> GetText(this DataPackageView data)
         {
-            return await GetData<string>(data, StandardDataFormats.Text);
+            return await data.GetTextAsync();
         }
 
-        public static async Task<string> GetHtmlAsync(this DataPackageView data)
+        public static async Task<string> GetHtml(this DataPackageView data)
         {
-            return await GetData<string>(data, StandardDataFormats.Html);
+            return await data.GetHtmlFormatAsync();
         }
 
-        public static async Task<string> GetRtfAsync(this DataPackageView data)
+        public static async Task<string> GetRtf(this DataPackageView data)
         {
-            return await GetData<string>(data, StandardDataFormats.Rtf);
+            return await data.GetRtfAsync();
         }
 
-        public static async Task<Uri> GetAppLinkAsync(this DataPackageView data)
+        public static async Task<Uri> GetAppLink(this DataPackageView data)
         {
-            return await GetData<Uri>(data, StandardDataFormats.ApplicationLink);
+            return await data.GetApplicationLinkAsync();
         }
 
-        public static async Task<Uri> GetWebLinkAsync(this DataPackageView data)
+        public static async Task<Uri> GetWebLink(this DataPackageView data)
         {
-            return await GetData<Uri>(data, StandardDataFormats.WebLink);
+            return await data.GetWebLinkAsync();
         }
 
-        public static async Task<RandomAccessStreamReference> GetBitmapAsync(this DataPackageView data)
+        public static async Task<Stream> GetBitmap(this DataPackageView data)
         {
-            return await GetData<RandomAccessStreamReference>(data, StandardDataFormats.Bitmap);
+            var bitmap = await data.GetBitmapAsync();
+            var stream = await bitmap.OpenReadAsync();
+            return stream.AsStream();
         }
 
-        public static async Task<IReadOnlyList<IStorageItem>> GetFilesAsync(this DataPackageView data)
+        public static async Task<ReadOnlyCollection<Stream>> GetFiles(this DataPackageView data)
         {
-            return await GetData<IReadOnlyList<IStorageItem>>(data, StandardDataFormats.StorageItems);
+            var files = new List<Stream>();
+            var dataFiles = await data.GetStorageItemsAsync();
+            foreach (var file in dataFiles)
+            {
+                if(file is IStorageFile storageFile)
+                {
+                    files.Add(await storageFile.OpenStreamForReadAsync());
+                }
+            }
+            return new ReadOnlyCollection<Stream>(files);
         }
 
-        public static async Task<T> GetData<T>(this DataPackageView data, string dataFormat)
+        private static async Task<T> GetData<T>(this DataPackageView data, string dataFormat)
             where T : class
         {
             try
@@ -96,5 +110,47 @@ namespace NittyGritty.Uwp.Extensions
             return default(T);
         }
 
+        public static async Task<SharePayload> GetPayload(this DataPackageView data, params string[] dataFormats)
+        {
+            var payload = new SharePayload(data.Properties.Title);
+            var formats = new List<string>();
+            if(dataFormats.Length == 0)
+            {
+                formats.AddRange(data.AvailableFormats);
+            }
+            foreach (var format in formats)
+            {
+                if (format == StandardDataFormats.ApplicationLink)
+                {
+                    payload.SetAppLink(await data.GetAppLink());
+                }
+                else if (format == StandardDataFormats.Bitmap)
+                {
+                    payload.SetBitmap(await data.GetBitmap());
+                }
+                else if (format == StandardDataFormats.Html)
+                {
+                    payload.SetHtml(await data.GetHtml());
+                }
+                else if (format == StandardDataFormats.Rtf)
+                {
+                    payload.SetRtf(await data.GetRtf());
+                }
+                else if (format == StandardDataFormats.Text)
+                {
+                    payload.SetText(await data.GetText());
+                }
+                else if (format == StandardDataFormats.WebLink)
+                {
+                    payload.SetWebLink(await data.GetWebLink());
+                }
+                else if (format == StandardDataFormats.StorageItems)
+                {
+                    payload.SetFiles(await data.GetFiles());
+                }
+
+            }
+            return payload;
+        }
     }
 }

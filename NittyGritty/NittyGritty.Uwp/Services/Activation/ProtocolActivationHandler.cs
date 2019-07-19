@@ -11,46 +11,29 @@ namespace NittyGritty.Uwp.Services.Activation
 {
     public class ProtocolActivationHandler : ActivationHandler<ProtocolActivatedEventArgs>
     {
-        private static readonly Dictionary<string, ProtocolOperation> _protocols;
+        private readonly Dictionary<string, ProtocolOperation> operations;
 
-        static ProtocolActivationHandler()
+        public ProtocolActivationHandler(params ProtocolOperation[] operations) : base(ActivationStrategy.Normal)
         {
-            _protocols = new Dictionary<string, ProtocolOperation>();
-        }
-
-        public ProtocolActivationHandler()
-        {
-            NeedsNavigationContext = true;
-        }
-
-        public static ReadOnlyDictionary<string, ProtocolOperation> Protocols
-        {
-            get { return new ReadOnlyDictionary<string, ProtocolOperation>(_protocols); }
-        }
-
-        public static void AddProtocol(ProtocolOperation protocol)
-        {
-            if (!_protocols.ContainsKey(protocol.Scheme))
+            this.operations = new Dictionary<string, ProtocolOperation>();
+            foreach (var operation in operations)
             {
-                _protocols.Add(protocol.Scheme, protocol);
+                this.operations.Add(operation.Scheme, operation);
+            }
+            Operations = new ReadOnlyDictionary<string, ProtocolOperation>(this.operations);
+        }
+
+        public ReadOnlyDictionary<string, ProtocolOperation> Operations { get; }
+
+        protected override async Task HandleInternal(ProtocolActivatedEventArgs args)
+        {
+            if(operations.TryGetValue(args.Uri.Scheme, out var operation))
+            {
+                await operation.Run(args, NavigationContext);
             }
             else
             {
-                throw new ArgumentException("You only have to register for a protocol once.");
-            }
-        }
-
-        public Func<Uri, Task> UnknownProtocol { get; set; }
-
-        public override async Task HandleInternal(ProtocolActivatedEventArgs args)
-        {
-            if(_protocols.TryGetValue(args.Uri.Scheme, out var protocol))
-            {
-                await protocol.Run(args.Uri, NavigationContext);
-            }
-            else
-            {
-                await UnknownProtocol?.Invoke(args.Uri);
+                // We should not reach this part. Please check if you have registered all of the Protocols this app handles
             }
         }
     }

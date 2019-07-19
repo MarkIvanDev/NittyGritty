@@ -1,4 +1,5 @@
 ﻿using NittyGritty.Models;
+using NittyGritty.Utilities;
 using NittyGritty.Views;
 using NittyGritty.Views.Events;
 using System;
@@ -7,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Activation;
+using Windows.Foundation;
 using Windows.Storage;
 using Windows.Storage.Pickers.Provider;
 using Windows.Storage.Streams;
@@ -19,25 +21,19 @@ namespace NittyGritty.Uwp.Services.Activation
     {
         private readonly object syncObject = new object();
         private FileOpenPickerUI fileOpenPickerUI;
-        private IFileOpenPicker fileOpenPickerContext;
 
-        public FileOpenPickerActivationHandler(Type openPickerView)
+        public FileOpenPickerActivationHandler(Type openPickerView) : base(ActivationStrategy.Hosted)
         {
-            Strategy = ActivationStrategy.Hosted;
             OpenPickerView = openPickerView;
         }
 
         public Type OpenPickerView { get; }
 
-        public Func<FileOpenPickerUI, Page, Task> IntegratePicker { get; set; }
-
-        public Func<PickedFile, Task<IStorageFile>> UnknownFileSource { get; set; }
-
-        public override async Task HandleInternal(FileOpenPickerActivatedEventArgs args)
+        protected override async Task HandleInternal(FileOpenPickerActivatedEventArgs args)
         {
             fileOpenPickerUI = args.FileOpenPickerUI;
 
-            // Since this is marked as a Picker activation, it is assumed that the current window's content has been initialized with a frame by the ActivationService
+            // Since this is marked as a Hosted activation, it is assumed that the current window's content has been initialized with a frame by the ActivationService
             if (Window.Current.Content is Frame frame)
             {
                 var settings = new FilePickerSettings(
@@ -46,21 +42,16 @@ namespace NittyGritty.Uwp.Services.Activation
                 frame.Navigate(OpenPickerView, settings);
                 if(frame.Content is Page page)
                 {
-                    fileOpenPickerContext = page.DataContext as IFileOpenPicker;
-                    if(fileOpenPickerContext != null)
+                    if (page.DataContext is IFileOpenPicker fileOpenPickerContext)
                     {
-                        fileOpenPickerUI.Closing += FileOpenPickerUI_Closing;
-                        fileOpenPickerContext.PickFileChanged += Context_PickFileChanged;
-                    }
-                    else
-                    {
-                        await IntegratePicker?.Invoke(fileOpenPickerUI, page);
+                        fileOpenPickerContext.PickedFileChanged += PickedFileChanged;
                     }
                 }
             }
+            await Task.CompletedTask;
         }
 
-        private async void Context_PickFileChanged(object sender, PickedFileChangedEventArgs e)
+        private async void PickedFileChanged(object sender, PickedFileChangedEventArgs e)
         {
             if(e.Action == PickedFileChangedAction.Add)
             {
@@ -78,7 +69,7 @@ namespace NittyGritty.Uwp.Services.Activation
                     }
                     else
                     {
-                        file = await UnknownFileSource?.Invoke(f);
+                        throw new ArgumentException("Unknown File source.", nameof(file));
                     }
                     
                     lock(syncObject)
@@ -104,16 +95,5 @@ namespace NittyGritty.Uwp.Services.Activation
                 }
             }
         }
-
-        private void FileOpenPickerUI_Closing(FileOpenPickerUI sender, PickerClosingEventArgs args)
-        {
-            if(fileOpenPickerContext != null)
-            {
-                fileOpenPickerContext.PickFileChanged -= Context_PickFileChanged;
-                fileOpenPickerContext = null;
-            }
-            fileOpenPickerUI.Closing -= FileOpenPickerUI_Closing;
-        }
-
     }
 }

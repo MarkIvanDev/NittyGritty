@@ -16,7 +16,7 @@ namespace NittyGritty.Uwp.Operations
         {
             if(source == LaunchSource.Unknown)
             {
-                throw new ArgumentException("Launch Operation Type cannot be Unknown");
+                throw new ArgumentException("Launch Source cannot be Unknown");
             }
 
             Source = source;
