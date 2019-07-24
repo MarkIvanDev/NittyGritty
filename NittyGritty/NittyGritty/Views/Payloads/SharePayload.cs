@@ -4,7 +4,7 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Text;
 
-namespace NittyGritty.Views
+namespace NittyGritty.Views.Payloads
 {
     public class SharePayload
     {

@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace NittyGritty.Views
+namespace NittyGritty.Views.Payloads
 {
     public class ProtocolPayload
     {
@@ -12,11 +12,14 @@ namespace NittyGritty.Views
         /// </summary>
         /// <param name="data">The data that the protocol passed. Can be null</param>
         /// <param name="parameter">The query that the protocol passed. Can be empty</param>
-        public ProtocolPayload(IDictionary<string, object> data, QueryString parameter)
+        public ProtocolPayload(string path, IDictionary<string, object> data, QueryString parameter)
         {
+            Path = path;
             Data = data;
             Parameter = parameter;
         }
+
+        public string Path { get; }
 
         public IDictionary<string, object> Data { get; }
 

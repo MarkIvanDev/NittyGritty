@@ -4,16 +4,16 @@ using System.Collections.Generic;
 
 namespace NittyGritty.Uwp.Operations
 {
-    internal class ProtocolPathConfiguration
+    internal class PathConfiguration
     {
-        public ProtocolPathConfiguration(string path, Type view, Predicate<QueryString> createsNewView)
+        public PathConfiguration(string path, Type view, Predicate<QueryString> createsNewView)
         {
             Path = path;
             View = view;
             CreatesNewView = createsNewView ?? (createsNewView = (q) => false);
         }
 
-        public ProtocolPathConfiguration(string path, Type view) : this(path, view, (uri) => false)
+        public PathConfiguration(string path, Type view) : this(path, view, (uri) => false)
         {
 
         }

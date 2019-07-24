@@ -1,5 +1,6 @@
 ﻿using NittyGritty.Models;
 using NittyGritty.Views;
+using NittyGritty.Views.Payloads;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,7 +17,7 @@ namespace NittyGritty.Uwp.Operations
 {
     public class ProtocolOperation
     {
-        private readonly Dictionary<string, ProtocolPathConfiguration> _pathConfigurations = new Dictionary<string, ProtocolPathConfiguration>();
+        private readonly Dictionary<string, PathConfiguration> _pathConfigurations;
 
         /// <summary>
         /// Creates a ProtocolOperation to handle the protocol that activated the app
@@ -25,7 +26,9 @@ namespace NittyGritty.Uwp.Operations
         /// Cannot be null or empty or whitespace</param>
         public ProtocolOperation(string scheme)
         {
-            if(string.IsNullOrWhiteSpace(scheme))
+            _pathConfigurations = new Dictionary<string, PathConfiguration>();
+
+            if (string.IsNullOrWhiteSpace(scheme))
             {
                 throw new ArgumentException("Scheme cannot be null, empty, or whitespace.", nameof(scheme));
             }
@@ -45,6 +48,11 @@ namespace NittyGritty.Uwp.Operations
         {
             lock (_pathConfigurations)
             {
+                if (path.Trim().Length == 0 && !path.Equals(string.Empty))
+                {
+                    throw new ArgumentException("Path cannot consist of whitespace only");
+                }
+
                 if (_pathConfigurations.ContainsKey(path))
                 {
                     throw new ArgumentException("This path is already used: " + path);
@@ -55,14 +63,7 @@ namespace NittyGritty.Uwp.Operations
                     throw new ArgumentNullException(nameof(view), "View cannot be null");
                 }
 
-                var configuration = new ProtocolPathConfiguration(path, view, createsNewView);
-
-                var existing = _pathConfigurations.GetValueOrDefault(path);
-                if (existing != null)
-                {
-                    throw new ArgumentException(
-                        "This configuration already exists with path " + existing.Path);
-                }
+                var configuration = new PathConfiguration(path, view, createsNewView);
 
                 _pathConfigurations.Add(
                     path,
@@ -72,19 +73,19 @@ namespace NittyGritty.Uwp.Operations
 
         public virtual async Task Run(ProtocolActivatedEventArgs args, Frame frame)
         {
-            if(args.Uri.Scheme != Scheme)
+            if (args.Uri.Scheme != Scheme)
             {
                 return;
             }
 
             var path = args.Uri.LocalPath;
             var parameters = QueryString.Parse(args.Uri.GetComponents(UriComponents.Query, UriFormat.UriEscaped));
-            var payload = new ProtocolPayload(args.Data, parameters);
+            var payload = new ProtocolPayload(path, args.Data, parameters);
 
-            ProtocolPathConfiguration pathConfiguration = null;
+            PathConfiguration pathConfiguration = null;
             lock (_pathConfigurations)
             {
-                if(_pathConfigurations.TryGetValue(path, out var view))
+                if (_pathConfigurations.TryGetValue(path, out var view))
                 {
                     pathConfiguration = view;
                 }
@@ -105,7 +106,7 @@ namespace NittyGritty.Uwp.Operations
                 }
             }
 
-            if(pathConfiguration.CreatesNewView(parameters))
+            if (pathConfiguration.CreatesNewView(parameters))
             {
                 var newView = CoreApplication.CreateNewView();
                 int newViewId = 0;

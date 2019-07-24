@@ -34,9 +34,9 @@ namespace NittyGritty.Uwp.Operations
     public enum LaunchSource
     {
         Unknown = 0,
-        Primary = 2,
-        Secondary = 4,
-        Jumplist = 8,
-        Chaseable = 16,
+        Primary = 1,
+        Secondary = 2,
+        Jumplist = 3,
+        Chaseable = 4,
     }
 }

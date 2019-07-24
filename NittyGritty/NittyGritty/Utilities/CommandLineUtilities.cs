@@ -8,72 +8,92 @@ namespace NittyGritty.Utilities
 {
     public static class CommandLineUtilities
     {
-        public static ReadOnlyCollection<ParsedCommand> Parse(string cmdArgs = null)
+        public static (string command, Dictionary<string, ReadOnlyCollection<string>> parameters) Parse(string cmdArgs = null)
         {
-            var parsedArgs = new List<ParsedCommand>();
-            string[] args = cmdArgs.Split(' ');
+            var command = string.Empty;
+            var parameters = new Dictionary<string, ReadOnlyCollection<string>>();
+
+            if(cmdArgs == null)
+            {
+                return (command, parameters);
+            }
+            
+            string[] args = cmdArgs.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
 
             if (args != null)
             {
                 for (int i = 0; i < args.Length; i++)
                 {
+                    var part = args[i].Trim();
                     if(i == 0 && !args[i].StartsWith("-") && !args[i].StartsWith("/"))
                     {
-
-                    }
-
-                    if (args[i].StartsWith("-") || args[i].StartsWith("/"))
-                    {
-                        var data = ParseData(args, i);
-                        if (data != null)
+                        if(part.Length > 0)
                         {
-                            for (int j = 0; j < parsedArgs.Count; j++)
-                            {
-                                if (parsedArgs[j].Command == data.Command)
-                                {
-                                    parsedArgs.RemoveAt(j);
-                                }
-                            }
-                            parsedArgs.Add(data);
+                            command = part;
+                        }
+                    }
+                    else if (args[i].StartsWith("-") || args[i].StartsWith("/"))
+                    {
+                        var (key, values) = ParseData(args, ref i);
+                        if (key != null)
+                        {
+                            parameters[key] = values;
                         }
                     }
                 }
             }
-            return new ReadOnlyCollection<ParsedCommand>(parsedArgs);
+            return (command, parameters);
         }
 
-        private static ParsedCommand ParseData(string[] args, ref int index)
+        private static (string key, ReadOnlyCollection<string> values) ParseData(string[] args, ref int index)
         {
-            string command = null;
-            string parameter = null;
-            if (args[index].StartsWith("-") || args[index].StartsWith("/"))
+            string key = null;
+            var values = new List<string>();
+            for (int i = index; i < args.Length; i++)
             {
-                if (args[index].Contains(":"))
-                {
-                    string argument = args[index];
-                    int endIndex = argument.IndexOf(':');
-                    command = argument.Substring(1, endIndex - 1);   // trim the '/' and the ':'.
-                    int valueStart = endIndex + 1;
-                    parameter = valueStart < argument.Length ? argument.Substring(
-                        valueStart, argument.Length - valueStart) : null;
+                string value = null;
+
+                if (args[i].StartsWith("-") || args[i].StartsWith("/"))
+                {   
+                    // we are at the start of the segment
+                    if(i == index)
+                    {
+                        // the value is at the end of the part after the :
+                        if(args[i].Contains(":"))
+                        {
+                            string argument = args[index];
+                            int endIndex = argument.IndexOf(':');
+                            key = argument.Substring(1, endIndex - 1);   // trim the '/' and the ':'
+                            int valueStart = endIndex + 1;
+                            value = valueStart < argument.Length ? argument.Substring(
+                                valueStart, argument.Length - valueStart) : null;
+                            if(value != null)
+                            {
+                                values.Add(value);
+                            }
+                        }
+                        // the value is the part of this segment
+                        else
+                        {
+                            key = args[i].Substring(1);     // trim the '/' and the ':'
+                        }
+                    }
+                    // we have reached the next segment
+                    else
+                    {
+                        index = i - 1;
+                        break;
+                    }
                 }
                 else
                 {
-                    command = args[index].Substring(1);     // trim the '/' and the ':'
-                    int argIndex = 1 + index;
-                    if (argIndex < args.Length && !(args[argIndex].StartsWith("-") || args[argIndex].StartsWith("/")))
+                    if(args[i].Length > 0)
                     {
-                        parameter = args[argIndex];
-                        ++index; 
-                    }
-                    else
-                    {
-                        parameter = null;
+                        values.Add(args[i]);
                     }
                 }
             }
-
-            return command != null ? new ParsedCommand(command, parameter) : null;
+            return (key, new ReadOnlyCollection<string>(values));
         }
     }
 }
