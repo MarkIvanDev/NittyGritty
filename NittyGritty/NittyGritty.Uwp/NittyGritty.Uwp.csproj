@@ -146,6 +146,7 @@
     <Compile Include="Operations\LaunchOperation.cs" />
     <Compile Include="Operations\ProtocolOperation.cs" />
     <Compile Include="Operations\ProtocolForResultsOperation.cs" />
+    <Compile Include="Operations\ProtocolPathConfiguration.cs" />
     <Compile Include="Operations\ShareTargetOperation.cs" />
     <Compile Include="Extensions\DataPackageViewExtensions.cs" />
     <Compile Include="Extensions\NavigationViewExtensions.cs" />

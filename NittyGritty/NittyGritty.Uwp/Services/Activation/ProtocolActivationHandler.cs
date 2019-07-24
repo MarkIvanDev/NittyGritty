@@ -13,7 +13,7 @@ namespace NittyGritty.Uwp.Services.Activation
     {
         private readonly Dictionary<string, ProtocolOperation> operations;
 
-        public ProtocolActivationHandler(params ProtocolOperation[] operations) : base(ActivationStrategy.Normal)
+        private ProtocolActivationHandler(ActivationStrategy strategy, params ProtocolOperation[] operations) : base(strategy)
         {
             this.operations = new Dictionary<string, ProtocolOperation>();
             foreach (var operation in operations)
@@ -21,6 +21,11 @@ namespace NittyGritty.Uwp.Services.Activation
                 this.operations.Add(operation.Scheme, operation);
             }
             Operations = new ReadOnlyDictionary<string, ProtocolOperation>(this.operations);
+        }
+
+        public ProtocolActivationHandler(params ProtocolOperation[] operations) : this(ActivationStrategy.Normal, operations)
+        {
+            
         }
 
         public ReadOnlyDictionary<string, ProtocolOperation> Operations { get; }

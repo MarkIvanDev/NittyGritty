@@ -12,14 +12,12 @@ namespace NittyGritty.Uwp.Operations
 {
     public class FileOperation
     {
-        private readonly Func<FileActivatedEventArgs, StorageFile, Frame, Task> callback;
-
         /// <summary>
         /// Creates a FileOperation to handle the file that activated the app
         /// </summary>
         /// <param name="fileType">The file type this FileOperation can handle. Cannot be null, empty, or whitespace</param>
         /// <param name="callback"></param>
-        public FileOperation(string fileType, Func<FileActivatedEventArgs, StorageFile, Frame, Task> callback = null)
+        public FileOperation(string fileType, Type view)
         {
             if(string.IsNullOrWhiteSpace(fileType))
             {
@@ -27,14 +25,22 @@ namespace NittyGritty.Uwp.Operations
             }
 
             FileType = fileType;
-            this.callback = callback;
+            View = view;
         }
 
         public string FileType { get; }
 
-        public virtual async Task Run(FileActivatedEventArgs args, StorageFile file, Frame frame)
+        public Type View { get; }
+
+        public async Task Run(FileActivatedEventArgs args, StorageFile file, Frame frame)
         {
-            await callback?.Invoke(args, file, frame);
+            var data = await ProcessFile(file);
+            frame.Navigate(View, data);
+        }
+
+        protected virtual async Task<object> ProcessFile(StorageFile file)
+        {
+            return await file.OpenStreamForReadAsync();
         }
     }
 }

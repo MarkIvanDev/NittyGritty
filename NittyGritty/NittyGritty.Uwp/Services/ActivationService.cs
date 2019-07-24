@@ -6,6 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Activation;
+using Windows.ApplicationModel.Core;
+using Windows.UI.Core;
+using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
@@ -27,6 +30,7 @@ namespace NittyGritty.Uwp.Services
                                  Type defaultView,
                                  Func<Task> startup)
         {
+            Current = this;
             this.initialization = initialization;
             this.shell = shell;
             this.navigationContext = navigationContext;
@@ -45,22 +49,43 @@ namespace NittyGritty.Uwp.Services
         {
         }
 
+        public static ActivationService Current { get; private set; }
+
         public async Task ActivateAsync(object args)
         {
+            if(args is IActivatedEventArgs)
+            {
+                // Initialize things like registering background task before the app is loaded
+                // Only when activation has UI
+                await initialization?.Invoke();
+            }
+
             var activationHandler = handlers?.FirstOrDefault(h => h.CanHandle(args));
 
             // Default activation and ALL Normal activations (exclude Background, Hosted and Custom activations)
             if (activationHandler == null || activationHandler.Strategy == ActivationStrategy.Normal)
             {
-                // Initialize things like registering background task before the app is loaded
-                await initialization?.Invoke();
-
                 // Do not repeat app initialization when the Window already has content,
                 // just ensure that the window is active
                 if (Window.Current.Content == null)
                 {
                     // Create a Frame to act as the navigation context and navigate to the first page
                     Window.Current.Content = shell?.Value ?? new Frame();
+                }
+
+                // If there is already a view showing, then the app is a multi-view
+                if (args is IApplicationViewActivatedEventArgs viewArgs && viewArgs.CurrentlyShownApplicationViewId != 0)
+                {
+                    // Since this is a Normal Activation, the app must make the MainView available first
+                    await Window.Current.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, async () =>
+                    {
+                        int mainViewId = ApplicationView.GetApplicationViewIdForWindow(CoreApplication.MainView.CoreWindow);
+                        await ApplicationViewSwitcher.TryShowAsStandaloneAsync(
+                            mainViewId,
+                            ViewSizePreference.Default,
+                            viewArgs.CurrentlyShownApplicationViewId,
+                            ViewSizePreference.Default);
+                    });
                 }
             }
             // Share Target, File Open Picker, File Save Picker, Contact Panel activation
@@ -77,16 +102,17 @@ namespace NittyGritty.Uwp.Services
                 // Normal activations can request for a navigation context (in this case, a Frame) to be used in their HandleAsync logic
                 // Pickers can just use Window.Current.Content as Frame to have a navigation context
                 // Background activation does not show any UI so can continue without navigation context
-                // We used a Lazy object for this because the navigation context is only relevant after setting the content of the current Window with a Shell or a Frame
                 if(activationHandler.Strategy == ActivationStrategy.Normal)
                 {
+                    // We used a Lazy object for this because the navigation context is only relevant after
+                    // setting the content of the current Window with a Shell or a Frame
                     activationHandler.SetNavigationContext(navigationContext.Value);
                 }
                 await activationHandler.Handle(args);
             }
 
             // If no handler was found or a handler with a normal strategy was found but did not set a content to the navigation context, the default handler kicks in
-            if(activationHandler == null || (activationHandler.Strategy == ActivationStrategy.Normal && navigationContext.Value.Content == null))
+            if(activationHandler == null || (activationHandler.Strategy == ActivationStrategy.Normal && navigationContext.Value?.Content == null))
             {
                 defaultHandler.SetNavigationContext(navigationContext.Value);
                 await defaultHandler.Handle(args);

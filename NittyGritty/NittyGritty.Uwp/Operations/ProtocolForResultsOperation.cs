@@ -69,7 +69,7 @@ namespace NittyGritty.Uwp.Operations
 
         public virtual async Task Run(ProtocolForResultsActivatedEventArgs args)
         {
-            if (args.Uri.Scheme != Scheme && Scheme != "*")
+            if (args.Uri.Scheme != Scheme)
             {
                 return;
             }

@@ -6,13 +6,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Activation;
+using Windows.ApplicationModel.Core;
+using Windows.UI.Core;
+using Windows.UI.ViewManagement;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
 namespace NittyGritty.Uwp.Operations
 {
     public class ProtocolOperation
     {
-        private readonly Dictionary<string, Type> _viewsByPath = new Dictionary<string, Type>();
+        private readonly Dictionary<string, ProtocolPathConfiguration> _pathConfigurations = new Dictionary<string, ProtocolPathConfiguration>();
 
         /// <summary>
         /// Creates a ProtocolOperation to handle the protocol that activated the app
@@ -37,11 +41,11 @@ namespace NittyGritty.Uwp.Operations
         /// <param name="path">The path that this scheme can handle. A path can be configured with an empty string
         /// A path with a value of * will be used as fallback for unknown paths</param>
         /// <param name="view">The type of the view that the path leads to</param>
-        public void Configure(string path, Type view)
+        public void Configure(string path, Type view, Predicate<QueryString> createsNewView = null)
         {
-            lock (_viewsByPath)
+            lock (_pathConfigurations)
             {
-                if (_viewsByPath.ContainsKey(path))
+                if (_pathConfigurations.ContainsKey(path))
                 {
                     throw new ArgumentException("This path is already used: " + path);
                 }
@@ -51,21 +55,24 @@ namespace NittyGritty.Uwp.Operations
                     throw new ArgumentNullException(nameof(view), "View cannot be null");
                 }
 
-                if (_viewsByPath.Any(p => p.Value == view))
+                var configuration = new ProtocolPathConfiguration(path, view, createsNewView);
+
+                var existing = _pathConfigurations.GetValueOrDefault(path);
+                if (existing != null)
                 {
                     throw new ArgumentException(
-                        "This view is already configured with path " + _viewsByPath.First(p => p.Value == view).Key);
+                        "This configuration already exists with path " + existing.Path);
                 }
 
-                _viewsByPath.Add(
+                _pathConfigurations.Add(
                     path,
-                    view);
+                    configuration);
             }
         }
 
         public virtual async Task Run(ProtocolActivatedEventArgs args, Frame frame)
         {
-            if(args.Uri.Scheme != Scheme && Scheme != "*")
+            if(args.Uri.Scheme != Scheme)
             {
                 return;
             }
@@ -73,17 +80,19 @@ namespace NittyGritty.Uwp.Operations
             var path = args.Uri.LocalPath;
             var parameters = QueryString.Parse(args.Uri.GetComponents(UriComponents.Query, UriFormat.UriEscaped));
             var payload = new ProtocolPayload(args.Data, parameters);
-            lock (_viewsByPath)
+
+            ProtocolPathConfiguration pathConfiguration = null;
+            lock (_pathConfigurations)
             {
-                if(_viewsByPath.TryGetValue(path, out var view))
+                if(_pathConfigurations.TryGetValue(path, out var view))
                 {
-                    frame.Navigate(view, payload);
+                    pathConfiguration = view;
                 }
                 else
                 {
-                    if(_viewsByPath.TryGetValue("*", out var fallbackView))
+                    if(_pathConfigurations.TryGetValue("*", out var fallbackView))
                     {
-                        frame.Navigate(fallbackView, payload);
+                        pathConfiguration = fallbackView;
                     }
                     else
                     {
@@ -95,7 +104,39 @@ namespace NittyGritty.Uwp.Operations
                     }
                 }
             }
-            await Task.CompletedTask;
+
+            if(pathConfiguration.CreatesNewView(parameters))
+            {
+                var newView = CoreApplication.CreateNewView();
+                int newViewId = 0;
+                await newView.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                {
+                    var newViewFrame = new Frame();
+                    newViewFrame.Navigate(pathConfiguration.View, payload);
+                    Window.Current.Content = newViewFrame;
+                    // You have to activate the window in order to show it later.
+                    Window.Current.Activate();
+
+                    newViewId = ApplicationView.GetForCurrentView().Id;
+                });
+
+                if (args.CurrentlyShownApplicationViewId != 0)
+                {
+                    await ApplicationViewSwitcher.TryShowAsStandaloneAsync(
+                        newViewId,
+                        ViewSizePreference.Default,
+                        args.CurrentlyShownApplicationViewId,
+                        ViewSizePreference.Default);
+                }
+                else
+                {
+                    await ApplicationViewSwitcher.TryShowAsStandaloneAsync(newViewId);
+                }
+            }
+            else
+            {
+                frame.Navigate(pathConfiguration.View, payload);
+            }
         }
     }
 }

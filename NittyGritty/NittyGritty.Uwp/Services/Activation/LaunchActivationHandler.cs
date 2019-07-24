@@ -32,7 +32,10 @@ namespace NittyGritty.Uwp.Services.Activation
                 // Primary Tile
                 if(operations.TryGetValue(LaunchSource.Primary, out var operation))
                 {
-                    await operation.Run(args, NavigationContext);
+                    if(NavigationContext.Content == null)
+                    {
+                        await operation.Run(args, NavigationContext);
+                    }
                 }
             }
             else if (!string.IsNullOrEmpty(args.TileId) && args.TileId != "App")

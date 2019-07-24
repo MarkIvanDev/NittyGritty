@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Activation;
+using Windows.ApplicationModel.Core;
 
 namespace NittyGritty.Uwp.Services.Activation
 {
@@ -15,7 +16,7 @@ namespace NittyGritty.Uwp.Services.Activation
     {
         private readonly Dictionary<string, CommandLineOperation> operations;
 
-        public CommandLineActivationHandler(params CommandLineOperation[] operations) : base(ActivationStrategy.Normal)
+        private CommandLineActivationHandler(ActivationStrategy strategy, params CommandLineOperation[] operations) : base(strategy)
         {
             this.operations = new Dictionary<string, CommandLineOperation>();
             foreach (var operation in operations)
@@ -25,12 +26,17 @@ namespace NittyGritty.Uwp.Services.Activation
             Operations = new ReadOnlyDictionary<string, CommandLineOperation>(this.operations);
         }
 
+        public CommandLineActivationHandler(params CommandLineOperation[] operations) : this(ActivationStrategy.Normal, operations)
+        {
+
+        }
+
         public ReadOnlyDictionary<string, CommandLineOperation> Operations { get; }
 
         protected override async Task HandleInternal(CommandLineActivatedEventArgs args)
         {
             var deferral = args.Operation.GetDeferral();
-            await operations.Run(args, NavigationContext);
+            
             deferral.Complete();
         }
     }

@@ -26,6 +26,11 @@ namespace NittyGritty.Uwp.Services.Activation
     {
         public ActivationHandler(ActivationStrategy strategy)
         {
+            if(strategy == ActivationStrategy.Unknown)
+            {
+                throw new ArgumentException("Strategy cannot be Unknown", nameof(strategy));
+            }
+
             Strategy = strategy;
         }
 
@@ -62,12 +67,12 @@ namespace NittyGritty.Uwp.Services.Activation
         }
 
     }
-
+    
     public enum ActivationStrategy
     {
         Unknown = 0,
-        Normal = 2,
-        Background = 4,
-        Hosted = 8
+        Normal = 1,
+        Background = 2,
+        Hosted = 3
     }
 }
