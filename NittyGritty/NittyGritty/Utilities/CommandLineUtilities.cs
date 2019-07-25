@@ -8,10 +8,10 @@ namespace NittyGritty.Utilities
 {
     public static class CommandLineUtilities
     {
-        public static (string command, Dictionary<string, ReadOnlyCollection<string>> parameters) Parse(string cmdArgs = null)
+        public static (string command, QueryString parameters) Parse(string cmdArgs = null)
         {
             var command = string.Empty;
-            var parameters = new Dictionary<string, ReadOnlyCollection<string>>();
+            var parameters = new QueryString();
 
             if(cmdArgs == null)
             {
@@ -24,21 +24,38 @@ namespace NittyGritty.Utilities
             {
                 for (int i = 0; i < args.Length; i++)
                 {
-                    var part = args[i].Trim();
-                    if(i == 0 && !args[i].StartsWith("-") && !args[i].StartsWith("/"))
+                    var part = args[i];
+                    if(i == 0 && !part.StartsWith("-") && !part.StartsWith("/"))
                     {
                         if(part.Length > 0)
                         {
                             command = part;
                         }
                     }
-                    else if (args[i].StartsWith("-") || args[i].StartsWith("/"))
+                    else if (part.StartsWith("-") || part.StartsWith("/"))
                     {
                         var (key, values) = ParseData(args, ref i);
                         if (key != null)
                         {
-                            parameters[key] = values;
+                            // each subsequent command replaces the values by the same previous command
+                            // parameters.RemoveAll(key);
+                            if (values.Count == 0)
+                            {
+                                parameters.Add(key);
+                            }
+                            else
+                            {
+                                foreach (var value in values)
+                                {
+                                    parameters.Add(key, value);
+                                }
+                            }
                         }
+                    }
+                    else
+                    {
+                        // all parts that do not start with - or / will be added to the key string.Empty
+                        parameters.Add(string.Empty, part);
                     }
                 }
             }
@@ -51,17 +68,18 @@ namespace NittyGritty.Utilities
             var values = new List<string>();
             for (int i = index; i < args.Length; i++)
             {
+                var part = args[i];
                 string value = null;
 
-                if (args[i].StartsWith("-") || args[i].StartsWith("/"))
+                if (part.StartsWith("-") || part.StartsWith("/"))
                 {   
                     // we are at the start of the segment
                     if(i == index)
                     {
                         // the value is at the end of the part after the :
-                        if(args[i].Contains(":"))
+                        if(part.Contains(":"))
                         {
-                            string argument = args[index];
+                            string argument = part;
                             int endIndex = argument.IndexOf(':');
                             key = argument.Substring(1, endIndex - 1);   // trim the '/' and the ':'
                             int valueStart = endIndex + 1;
@@ -72,10 +90,10 @@ namespace NittyGritty.Utilities
                                 values.Add(value);
                             }
                         }
-                        // the value is the part of this segment
+                        // the value is not a part of this segment
                         else
                         {
-                            key = args[i].Substring(1);     // trim the '/' and the ':'
+                            key = part.Substring(1);     // trim the '/' and the ':'
                         }
                     }
                     // we have reached the next segment
@@ -85,9 +103,10 @@ namespace NittyGritty.Utilities
                         break;
                     }
                 }
+                // all parts that does not start with - or / will be treated as value for the current key
                 else
                 {
-                    if(args[i].Length > 0)
+                    if(part.Length > 0)
                     {
                         values.Add(args[i]);
                     }

@@ -1,5 +1,7 @@
-﻿using System;
+﻿using NittyGritty.Models;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -40,6 +42,14 @@ namespace NittyGritty.Sample.Uwp
         protected override void OnLaunched(LaunchActivatedEventArgs e)
         {
             Frame rootFrame = Window.Current.Content as Frame;
+
+            var query = new QueryString();
+            query.Add("keyWithoutValue");
+            query.Add("keyWithOneValue", "value");
+            query.Add("keyWithNullValue", null);
+            query.Add("keyWithManyValues", "value1");
+            query.Add("keyWithManyValues", "value2");
+            Debug.WriteLine(query.ToString());
 
             // Do not repeat app initialization when the Window already has content,
             // just ensure that the window is active

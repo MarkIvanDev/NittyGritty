@@ -1,23 +1,24 @@
 ﻿using NittyGritty.Models;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Text;
 
 namespace NittyGritty.Views.Payloads
 {
     public class CommandLinePayload
     {
-        public CommandLinePayload(string command, string currentDirectory, QueryString parameter)
+        public CommandLinePayload(string command, string currentDirectory, QueryString parameters)
         {
             Command = command;
             CurrentDirectory = currentDirectory;
-            Parameter = parameter;
+            Parameters = parameters;
         }
 
         public string Command { get; }
 
         public string CurrentDirectory { get; }
 
-        public QueryString Parameter { get; }
+        public QueryString Parameters { get; }
     }
 }

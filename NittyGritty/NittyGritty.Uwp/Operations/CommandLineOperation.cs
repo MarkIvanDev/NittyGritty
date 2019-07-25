@@ -1,21 +1,26 @@
 ﻿using NittyGritty.Models;
+using NittyGritty.Utilities;
+using NittyGritty.Views.Payloads;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Activation;
+using Windows.ApplicationModel.Core;
+using Windows.UI.ViewManagement;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
 namespace NittyGritty.Uwp.Operations
 {
     public class CommandLineOperation
     {
-        private readonly Dictionary<string, PathConfiguration> _pathConfigurations;
+        private readonly Dictionary<string, KeyViewConfiguration> configurations;
 
         public CommandLineOperation(string alias)
         {
-            _pathConfigurations = new Dictionary<string, PathConfiguration>();
+            configurations = new Dictionary<string, KeyViewConfiguration>();
 
             if (string.IsNullOrWhiteSpace(alias))
             {
@@ -35,14 +40,14 @@ namespace NittyGritty.Uwp.Operations
         /// <param name="view">The type of the view that the path leads to</param>
         public void Configure(string command, Type view, Predicate<QueryString> createsNewView = null)
         {
-            lock (_pathConfigurations)
+            lock (configurations)
             {
                 if (command.Trim().Length == 0 && !command.Equals(string.Empty))
                 {
                     throw new ArgumentException("Command cannot consist of whitespace only");
                 }
 
-                if (_pathConfigurations.ContainsKey(command))
+                if (configurations.ContainsKey(command))
                 {
                     throw new ArgumentException("This command is already used: " + command);
                 }
@@ -52,9 +57,9 @@ namespace NittyGritty.Uwp.Operations
                     throw new ArgumentNullException(nameof(view), "View cannot be null");
                 }
 
-                var configuration = new PathConfiguration(command, view, createsNewView);
+                var configuration = new KeyViewConfiguration(command, view, createsNewView);
 
-                _pathConfigurations.Add(
+                configurations.Add(
                     command,
                     configuration);
             }
@@ -65,31 +70,34 @@ namespace NittyGritty.Uwp.Operations
             var deferral = args.Operation.GetDeferral();
 
             var currentDirectory = args.Operation.CurrentDirectoryPath;
+            var (command, parameters) = CommandLineUtilities.Parse(args.Operation.Arguments);
+            var payload = new CommandLinePayload(command, currentDirectory, parameters);
 
-
-            PathConfiguration pathConfiguration = null;
-            lock (_pathConfigurations)
+            KeyViewConfiguration configuration = null;
+            lock (configurations)
             {
-                if (_pathConfigurations.TryGetValue(path, out var view))
+                if (configurations.TryGetValue(command, out var view))
                 {
-                    pathConfiguration = view;
+                    configuration = view;
                 }
                 else
                 {
-                    if (_pathConfigurations.TryGetValue("*", out var fallbackView))
+                    if (configurations.TryGetValue("*", out var fallbackView))
                     {
-                        pathConfiguration = fallbackView;
+                        configuration = fallbackView;
                     }
                     else
                     {
                         throw new ArgumentException(
                             string.Format(
-                                "No such path: {0}. Did you forget to call Protocol.Configure?",
-                                path),
-                            nameof(path));
+                                "No such command: {0}. Did you forget to call Configure?",
+                                command),
+                            nameof(command));
                     }
                 }
             }
+            int currentApplicationViewId = ApplicationView.GetApplicationViewIdForWindow(CoreApplication.GetCurrentView().CoreWindow);
+            await configuration.Run(parameters, payload, currentApplicationViewId, frame);
 
             deferral.Complete();
         }

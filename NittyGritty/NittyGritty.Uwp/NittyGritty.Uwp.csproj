@@ -143,10 +143,11 @@
     <Compile Include="Converters\ValueWhenConverter.cs" />
     <Compile Include="Operations\AppointmentOperation.cs" />
     <Compile Include="Operations\CommandLineOperation.cs" />
+    <Compile Include="Operations\ContactPanelOperation.cs" />
     <Compile Include="Operations\LaunchOperation.cs" />
     <Compile Include="Operations\ProtocolOperation.cs" />
     <Compile Include="Operations\ProtocolForResultsOperation.cs" />
-    <Compile Include="Operations\PathConfiguration.cs" />
+    <Compile Include="Operations\KeyViewConfiguration.cs" />
     <Compile Include="Operations\ShareTargetOperation.cs" />
     <Compile Include="Extensions\DataPackageViewExtensions.cs" />
     <Compile Include="Extensions\NavigationViewExtensions.cs" />
@@ -158,6 +159,7 @@
     <Compile Include="Interactivity\Actions\ScrollToElementAction.cs" />
     <Compile Include="Interactivity\Actions\SelectAllAction.cs" />
     <Compile Include="Interactivity\Behaviors\MultiSelectBehavior.cs" />
+    <Compile Include="Platform\Contacts.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Selectors\ShellItemTemplateSelector.cs" />
     <Compile Include="Services\ActivationService.cs" />

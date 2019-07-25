@@ -17,7 +17,7 @@ namespace NittyGritty.Uwp.Operations
 {
     public class ProtocolOperation
     {
-        private readonly Dictionary<string, PathConfiguration> _pathConfigurations;
+        private readonly Dictionary<string, KeyViewConfiguration> configurations;
 
         /// <summary>
         /// Creates a ProtocolOperation to handle the protocol that activated the app
@@ -26,7 +26,7 @@ namespace NittyGritty.Uwp.Operations
         /// Cannot be null or empty or whitespace</param>
         public ProtocolOperation(string scheme)
         {
-            _pathConfigurations = new Dictionary<string, PathConfiguration>();
+            configurations = new Dictionary<string, KeyViewConfiguration>();
 
             if (string.IsNullOrWhiteSpace(scheme))
             {
@@ -46,14 +46,14 @@ namespace NittyGritty.Uwp.Operations
         /// <param name="view">The type of the view that the path leads to</param>
         public void Configure(string path, Type view, Predicate<QueryString> createsNewView = null)
         {
-            lock (_pathConfigurations)
+            lock (configurations)
             {
                 if (path.Trim().Length == 0 && !path.Equals(string.Empty))
                 {
                     throw new ArgumentException("Path cannot consist of whitespace only");
                 }
 
-                if (_pathConfigurations.ContainsKey(path))
+                if (configurations.ContainsKey(path))
                 {
                     throw new ArgumentException("This path is already used: " + path);
                 }
@@ -63,9 +63,9 @@ namespace NittyGritty.Uwp.Operations
                     throw new ArgumentNullException(nameof(view), "View cannot be null");
                 }
 
-                var configuration = new PathConfiguration(path, view, createsNewView);
+                var configuration = new KeyViewConfiguration(path, view, createsNewView);
 
-                _pathConfigurations.Add(
+                configurations.Add(
                     path,
                     configuration);
             }
@@ -82,62 +82,31 @@ namespace NittyGritty.Uwp.Operations
             var parameters = QueryString.Parse(args.Uri.GetComponents(UriComponents.Query, UriFormat.UriEscaped));
             var payload = new ProtocolPayload(path, args.Data, parameters);
 
-            PathConfiguration pathConfiguration = null;
-            lock (_pathConfigurations)
+            KeyViewConfiguration configuration = null;
+            lock (configurations)
             {
-                if (_pathConfigurations.TryGetValue(path, out var view))
+                if (configurations.TryGetValue(path, out var view))
                 {
-                    pathConfiguration = view;
+                    configuration = view;
                 }
                 else
                 {
-                    if(_pathConfigurations.TryGetValue("*", out var fallbackView))
+                    if(configurations.TryGetValue("*", out var fallbackView))
                     {
-                        pathConfiguration = fallbackView;
+                        configuration = fallbackView;
                     }
                     else
                     {
                         throw new ArgumentException(
                             string.Format(
-                                "No such path: {0}. Did you forget to call Protocol.Configure?",
+                                "No configuration for path: {0}. Did you forget to call Protocol.Configure?",
                                 path),
                             nameof(path));
                     }
                 }
             }
 
-            if (pathConfiguration.CreatesNewView(parameters))
-            {
-                var newView = CoreApplication.CreateNewView();
-                int newViewId = 0;
-                await newView.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
-                {
-                    var newViewFrame = new Frame();
-                    newViewFrame.Navigate(pathConfiguration.View, payload);
-                    Window.Current.Content = newViewFrame;
-                    // You have to activate the window in order to show it later.
-                    Window.Current.Activate();
-
-                    newViewId = ApplicationView.GetForCurrentView().Id;
-                });
-
-                if (args.CurrentlyShownApplicationViewId != 0)
-                {
-                    await ApplicationViewSwitcher.TryShowAsStandaloneAsync(
-                        newViewId,
-                        ViewSizePreference.Default,
-                        args.CurrentlyShownApplicationViewId,
-                        ViewSizePreference.Default);
-                }
-                else
-                {
-                    await ApplicationViewSwitcher.TryShowAsStandaloneAsync(newViewId);
-                }
-            }
-            else
-            {
-                frame.Navigate(pathConfiguration.View, payload);
-            }
+            await configuration.Run(parameters, payload, args.CurrentlyShownApplicationViewId, frame);
         }
     }
 }

@@ -17,7 +17,6 @@ namespace NittyGritty.Uwp.Services.Activation
 {
     public class FileSavePickerActivationHandler : ActivationHandler<FileSavePickerActivatedEventArgs>
     {
-        private FileSavePickerUI fileSavePickerUI;
         private IFileSavePicker fileSavePickerContext;
 
         public FileSavePickerActivationHandler(Type savePickerView) : base(ActivationStrategy.Hosted)
@@ -29,24 +28,17 @@ namespace NittyGritty.Uwp.Services.Activation
 
         protected override async Task HandleInternal(FileSavePickerActivatedEventArgs args)
         {
-            if(fileSavePickerUI != null)
-            {
-                fileSavePickerUI.TargetFileRequested -= OnTargetFileRequested;
-            }
-
-            fileSavePickerUI = args.FileSavePickerUI;
-
             // Since this is marked as a Hosted activation, it is assumed that the current window's content has been initialized with a frame by the ActivationService
             if (Window.Current.Content is Frame frame)
             {
-                var settings = new FilePickerSettings(false, fileSavePickerUI.AllowedFileTypes);
+                var settings = new FilePickerSettings(false, args.FileSavePickerUI.AllowedFileTypes);
                 frame.Navigate(SavePickerView, settings);
                 if (frame.Content is Page page)
                 {
                     fileSavePickerContext = page.DataContext as IFileSavePicker;
                     if (fileSavePickerContext != null)
                     {
-                        fileSavePickerUI.TargetFileRequested += OnTargetFileRequested;
+                        args.FileSavePickerUI.TargetFileRequested += OnTargetFileRequested;
                     }
                 }
             }
@@ -63,10 +55,9 @@ namespace NittyGritty.Uwp.Services.Activation
                 try
                 {
                     var folder = await StorageFolder.GetFolderFromPathAsync(fileSavePickerContext.GetCurrentPath());
-                    var file = await folder.CreateFileAsync(fileSavePickerUI.FileName, CreationCollisionOption.GenerateUniqueName);
+                    var file = await folder.CreateFileAsync(sender.FileName, CreationCollisionOption.GenerateUniqueName);
 
                     args.Request.TargetFile = file;
-                    fileSavePickerUI.TargetFileRequested -= OnTargetFileRequested;
                     deferral.Complete();
                 }
                 catch (ArgumentException)

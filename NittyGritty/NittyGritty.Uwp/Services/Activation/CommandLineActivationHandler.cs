@@ -16,28 +16,16 @@ namespace NittyGritty.Uwp.Services.Activation
     {
         private readonly Dictionary<string, CommandLineOperation> operations;
 
-        private CommandLineActivationHandler(ActivationStrategy strategy, params CommandLineOperation[] operations) : base(strategy)
+        public CommandLineActivationHandler(CommandLineOperation operation) : base(ActivationStrategy.Normal)
         {
-            this.operations = new Dictionary<string, CommandLineOperation>();
-            foreach (var operation in operations)
-            {
-                this.operations.Add(operation.Command, operation);
-            }
-            Operations = new ReadOnlyDictionary<string, CommandLineOperation>(this.operations);
+            Operation = operation ?? throw new ArgumentNullException(nameof(operation), "Operation cannot be null");
         }
 
-        public CommandLineActivationHandler(params CommandLineOperation[] operations) : this(ActivationStrategy.Normal, operations)
-        {
-
-        }
-
-        public ReadOnlyDictionary<string, CommandLineOperation> Operations { get; }
+        public CommandLineOperation Operation { get; }
 
         protected override async Task HandleInternal(CommandLineActivatedEventArgs args)
         {
-            var deferral = args.Operation.GetDeferral();
-            
-            deferral.Complete();
+            await Operation.Run(args, NavigationContext);
         }
     }
 }
