@@ -1,8 +1,4 @@
-﻿using NittyGritty.Models;
-using NittyGritty.Platform;
-using NittyGritty.Platform.Contacts;
-using NittyGritty.Uwp.Extensions;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -54,19 +50,52 @@ namespace NittyGritty.Uwp.Platform
             return list;
         }
 
-        public static async Task<Contact> CreateContact(string providerId, string listName, NGContact contact)
+        public static async Task<Contact> CreateContact(Contact contact, string listName)
         {
             try
             {
-                var winContact = contact.ToContact();
                 var contactList = await FindOrRegisterContactList(listName);
-                await contactList.SaveContactAsync(winContact);
+                var winContact = await contactList.GetContactFromRemoteIdAsync(contact.RemoteId);
+                if(winContact != null)
+                {
+                    return winContact;
+                }
+                await contactList.SaveContactAsync(contact);
 
+                return winContact;
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+        public static async Task DeleteContact(Contact contact, string listName)
+        {
+            try
+            {
+                var contactList = await FindOrRegisterContactList(listName);
+                var winContact = await contactList.GetContactFromRemoteIdAsync(contact.RemoteId);
+                if(winContact != null)
+                {
+                    await contactList.DeleteContactAsync(winContact);
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public static async Task AnnotateContact(Contact contact, string providerId)
+        {
+            try
+            {
                 // Annotate this contact with a remote ID, which you can then retrieve when the Contact Panel is activated.
                 var contactAnnotation = new ContactAnnotation
                 {
-                    ContactId = winContact.Id,
-                    RemoteId = winContact.RemoteId,
+                    ContactId = contact.Id,
+                    RemoteId = contact.RemoteId,
                     SupportedOperations = ContactAnnotationOperations.ContactProfile
                 };
 
@@ -76,12 +105,10 @@ namespace NittyGritty.Uwp.Platform
 
                 var annotationList = await FindOrRegisterAnnotationList();
                 await annotationList.TrySaveAnnotationAsync(contactAnnotation);
-
-                return winContact;
             }
             catch (Exception)
             {
-                return null;
+                throw;
             }
         }
 
@@ -104,10 +131,16 @@ namespace NittyGritty.Uwp.Platform
             }
 
             // Pin the contact to the taskbar.
-            if (!await pinnedContactManager.RequestPinContactAsync(contact, PinnedContactSurface.Taskbar))
+            await pinnedContactManager.RequestPinContactAsync(contact, PinnedContactSurface.Taskbar);
+        }
+
+        public static async Task UnpinFromTaskbar(Contact contact)
+        {
+            var pinnedContactManager = PinnedContactManager.GetDefault();
+
+            if (pinnedContactManager.IsContactPinned(contact, PinnedContactSurface.Taskbar))
             {
-                // Contact was not pinned.
-                return;
+                await pinnedContactManager.RequestUnpinContactAsync(contact, PinnedContactSurface.Taskbar);
             }
         }
 
@@ -116,7 +149,9 @@ namespace NittyGritty.Uwp.Platform
             try
             {
                 var store = await ContactManager.RequestStoreAsync(ContactStoreAccessType.AppContactsReadWrite);
-                return await store.GetContactAsync(id);
+                var winContact = await store.GetContactAsync(id);
+                winContact.RemoteId = await Contacts.TryGetRemoteId(winContact);
+                return winContact;
             }
             catch (Exception)
             {

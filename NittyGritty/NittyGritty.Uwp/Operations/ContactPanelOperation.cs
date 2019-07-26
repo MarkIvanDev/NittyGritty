@@ -1,4 +1,5 @@
-﻿using NittyGritty.Uwp.Platform;
+﻿using NittyGritty.Uwp.Extensions;
+using NittyGritty.Uwp.Platform;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,7 +31,9 @@ namespace NittyGritty.Uwp.Operations
 
         public virtual async Task<object> GetPayload(ContactPanelActivatedEventArgs args)
         {
-            return await Contacts.TryGetRemoteId(args.Contact.Id);
+            var contact = await Contacts.TryGetContact(args.Contact.Id);
+            contact.RemoteId = await Contacts.TryGetRemoteId(contact);
+            return contact?.ToNGContact();
         }
     }
 }

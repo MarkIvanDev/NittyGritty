@@ -26,14 +26,13 @@ namespace NittyGritty.Uwp.Operations
         /// Cannot be null or empty or whitespace</param>
         public ProtocolOperation(string scheme)
         {
-            configurations = new Dictionary<string, KeyViewConfiguration>();
-
             if (string.IsNullOrWhiteSpace(scheme))
             {
                 throw new ArgumentException("Scheme cannot be null, empty, or whitespace.", nameof(scheme));
             }
 
             Scheme = scheme;
+            configurations = new Dictionary<string, KeyViewConfiguration>();
         }
 
         public string Scheme { get; }

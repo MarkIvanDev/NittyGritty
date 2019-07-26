@@ -132,7 +132,7 @@ namespace NittyGritty.Validation
 
         public override void OnLoading()
         {
-            ValidationManager = new ValidationManager<Sample>(this);
+            ValidationManager = new ValidationManager<Sample>();
             ValidationManager
                 .ConfigureProperty(c => c.DateTime);
             
@@ -146,7 +146,7 @@ namespace NittyGritty.Validation
 
     public class SampleValidationManager : ValidationManager<Sample>
     {
-        public SampleValidationManager(Sample context) : base(context)
+        public SampleValidationManager()
         {
             
         }

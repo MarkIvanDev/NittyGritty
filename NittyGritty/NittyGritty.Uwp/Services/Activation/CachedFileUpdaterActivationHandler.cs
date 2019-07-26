@@ -12,36 +12,34 @@ namespace NittyGritty.Uwp.Services.Activation
 {
     internal class CachedFileUpdaterActivationHandler : ActivationHandler<CachedFileUpdaterActivatedEventArgs>
     {
-        private CachedFileUpdaterUI cachedFileUpdaterUI;
         private FileUpdateRequest fileUpdateRequest;
         private FileUpdateRequestDeferral fileUpdateRequestDeferral;
 
-        public CachedFileUpdaterActivationHandler()
+        public CachedFileUpdaterActivationHandler() : base(ActivationStrategy.Unknown)
         {
-            Strategy = ActivationStrategy.Other;
+            
         }
 
-        public override async Task HandleInternal(CachedFileUpdaterActivatedEventArgs args)
+        protected override async Task HandleInternal(CachedFileUpdaterActivatedEventArgs args)
         {
-            cachedFileUpdaterUI = args.CachedFileUpdaterUI;
-            
-            if(cachedFileUpdaterUI.UIStatus == UIStatus.Visible)
+            if(args.CachedFileUpdaterUI.UIStatus == UIStatus.Visible)
             {
                 // Normal Activation
-                fileUpdateRequest = cachedFileUpdaterUI.UpdateRequest;
-                fileUpdateRequestDeferral = cachedFileUpdaterUI.GetDeferral();
+                fileUpdateRequest = args.CachedFileUpdaterUI.UpdateRequest;
+                fileUpdateRequestDeferral = args.CachedFileUpdaterUI.GetDeferral();
             }
             else
             {
                 // Background
-                cachedFileUpdaterUI.FileUpdateRequested += CachedFileUpdaterUI_FileUpdateRequested;
-                cachedFileUpdaterUI.UIRequested += CachedFileUpdaterUI_UIRequested;
+                args.CachedFileUpdaterUI.FileUpdateRequested += OnFileUpdateRequested;
+                args.CachedFileUpdaterUI.UIRequested += OnUIRequested;
             }
+            await Task.CompletedTask;
         }
 
-        private void CachedFileUpdaterUI_FileUpdateRequested(CachedFileUpdaterUI sender, FileUpdateRequestedEventArgs args)
+        private void OnFileUpdateRequested(CachedFileUpdaterUI sender, FileUpdateRequestedEventArgs args)
         {
-            switch (cachedFileUpdaterUI.UIStatus)
+            switch (sender.UIStatus)
             {
                 case UIStatus.Hidden:
                     fileUpdateRequest = args.Request;
@@ -61,7 +59,7 @@ namespace NittyGritty.Uwp.Services.Activation
             }
         }
 
-        private async void CachedFileUpdaterUI_UIRequested(CachedFileUpdaterUI sender, object args)
+        private async void OnUIRequested(CachedFileUpdaterUI sender, object args)
         {
             // The event handler may be invoked on a background thread, so use the Dispatcher to run the UI-related code on the UI thread.
             await Window.Current.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
@@ -70,17 +68,5 @@ namespace NittyGritty.Uwp.Services.Activation
             });
         }
 
-        public override bool CanHandleInternal(CachedFileUpdaterActivatedEventArgs args)
-        {
-            if(args.CachedFileUpdaterUI.UIStatus == UIStatus.Visible)
-            {
-                Strategy = ActivationStrategy.Hosted;
-            }
-            else
-            {
-                Strategy = ActivationStrategy.Background;
-            }
-            return base.CanHandleInternal(args);
-        }
     }
 }

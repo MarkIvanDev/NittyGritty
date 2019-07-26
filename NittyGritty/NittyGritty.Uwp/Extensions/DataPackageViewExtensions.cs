@@ -1,5 +1,4 @@
-﻿using NittyGritty.Views;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -7,9 +6,9 @@ using System.Text;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.Storage;
-using Windows.Storage.Streams;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Collections.ObjectModel;
+using NittyGritty.Views.Payloads;
 
 namespace NittyGritty.Uwp.Extensions
 {

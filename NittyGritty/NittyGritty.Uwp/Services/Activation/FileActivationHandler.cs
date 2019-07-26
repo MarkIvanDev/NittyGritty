@@ -42,6 +42,10 @@ namespace NittyGritty.Uwp.Services.Activation
                         // We should not reach this part. Please check if you have added all the file types that this app can handle
                     }
                 }
+                else if (file is StorageFolder folder)
+                {
+                    // TODO: fetch files in folder and operate on them
+                }
             }
         }
     }

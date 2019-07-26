@@ -1,6 +1,7 @@
 ﻿using NittyGritty.Models;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Text;
 
 namespace NittyGritty.Views.Payloads
@@ -15,13 +16,13 @@ namespace NittyGritty.Views.Payloads
         public ProtocolPayload(string path, IDictionary<string, object> data, QueryString parameters)
         {
             Path = path;
-            Data = data;
+            Data = new ReadOnlyDictionary<string, object>(data);
             Parameters = parameters;
         }
 
         public string Path { get; }
 
-        public IDictionary<string, object> Data { get; }
+        public ReadOnlyDictionary<string, object> Data { get; }
 
         public QueryString Parameters { get; }
     }

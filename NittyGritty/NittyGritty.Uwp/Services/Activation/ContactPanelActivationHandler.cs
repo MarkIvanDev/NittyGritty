@@ -49,7 +49,8 @@ namespace NittyGritty.Uwp.Services.Activation
                         };
 
                         await Launcher.LaunchUriAsync(
-                            ProtocolUtilities.Create(ContactPanelOperation.Scheme, ContactPanelOperation.Path, new QueryString() { { "id", await Contacts.TryGetRemoteId(args.Contact.Id) } }),
+                            ProtocolUtilities.Create(ContactPanelOperation.Scheme, ContactPanelOperation.Path,
+                                new QueryString() { { "id", await Contacts.TryGetRemoteId(args.Contact.Id) } }),
                             options);
                         contactPanel.ClosePanel();
                     });

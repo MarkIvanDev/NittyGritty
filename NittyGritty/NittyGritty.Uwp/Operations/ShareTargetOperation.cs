@@ -1,7 +1,5 @@
-﻿using NittyGritty.Utilities;
-using NittyGritty.Uwp.Extensions;
-using NittyGritty.Views;
-using NittyGritty.Views.Events;
+﻿using NittyGritty.Uwp.Extensions;
+using NittyGritty.Views.Payloads;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -10,7 +8,6 @@ using System.Text;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Activation;
 using Windows.ApplicationModel.DataTransfer;
-using Windows.ApplicationModel.DataTransfer.ShareTarget;
 using Windows.Foundation.Metadata;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
