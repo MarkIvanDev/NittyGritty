@@ -141,6 +141,7 @@
     <Compile Include="Converters\StringVisibilityConverter.cs" />
     <Compile Include="Converters\UppercaseConverter.cs" />
     <Compile Include="Converters\ValueWhenConverter.cs" />
+    <Compile Include="Extensions\NGContactExtensions.cs" />
     <Compile Include="Operations\AppointmentOperation.cs" />
     <Compile Include="Operations\CommandLineOperation.cs" />
     <Compile Include="Operations\ContactPanelOperation.cs" />
@@ -160,6 +161,7 @@
     <Compile Include="Interactivity\Actions\SelectAllAction.cs" />
     <Compile Include="Interactivity\Behaviors\MultiSelectBehavior.cs" />
     <Compile Include="Platform\Contacts.cs" />
+    <Compile Include="Platform\Files.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Selectors\ShellItemTemplateSelector.cs" />
     <Compile Include="Services\ActivationService.cs" />
@@ -197,6 +199,10 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <ProjectReference Include="..\NittyGritty.Platform\NittyGritty.Platform.csproj">
+      <Project>{9F764D3A-893F-4B2D-A560-2E03419763DD}</Project>
+      <Name>NittyGritty.Platform</Name>
+    </ProjectReference>
     <ProjectReference Include="..\NittyGritty\NittyGritty.csproj">
       <Project>{E9EFE766-9D0A-4304-9920-5D0D6E0D2DC5}</Project>
       <Name>NittyGritty</Name>

@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Events\" />
+    <Folder Include="Payloads\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\NittyGritty\NittyGritty.csproj" />
+  </ItemGroup>
+
+</Project>

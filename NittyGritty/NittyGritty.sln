@@ -13,6 +13,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sample", "Sample", "{45AB88
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NittyGritty.Sample.Uwp", "Sample\NittyGritty.Sample.Uwp\NittyGritty.Sample.Uwp.csproj", "{333DC346-F66A-4C91-A95E-7C2618724B7C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NittyGritty.Platform", "NittyGritty.Platform\NittyGritty.Platform.csproj", "{9F764D3A-893F-4B2D-A560-2E03419763DD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -113,6 +115,26 @@ Global
 		{333DC346-F66A-4C91-A95E-7C2618724B7C}.Release|x86.ActiveCfg = Release|x86
 		{333DC346-F66A-4C91-A95E-7C2618724B7C}.Release|x86.Build.0 = Release|x86
 		{333DC346-F66A-4C91-A95E-7C2618724B7C}.Release|x86.Deploy.0 = Release|x86
+		{9F764D3A-893F-4B2D-A560-2E03419763DD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9F764D3A-893F-4B2D-A560-2E03419763DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9F764D3A-893F-4B2D-A560-2E03419763DD}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{9F764D3A-893F-4B2D-A560-2E03419763DD}.Debug|ARM.Build.0 = Debug|Any CPU
+		{9F764D3A-893F-4B2D-A560-2E03419763DD}.Debug|ARM64.ActiveCfg = Debug|Any CPU
+		{9F764D3A-893F-4B2D-A560-2E03419763DD}.Debug|ARM64.Build.0 = Debug|Any CPU
+		{9F764D3A-893F-4B2D-A560-2E03419763DD}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{9F764D3A-893F-4B2D-A560-2E03419763DD}.Debug|x64.Build.0 = Debug|Any CPU
+		{9F764D3A-893F-4B2D-A560-2E03419763DD}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{9F764D3A-893F-4B2D-A560-2E03419763DD}.Debug|x86.Build.0 = Debug|Any CPU
+		{9F764D3A-893F-4B2D-A560-2E03419763DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9F764D3A-893F-4B2D-A560-2E03419763DD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9F764D3A-893F-4B2D-A560-2E03419763DD}.Release|ARM.ActiveCfg = Release|Any CPU
+		{9F764D3A-893F-4B2D-A560-2E03419763DD}.Release|ARM.Build.0 = Release|Any CPU
+		{9F764D3A-893F-4B2D-A560-2E03419763DD}.Release|ARM64.ActiveCfg = Release|Any CPU
+		{9F764D3A-893F-4B2D-A560-2E03419763DD}.Release|ARM64.Build.0 = Release|Any CPU
+		{9F764D3A-893F-4B2D-A560-2E03419763DD}.Release|x64.ActiveCfg = Release|Any CPU
+		{9F764D3A-893F-4B2D-A560-2E03419763DD}.Release|x64.Build.0 = Release|Any CPU
+		{9F764D3A-893F-4B2D-A560-2E03419763DD}.Release|x86.ActiveCfg = Release|Any CPU
+		{9F764D3A-893F-4B2D-A560-2E03419763DD}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

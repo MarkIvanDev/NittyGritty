@@ -28,37 +28,9 @@ namespace NittyGritty.Uwp.Operations
 
         public string Path { get; }
 
-        public async Task<string> GetRemoteId(string id)
-        {
-            try
-            {
-                var contact = await Contacts.TryGetContact(id);
-                var remoteId = await Contacts.TryGetRemoteId(contact);
-                return remoteId;
-            }
-            catch (Exception)
-            {
-                await Window.Current.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, async () =>
-                {
-                    var dialog = new MessageDialog("This app requires access to your contacts in order to show information about this contact.");
-                    dialog.Commands.Add(new UICommand(
-                        "Allow Access",
-                        async (label) => await Contacts.RequestAccess()));
-                    dialog.Commands.Add(new UICommand(
-                        "Cancel"));
-
-                    dialog.DefaultCommandIndex = 0;
-                    dialog.CancelCommandIndex = 1;
-                    
-                    await dialog.ShowAsync();
-                });
-                return null;
-            }
-        }
-
         public virtual async Task<object> GetPayload(ContactPanelActivatedEventArgs args)
         {
-            return await GetRemoteId(args.Contact.Id);
+            return await Contacts.TryGetRemoteId(args.Contact.Id);
         }
     }
 }
