@@ -20,7 +20,7 @@ namespace NittyGritty.Uwp.Services.Activation
             this.operations = new Dictionary<string, FileOperation>();
             foreach (var operation in operations)
             {
-                this.operations.Add(operation.FileType, operation);
+                this.operations.Add(operation.Verb, operation);
             }
             Operations = new ReadOnlyDictionary<string, FileOperation>(this.operations);
         }
@@ -29,23 +29,13 @@ namespace NittyGritty.Uwp.Services.Activation
 
         protected override async Task HandleInternal(FileActivatedEventArgs args)
         {
-            foreach (var file in args.Files)
+            if (operations.TryGetValue(args.Verb, out var operation))
             {
-                if(file is StorageFile storageFile)
-                {
-                    if(operations.TryGetValue(storageFile.FileType, out var operation))
-                    {
-                        await operation.Run(args, storageFile, NavigationContext);
-                    }
-                    else
-                    {
-                        // We should not reach this part. Please check if you have added all the file types that this app can handle
-                    }
-                }
-                else if (file is StorageFolder folder)
-                {
-                    // TODO: fetch files in folder and operate on them
-                }
+                await operation.Run(args, NavigationContext);
+            }
+            else
+            {
+                // We should not reach this part. Please check if you have registered all of the Verbs this app handles
             }
         }
     }

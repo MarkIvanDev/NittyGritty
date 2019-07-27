@@ -39,7 +39,7 @@ namespace NittyGritty.Uwp.Services
             this.startup = startup;
         }
 
-        public ActivationService(INittyGrittyApp app) : this(
+        public ActivationService(INGApp app) : this(
             app.Initialization,
             new Lazy<UIElement>(app.CreateShell),
             new Lazy<Frame>(app.GetNavigationContext),

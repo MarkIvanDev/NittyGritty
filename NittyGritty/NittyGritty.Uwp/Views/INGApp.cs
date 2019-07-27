@@ -9,7 +9,7 @@ using Windows.UI.Xaml.Controls;
 
 namespace NittyGritty.Uwp.Views
 {
-    public interface INittyGrittyApp
+    public interface INGApp
     {
         UIElement CreateShell();
 

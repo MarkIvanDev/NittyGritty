@@ -12,9 +12,9 @@ using Windows.UI.Xaml.Controls;
 
 namespace NittyGritty.Uwp.Views
 {
-    public abstract class NittyGrittyApp : Application, INittyGrittyApp
+    public abstract class NGApp : Application, INGApp
     {
-        public NittyGrittyApp()
+        public NGApp()
         {
             Current = this;
 
@@ -23,7 +23,7 @@ namespace NittyGritty.Uwp.Views
             _activationService = new Lazy<ActivationService>(CreateActivationService);
         }
 
-        public static new NittyGrittyApp Current { get; private set; }
+        public static new NGApp Current { get; private set; }
 
         private async void App_Suspending(object sender, SuspendingEventArgs e)
         {

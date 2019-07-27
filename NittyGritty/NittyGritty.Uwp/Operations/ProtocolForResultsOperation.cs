@@ -1,5 +1,5 @@
 ﻿using NittyGritty.Models;
-using NittyGritty.Views;
+using NittyGritty.Views.Payloads;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,15 +14,13 @@ namespace NittyGritty.Uwp.Operations
     public class ProtocolForResultsOperation
     {
         private readonly Dictionary<string, Type> _viewsByPath = new Dictionary<string, Type>();
-        private readonly Func<ProtocolForResultsActivatedEventArgs, Task> callback;
 
         /// <summary>
         /// Creates a ProtocolForResultsOperation to handle the protocol that activated the app and returns the results to the caller
         /// </summary>
         /// <param name="scheme">The scheme this ProtocolForResultsOperation can handle.
         /// Cannot be null, empty, or consist of whitespace only.</param>
-        /// <param name="callback"></param>
-        public ProtocolForResultsOperation(string scheme, Func<ProtocolForResultsActivatedEventArgs, Task> callback)
+        public ProtocolForResultsOperation(string scheme)
         {
             if (string.IsNullOrWhiteSpace(scheme))
             {
@@ -30,7 +28,6 @@ namespace NittyGritty.Uwp.Operations
             }
 
             Scheme = scheme;
-            this.callback = callback;
         }
 
         public string Scheme { get; }
@@ -45,6 +42,11 @@ namespace NittyGritty.Uwp.Operations
         {
             lock (_viewsByPath)
             {
+                if (path.Trim().Length == 0 && !path.Equals(string.Empty))
+                {
+                    throw new ArgumentException("Path cannot consist of whitespace only");
+                }
+
                 if (_viewsByPath.ContainsKey(path))
                 {
                     throw new ArgumentException("This path is already used: " + path);
@@ -53,12 +55,6 @@ namespace NittyGritty.Uwp.Operations
                 if(view == null)
                 {
                     throw new ArgumentNullException(nameof(view), "View cannot be null");
-                }
-
-                if (_viewsByPath.Any(p => p.Value == view))
-                {
-                    throw new ArgumentException(
-                        "This view is already configured with path " + _viewsByPath.First(p => p.Value == view).Key);
                 }
 
                 _viewsByPath.Add(
@@ -76,7 +72,7 @@ namespace NittyGritty.Uwp.Operations
 
             var path = args.Uri.LocalPath;
             var parameters = QueryString.Parse(args.Uri.GetComponents(UriComponents.Query, UriFormat.UriEscaped));
-            var payload = new ProtocolPayload(args.Data, parameters);
+            var payload = new ProtocolPayload(path, args.Data, parameters);
             lock (_viewsByPath)
             {
                 if (_viewsByPath.TryGetValue(path, out var view))

@@ -1,5 +1,4 @@
-﻿using NittyGritty.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Core;
@@ -8,18 +7,18 @@ using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
-namespace NittyGritty.Uwp.Operations
+namespace NittyGritty.Uwp
 {
-    internal class KeyViewConfiguration
+    internal class KeyViewConfiguration<T>
     {
-        public KeyViewConfiguration(string key, Type view, Predicate<QueryString> createsNewView)
+        public KeyViewConfiguration(string key, Type view, Predicate<T> createsNewView)
         {
             Key = key;
             View = view;
-            CreatesNewView = createsNewView ?? (createsNewView = (q) => false);
+            CreatesNewView = createsNewView ?? (createsNewView = (payload) => false);
         }
 
-        public KeyViewConfiguration(string key, Type view) : this(key, view, (uri) => false)
+        public KeyViewConfiguration(string key, Type view) : this(key, view, (payload) => false)
         {
 
         }
@@ -28,11 +27,11 @@ namespace NittyGritty.Uwp.Operations
 
         public Type View { get; }
 
-        public Predicate<QueryString> CreatesNewView { get; }
+        public Predicate<T> CreatesNewView { get; }
 
-        public async Task Run(QueryString parameters, object payload, int currentlyShownApplicationViewId, Frame frame)
+        public async Task Run(T payload, int currentlyShownApplicationViewId, Frame frame)
         {
-            if (CreatesNewView(parameters))
+            if (CreatesNewView(payload))
             {
                 var newView = CoreApplication.CreateNewView();
                 int newViewId = 0;

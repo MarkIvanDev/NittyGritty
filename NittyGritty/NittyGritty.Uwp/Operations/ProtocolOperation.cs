@@ -15,16 +15,14 @@ using Windows.UI.Xaml.Controls;
 
 namespace NittyGritty.Uwp.Operations
 {
-    public class ProtocolOperation
+    public class ProtocolOperation : KeyViewOperation<ProtocolPayload>
     {
-        private readonly Dictionary<string, KeyViewConfiguration> configurations;
-
         /// <summary>
         /// Creates a ProtocolOperation to handle the protocol that activated the app
         /// </summary>
         /// <param name="scheme">The scheme this ProtocolOperation can handle.
         /// Cannot be null or empty or whitespace</param>
-        public ProtocolOperation(string scheme)
+        public ProtocolOperation(string scheme) : base()
         {
             if (string.IsNullOrWhiteSpace(scheme))
             {
@@ -32,43 +30,9 @@ namespace NittyGritty.Uwp.Operations
             }
 
             Scheme = scheme;
-            configurations = new Dictionary<string, KeyViewConfiguration>();
         }
 
         public string Scheme { get; }
-
-        /// <summary>
-        /// Configures the paths that this scheme can handle with the appropriate view
-        /// </summary>
-        /// <param name="path">The path that this scheme can handle. A path can be configured with an empty string
-        /// A path with a value of * will be used as fallback for unknown paths</param>
-        /// <param name="view">The type of the view that the path leads to</param>
-        public void Configure(string path, Type view, Predicate<QueryString> createsNewView = null)
-        {
-            lock (configurations)
-            {
-                if (path.Trim().Length == 0 && !path.Equals(string.Empty))
-                {
-                    throw new ArgumentException("Path cannot consist of whitespace only");
-                }
-
-                if (configurations.ContainsKey(path))
-                {
-                    throw new ArgumentException("This path is already used: " + path);
-                }
-
-                if (view == null)
-                {
-                    throw new ArgumentNullException(nameof(view), "View cannot be null");
-                }
-
-                var configuration = new KeyViewConfiguration(path, view, createsNewView);
-
-                configurations.Add(
-                    path,
-                    configuration);
-            }
-        }
 
         public virtual async Task Run(ProtocolActivatedEventArgs args, Frame frame)
         {
@@ -81,31 +45,8 @@ namespace NittyGritty.Uwp.Operations
             var parameters = QueryString.Parse(args.Uri.GetComponents(UriComponents.Query, UriFormat.UriEscaped));
             var payload = new ProtocolPayload(path, args.Data, parameters);
 
-            KeyViewConfiguration configuration = null;
-            lock (configurations)
-            {
-                if (configurations.TryGetValue(path, out var view))
-                {
-                    configuration = view;
-                }
-                else
-                {
-                    if(configurations.TryGetValue("*", out var fallbackView))
-                    {
-                        configuration = fallbackView;
-                    }
-                    else
-                    {
-                        throw new ArgumentException(
-                            string.Format(
-                                "No configuration for path: {0}. Did you forget to call Protocol.Configure?",
-                                path),
-                            nameof(path));
-                    }
-                }
-            }
-
-            await configuration.Run(parameters, payload, args.CurrentlyShownApplicationViewId, frame);
+            var configuration = GetConfiguration(path);
+            await configuration.Run(payload, args.CurrentlyShownApplicationViewId, frame);
         }
     }
 }

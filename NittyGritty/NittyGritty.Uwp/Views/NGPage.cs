@@ -12,7 +12,7 @@ using Windows.UI.Xaml.Navigation;
 
 namespace NittyGritty.Uwp.Views
 {
-    public class ViewBase : Page
+    public class NGPage : Page
     {
         private IStateManager PageViewModel
         {
@@ -22,7 +22,7 @@ namespace NittyGritty.Uwp.Views
         private string _pageKey;
         private SystemNavigationManager currentView;
 
-        public ViewBase()
+        public NGPage()
         {
             if(!DesignMode.DesignModeEnabled)
             {

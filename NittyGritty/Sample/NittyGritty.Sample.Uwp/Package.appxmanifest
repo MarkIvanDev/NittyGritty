@@ -1,9 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Package xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10"
-         xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest"
-         xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10"
-         xmlns:uap5="http://schemas.microsoft.com/appx/manifest/uap/windows10/5"
-         IgnorableNamespaces="uap uap5 mp">
+<Package xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10" xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest" xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10" xmlns:uap5="http://schemas.microsoft.com/appx/manifest/uap/windows10/5" IgnorableNamespaces="uap uap5 mp">
   <Identity Name="e438ee82-b9ee-4cd2-984a-a085bc28eb41" Publisher="CN=marki_a2x5" Version="1.0.0.0" />
   <mp:PhoneIdentity PhoneProductId="e438ee82-b9ee-4cd2-984a-a085bc28eb41" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
   <Properties>
@@ -25,16 +21,14 @@
         <uap:SplashScreen Image="Assets\SplashScreen.png" />
       </uap:VisualElements>
       <Extensions>
+        <uap5:Extension Category="windows.appExecutionAlias" EntryPoint="NittyGritty.Sample.Uwp.App" Executable="NittyGritty.Sample.Uwp.exe">
+          <uap5:AppExecutionAlias>
+            <uap5:ExecutionAlias Alias="nittygritty-sample.exe" />
+          </uap5:AppExecutionAlias>
+        </uap5:Extension>
         <uap:Extension Category="windows.protocol">
           <uap:Protocol Name="nittygritty-sample" />
         </uap:Extension>
-        <uap5:Extension Category="windows.appExecutionAlias"
-                        EntryPoint="NittyGritty.Sample.Uwp.App"
-                        Executable="NittyGritty.Sample.Uwp.exe">
-          <uap5:AppExecutionAlias>
-            <uap5:ExecutionAlias Alias="nittygritty-sample.exe"/>
-          </uap5:AppExecutionAlias>
-        </uap5:Extension>
       </Extensions>
     </Application>
   </Applications>
