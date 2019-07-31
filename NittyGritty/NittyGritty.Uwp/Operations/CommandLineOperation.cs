@@ -14,7 +14,7 @@ using Windows.UI.Xaml.Controls;
 
 namespace NittyGritty.Uwp.Operations
 {
-    public class CommandLineOperation : KeyViewOperation<CommandLinePayload>
+    public class CommandLineOperation : NormalOperation<CommandLinePayload>
     {
         public CommandLineOperation(string alias)
         {
@@ -38,7 +38,7 @@ namespace NittyGritty.Uwp.Operations
 
             var configuration = GetConfiguration(command);
             int currentApplicationViewId = ApplicationView.GetApplicationViewIdForWindow(CoreApplication.GetCurrentView().CoreWindow);
-            await configuration.Run(payload, currentApplicationViewId, frame);
+            await configuration.Show(payload, currentApplicationViewId, frame);
 
             deferral.Complete();
         }

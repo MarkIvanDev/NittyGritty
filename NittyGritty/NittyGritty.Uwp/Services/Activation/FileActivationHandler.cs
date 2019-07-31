@@ -1,4 +1,5 @@
 ﻿using NittyGritty.Uwp.Operations;
+using NittyGritty.Views.Payloads;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -15,6 +16,11 @@ namespace NittyGritty.Uwp.Services.Activation
     {
         private readonly Dictionary<string, FileOperation> operations;
 
+        /// <summary>
+        /// Creates a FileActivationHandler for a specific verb with its operations
+        /// </summary>
+        /// <param name="verb">The verb this File Activation can handle. Cannot be null, empty, or whitespace.</param>
+        /// <param name="operations">Operations that can run for this verb</param>
         public FileActivationHandler(params FileOperation[] operations) : base(ActivationStrategy.Normal)
         {
             this.operations = new Dictionary<string, FileOperation>();
@@ -38,5 +44,6 @@ namespace NittyGritty.Uwp.Services.Activation
                 // We should not reach this part. Please check if you have registered all of the Verbs this app handles
             }
         }
+
     }
 }

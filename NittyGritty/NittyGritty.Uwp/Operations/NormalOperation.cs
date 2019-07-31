@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace NittyGritty.Uwp.Operations
 {
-    public abstract class KeyViewOperation<T>
+    public abstract class NormalOperation<T>
     {
-        private readonly Dictionary<string, KeyViewConfiguration<T>> configurations;
+        private readonly Dictionary<string, MultiViewConfiguration<T>> configurations;
 
-        public KeyViewOperation()
+        public NormalOperation()
         {
-            configurations = new Dictionary<string, KeyViewConfiguration<T>>();
+            configurations = new Dictionary<string, MultiViewConfiguration<T>>();
         }
 
         public virtual void Configure(string key, Type view, Predicate<T> createsNewView = null)
@@ -21,7 +21,7 @@ namespace NittyGritty.Uwp.Operations
             {
                 if (CheckConfiguration(key, view))
                 {
-                    var configuration = new KeyViewConfiguration<T>(key, view, createsNewView);
+                    var configuration = new MultiViewConfiguration<T>(key, view, createsNewView);
 
                     configurations.Add(
                         key,
@@ -32,6 +32,11 @@ namespace NittyGritty.Uwp.Operations
 
         private bool CheckConfiguration(string key, Type value)
         {
+            if (key == null)
+            {
+                throw new ArgumentNullException(nameof(key), "Key cannot be null");
+            }
+
             if (key.Trim().Length == 0 && !key.Equals(string.Empty))
             {
                 throw new ArgumentException("Key cannot consist of whitespace only");
@@ -49,7 +54,7 @@ namespace NittyGritty.Uwp.Operations
             return true;
         }
 
-        internal KeyViewConfiguration<T> GetConfiguration(string key)
+        internal MultiViewConfiguration<T> GetConfiguration(string key)
         {
             lock (configurations)
             {

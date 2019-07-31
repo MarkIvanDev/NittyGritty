@@ -15,7 +15,7 @@ using Windows.UI.Xaml.Controls;
 
 namespace NittyGritty.Uwp.Operations
 {
-    public class ProtocolOperation : KeyViewOperation<ProtocolPayload>
+    public class ProtocolOperation : NormalOperation<ProtocolPayload>
     {
         /// <summary>
         /// Creates a ProtocolOperation to handle the protocol that activated the app
@@ -46,7 +46,7 @@ namespace NittyGritty.Uwp.Operations
             var payload = new ProtocolPayload(path, args.Data, parameters);
 
             var configuration = GetConfiguration(path);
-            await configuration.Run(payload, args.CurrentlyShownApplicationViewId, frame);
+            await configuration.Show(payload, args.CurrentlyShownApplicationViewId, frame);
         }
     }
 }

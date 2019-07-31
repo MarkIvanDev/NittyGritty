@@ -33,6 +33,14 @@ namespace NittyGritty.Uwp.Services.Activation
 
         protected override async Task HandleInternal(ShareTargetActivatedEventArgs args)
         {
+            if(args.ShareOperation.Contacts.Count > 0)
+            {
+
+            }
+            else
+            {
+
+            }
             var supported = new List<ShareTargetOperation>();
             foreach (var item in args.ShareOperation.Data.AvailableFormats)
             {
@@ -41,7 +49,7 @@ namespace NittyGritty.Uwp.Services.Activation
                     supported.Add(target);
                 }
             }
-            var picked = supported.OrderByDescending(s => s.Priority).ThenBy(s => s.DataFormat).FirstOrDefault();
+            var picked = supported.OrderByDescending(s => s.Priority).ThenByDescending(s => s.DataFormat).FirstOrDefault();
             if(picked != null)
             {
                 await picked.Run(args);

@@ -10,7 +10,7 @@ using Windows.UI.Xaml.Controls;
 
 namespace NittyGritty.Uwp.Operations
 {
-    public class ToastOperation : KeyViewOperation<ToastPayload>
+    public class ToastOperation : ViewConfigurableOperation<ToastPayload>
     {
         public ToastOperation(string key)
         {

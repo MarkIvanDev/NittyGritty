@@ -14,32 +14,32 @@ namespace NittyGritty.Uwp.Services
     public class DialogService : IDialogService
     {
         
-        public string CurrentKey
-        {
-            get
-            {
-                var popups = VisualTreeHelper.GetOpenPopups(Window.Current);
-                foreach (var popup in popups)
-                {
-                    if (popup.Child is ContentDialog dialog)
-                    {
-                        try
-                        {
-                            return GetKeyForValue(dialog.GetType());
-                        }
-                        catch (Exception)
-                        {
-                            return ViewConstants.UnknownKey;
-                        }
-                    }
-                    else
-                    {
-                        return ViewConstants.OOBKey;
-                    }
-                }
-                return ViewConstants.UnknownKey;
-            }
-        }
+        //public string CurrentKey
+        //{
+        //    get
+        //    {
+        //        var popups = VisualTreeHelper.GetOpenPopups(Window.Current);
+        //        foreach (var popup in popups)
+        //        {
+        //            if (popup.Child is ContentDialog dialog)
+        //            {
+        //                try
+        //                {
+        //                    return GetKeyForValue(dialog.GetType());
+        //                }
+        //                catch (Exception)
+        //                {
+        //                    return ViewConstants.UnknownKey;
+        //                }
+        //            }
+        //            else
+        //            {
+        //                return ViewConstants.OOBKey;
+        //            }
+        //        }
+        //        return ViewConstants.UnknownKey;
+        //    }
+        //}
 
         private readonly Dictionary<string, Type> _dialogsByKey = new Dictionary<string, Type>();
 

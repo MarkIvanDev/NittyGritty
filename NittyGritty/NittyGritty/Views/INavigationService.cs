@@ -6,7 +6,8 @@ namespace NittyGritty.Views
 {
     public interface INavigationService
     {
-        
+        string CurrentKey { get; }
+
         /// <summary>
         /// If possible, instructs the navigation service
         /// to discard the current page and display the previous page

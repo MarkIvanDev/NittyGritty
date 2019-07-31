@@ -14,7 +14,7 @@ using Windows.UI.Xaml.Controls;
 
 namespace NittyGritty.Uwp.Operations
 {
-    public abstract class ShareTargetOperation
+    public abstract class ShareTargetOperation : HostedOperation<SharePayload>
     {
         
         #region Static Constructor and Fields
@@ -44,7 +44,7 @@ namespace NittyGritty.Uwp.Operations
         /// <summary>
         /// Creates a ShareTargetOperation
         /// </summary>
-        /// <param name="dataFormat">Must be one of the properties of the StandardDataFormats class or *.
+        /// <param name="dataFormat">Can be one of the properties of the StandardDataFormats class, * or custom.
         /// A dataformat with value of * means all of the data in the DataPackageView will be used</param>
         /// <param name="view">The view to be used by the dataFormat</param>
         /// <param name="priority">The priority level of the dataFormat</param>
@@ -58,11 +58,6 @@ namespace NittyGritty.Uwp.Operations
 
         private ShareTargetOperation(string dataFormat, IEnumerable<string> fileTypes, Type view, int priority)
         {
-            if (!supportedDataFormats.Contains(dataFormat) && dataFormat != "*")
-            {
-                throw new ArgumentException("Data Format is not supported");
-            }
-
             DataFormat = dataFormat;
             FileTypes = new ReadOnlyCollection<string>(fileTypes.ToList());
             View = view ?? throw new ArgumentNullException(nameof(view), "View cannot be null");
@@ -79,6 +74,32 @@ namespace NittyGritty.Uwp.Operations
         public Type View { get; }
 
         public int Priority { get; }
+
+        public override void Configure(string key, Type view)
+        {
+            Configure(key, new Collection<string>(), view, 0);
+        }
+
+        public void Configure(string key, Type view, int priority)
+        {
+            Configure(key, new Collection<string>(), view, priority);
+        }
+
+        public void Configure(ICollection<string> fileTypes, Type view, int priority)
+        {
+            Configure(StandardDataFormats.StorageItems, fileTypes, view, priority);
+        }
+
+        private void Configure(string key, ICollection<string> fileTypes, Type view, int priority)
+        {
+            if(key != StandardDataFormats.StorageItems && fileTypes.Count > 0)
+            {
+                throw new ArgumentException("Only the StorageItems Data Format can have supported file types");
+            }
+
+            base.Configure(key, view);
+
+        }
 
         #endregion
 

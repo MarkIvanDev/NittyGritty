@@ -8,7 +8,14 @@ using Windows.Storage;
 
 namespace NittyGritty.Uwp
 {
-    public class FileProcessor
+    public interface IFileProcessor
+    {
+        string FileType { get; }
+
+        Task<object> Process(IStorageFile file);
+    }
+
+    public abstract class FileProcessor<T> : IFileProcessor
     {
         /// <summary>
         /// Creates a file processor
@@ -21,11 +28,11 @@ namespace NittyGritty.Uwp
 
         public string FileType { get; }
 
-        public virtual async Task<object> Process(IStorageFile file)
-        {
-            var stream = await file.OpenReadAsync();
-            return stream.AsStream();
-        }
+        public abstract Task<T> Process(IStorageFile file);
 
+        async Task<object> IFileProcessor.Process(IStorageFile file)
+        {
+            return await Process(file);
+        }
     }
 }

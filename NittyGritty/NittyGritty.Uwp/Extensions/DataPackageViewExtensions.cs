@@ -117,6 +117,10 @@ namespace NittyGritty.Uwp.Extensions
             {
                 formats.AddRange(data.AvailableFormats);
             }
+            else
+            {
+                formats.AddRange(dataFormats);
+            }
             foreach (var format in formats)
             {
                 if (format == StandardDataFormats.ApplicationLink)

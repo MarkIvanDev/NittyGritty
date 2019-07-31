@@ -9,27 +9,19 @@ using Windows.UI.Xaml.Controls;
 
 namespace NittyGritty.Uwp
 {
-    internal class KeyViewConfiguration<T>
+    public class MultiViewConfiguration<T>
     {
-        public KeyViewConfiguration(string key, Type view, Predicate<T> createsNewView)
+        public MultiViewConfiguration(Type view, Predicate<T> createsNewView = null)
         {
-            Key = key;
-            View = view;
+            View = view ?? throw new ArgumentNullException(nameof(view));
             CreatesNewView = createsNewView ?? (createsNewView = (payload) => false);
         }
-
-        public KeyViewConfiguration(string key, Type view) : this(key, view, (payload) => false)
-        {
-
-        }
-
-        public string Key { get; }
 
         public Type View { get; }
 
         public Predicate<T> CreatesNewView { get; }
 
-        public async Task Run(T payload, int currentlyShownApplicationViewId, Frame frame)
+        public async Task Show(T payload, int currentlyShownApplicationViewId, Frame frame)
         {
             if (CreatesNewView(payload))
             {
