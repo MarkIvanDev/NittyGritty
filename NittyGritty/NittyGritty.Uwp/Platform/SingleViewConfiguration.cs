@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Windows.UI.Xaml.Controls;
 
-namespace NittyGritty.Uwp
+namespace NittyGritty.Uwp.Platform
 {
     public class SingleViewConfiguration<T>
     {
@@ -19,7 +19,7 @@ namespace NittyGritty.Uwp
 
         public Type View { get; }
 
-        public void Run(T payload, Frame frame)
+        public void Show(T payload, Frame frame)
         {
             frame.Navigate(View, payload);
         }

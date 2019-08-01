@@ -7,7 +7,7 @@ using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
-namespace NittyGritty.Uwp
+namespace NittyGritty.Uwp.Platform
 {
     public class MultiViewConfiguration<T>
     {

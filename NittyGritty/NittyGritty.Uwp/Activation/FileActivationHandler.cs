@@ -1,5 +1,4 @@
-﻿using NittyGritty.Uwp.Operations;
-using NittyGritty.Views.Payloads;
+﻿using NittyGritty.Uwp.Activation.Operations;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -7,10 +6,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Activation;
-using Windows.Storage;
-using Windows.Storage.AccessCache;
 
-namespace NittyGritty.Uwp.Services.Activation
+namespace NittyGritty.Uwp.Activation
 {
     public class FileActivationHandler : ActivationHandler<FileActivatedEventArgs>
     {
@@ -28,10 +25,7 @@ namespace NittyGritty.Uwp.Services.Activation
             {
                 this.operations.Add(operation.Verb, operation);
             }
-            Operations = new ReadOnlyDictionary<string, FileOperation>(this.operations);
         }
-
-        public ReadOnlyDictionary<string, FileOperation> Operations { get; }
 
         protected override async Task HandleInternal(FileActivatedEventArgs args)
         {

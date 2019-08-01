@@ -20,10 +20,7 @@ namespace NittyGritty.Uwp.Services.Activation
             {
                 this.operations.Add(operation.Source, operation);
             }
-            Operations = new ReadOnlyDictionary<LaunchSource, LaunchOperation>(this.operations);
         }
-
-        public ReadOnlyDictionary<LaunchSource, LaunchOperation> Operations { get; }
 
         protected override async Task HandleInternal(LaunchActivatedEventArgs args)
         {

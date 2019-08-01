@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text;
 
-namespace NittyGritty.Views.Payloads
+namespace NittyGritty.Platform.Payloads
 {
     public class ProtocolPayload
     {
@@ -22,7 +22,7 @@ namespace NittyGritty.Views.Payloads
 
         public string Path { get; }
 
-        public ReadOnlyDictionary<string, object> Data { get; }
+        public IReadOnlyDictionary<string, object> Data { get; }
 
         public QueryString Parameters { get; }
     }

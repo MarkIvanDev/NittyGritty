@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NittyGritty.Platform.Files;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,8 +12,6 @@ namespace NittyGritty.Platform.Payloads
 
         IReadOnlyCollection<string> AvailableFileTypes { get; }
 
-        IReadOnlyCollection<string> FilePaths { get; }
-
-        Task<IReadOnlyCollection<object>> Extract();
+        Task<IReadOnlyCollection<NGFile>> Extract();
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NittyGritty.Platform.Files;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -6,15 +7,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Windows.Storage;
 
-namespace NittyGritty.Uwp
+namespace NittyGritty.Uwp.Platform
 {
-    public interface IFileProcessor
-    {
-        string FileType { get; }
-
-        Task<object> Process(IStorageFile file);
-    }
-
     public abstract class FileProcessor<T> : IFileProcessor
     {
         /// <summary>
@@ -30,9 +24,9 @@ namespace NittyGritty.Uwp
 
         public abstract Task<T> Process(IStorageFile file);
 
-        async Task<object> IFileProcessor.Process(IStorageFile file)
+        async Task<object> IFileProcessor.Process(object file)
         {
-            return await Process(file);
+            return await Process(file as IStorageFile);
         }
     }
 }

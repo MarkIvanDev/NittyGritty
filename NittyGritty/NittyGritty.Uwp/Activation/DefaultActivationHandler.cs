@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Windows.UI.Xaml.Controls;
 
-namespace NittyGritty.Uwp.Services.Activation
+namespace NittyGritty.Uwp.Activation
 {
     internal class DefaultActivationHandler : ActivationHandler<object>
     {

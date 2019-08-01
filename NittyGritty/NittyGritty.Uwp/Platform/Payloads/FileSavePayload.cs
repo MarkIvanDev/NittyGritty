@@ -1,49 +1,33 @@
-﻿using NittyGritty.Views;
+﻿using NittyGritty.Platform.Payloads;
+using NittyGritty.Views;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Windows.ApplicationModel.Activation;
 using Windows.Storage;
 using Windows.Storage.Pickers.Provider;
 using Windows.UI.Core;
 using Windows.UI.Popups;
 using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
 
-namespace NittyGritty.Uwp.Services.Activation
+namespace NittyGritty.Uwp.Platform.Payloads
 {
-    public class FileSavePickerActivationHandler : ActivationHandler<FileSavePickerActivatedEventArgs>
+    public class FileSavePayload : IFileSavePayload
     {
-        private IFileSavePicker fileSavePickerContext;
+        private readonly FileSavePickerUI fileSavePickerUI;
 
-        public FileSavePickerActivationHandler(Type savePickerView) : base(ActivationStrategy.Hosted)
+        public FileSavePayload(FileSavePickerUI fileSavePickerUI)
         {
-            SavePickerView = savePickerView;
+            this.fileSavePickerUI = fileSavePickerUI;
+            Settings = new FilePickerSettings(false, fileSavePickerUI.AllowedFileTypes);
+            this.fileSavePickerUI.TargetFileRequested += OnTargetFileRequested;
         }
 
-        public Type SavePickerView { get; }
+        public FilePickerSettings Settings { get; }
 
-        protected override async Task HandleInternal(FileSavePickerActivatedEventArgs args)
-        {
-            // Since this is marked as a Hosted activation, it is assumed that the current window's content has been initialized with a frame by the ActivationService
-            if (Window.Current.Content is Frame frame)
-            {
-                var settings = new FilePickerSettings(false, args.FileSavePickerUI.AllowedFileTypes);
-                frame.Navigate(SavePickerView, settings);
-                if (frame.Content is Page page)
-                {
-                    fileSavePickerContext = page.DataContext as IFileSavePicker;
-                    if (fileSavePickerContext != null)
-                    {
-                        args.FileSavePickerUI.TargetFileRequested += OnTargetFileRequested;
-                    }
-                }
-            }
-            await Task.CompletedTask;
-        }
+        public string SavePath { get; set; }
 
         private async void OnTargetFileRequested(FileSavePickerUI sender, TargetFileRequestedEventArgs args)
         {
@@ -54,7 +38,7 @@ namespace NittyGritty.Uwp.Services.Activation
                 // the UI or showing error dialogs
                 try
                 {
-                    var folder = await StorageFolder.GetFolderFromPathAsync(fileSavePickerContext.GetCurrentPath());
+                    var folder = await StorageFolder.GetFolderFromPathAsync(SavePath);
                     var file = await folder.CreateFileAsync(sender.FileName, CreationCollisionOption.GenerateUniqueName);
 
                     args.Request.TargetFile = file;
@@ -105,5 +89,6 @@ namespace NittyGritty.Uwp.Services.Activation
                 }
             });
         }
+
     }
 }

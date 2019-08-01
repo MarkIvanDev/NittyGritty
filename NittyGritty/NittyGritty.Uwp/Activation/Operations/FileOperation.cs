@@ -1,5 +1,4 @@
-﻿using NittyGritty.Uwp.Activation.Operations;
-using NittyGritty.Uwp.Activation.Operations.Jobs;
+﻿using NittyGritty.Uwp.Activation.Operations.Jobs;
 using NittyGritty.Uwp.Platform;
 using System;
 using System.Collections.Generic;
@@ -12,7 +11,7 @@ using Windows.ApplicationModel.Activation;
 using Windows.Storage;
 using Windows.UI.Xaml.Controls;
 
-namespace NittyGritty.Uwp.Operations
+namespace NittyGritty.Uwp.Activation.Operations
 {
     public class FileOperation : IViewOperation<FileActivatedEventArgs>
     {
@@ -68,12 +67,15 @@ namespace NittyGritty.Uwp.Operations
             {
                 if(groupedFiles.Count == 0)
                 {
-                    var config = GetConfiguration(groupedFiles.First().Key);
-                    var payload = new FilePayload(Verb, groupedFiles.First().Value, config.Processor);
+                    // We only have 1 file type
+                    var config = GetConfiguration(files[0].FileType);
+                    var payload = new FilePayload(Verb, files, config.Processor);
                     await config.View.Show(payload, args.CurrentlyShownApplicationViewId, frame);
                 }
                 else
                 {
+                    // If the file operation strategy is Single, we could only use one file processor.
+                    // We should have a file processor that processes any file type
                     var config = GetConfiguration("*");
                     var payload = new FilePayload(Verb, files, config.Processor);
                     await config.View.Show(payload, args.CurrentlyShownApplicationViewId, frame);
@@ -163,7 +165,7 @@ namespace NittyGritty.Uwp.Operations
         //    }
         //}
 
-        protected FileConfiguration GetConfiguration(string fileType)
+        private FileConfiguration GetConfiguration(string fileType)
         {
             lock (configurations)
             {
@@ -180,13 +182,29 @@ namespace NittyGritty.Uwp.Operations
                     else
                     {
                         throw new ArgumentException(
-                            string.Format(
-                                "No configuration for file type: {0}. Did you forget to call FileOperation.Configure?",
-                                fileType),
+                            $"No configuration for file type: {fileType}. Did you forget to register a FileConfiguration?",
                             nameof(fileType));
                     }
                 }
             }
         }
+    }
+
+    public enum FileOperationStrategy
+    {
+        /// <summary>
+        /// Use a single payload to contain all files
+        /// </summary>
+        Single = 0,
+
+        /// <summary>
+        /// Group files by file type
+        /// </summary>
+        Group = 1,
+
+        /// <summary>
+        /// A unique payload for each file
+        /// </summary>
+        Unqiue = 3
     }
 }

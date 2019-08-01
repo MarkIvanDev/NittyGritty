@@ -6,19 +6,24 @@ using System.Text;
 using System.Threading.Tasks;
 using Windows.Storage;
 
-namespace NittyGritty.Uwp
+namespace NittyGritty.Uwp.Platform
 {
     public class StreamFileProcessor : FileProcessor<Stream>
     {
-        public StreamFileProcessor(string fileType) : base(fileType)
+        public StreamFileProcessor() : base("*")
         {
-
         }
-
+        
         public override async Task<Stream> Process(IStorageFile file)
         {
+            if (file == null)
+            {
+                throw new ArgumentNullException(nameof(file));
+            }
+            
             var stream = await file.OpenReadAsync();
             return stream.AsStream();
         }
+
     }
 }

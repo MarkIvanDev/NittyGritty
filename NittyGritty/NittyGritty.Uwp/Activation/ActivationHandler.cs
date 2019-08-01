@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Windows.ApplicationModel.Activation;
 using Windows.UI.Xaml.Controls;
 
-namespace NittyGritty.Uwp.Services.Activation
+namespace NittyGritty.Uwp.Activation
 {
     public interface IActivationHandler
     {

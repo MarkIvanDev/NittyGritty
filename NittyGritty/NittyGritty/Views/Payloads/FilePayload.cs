@@ -5,7 +5,7 @@ using System.Text;
 
 namespace NittyGritty.Views.Payloads
 {
-    public class FilePayload
+    internal class FilePayload
     {
         public FilePayload(string action, string fileType, IList<object> data)
         {
