@@ -11,4 +11,5 @@ namespace NittyGritty.Platform.Files
 
         Task<object> Process(object file);
     }
+    
 }

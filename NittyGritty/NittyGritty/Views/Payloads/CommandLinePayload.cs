@@ -6,7 +6,7 @@ using System.Text;
 
 namespace NittyGritty.Views.Payloads
 {
-    public class CommandLinePayload
+    internal class CommandLinePayload
     {
         public CommandLinePayload(string command, string currentDirectory, QueryString parameters)
         {

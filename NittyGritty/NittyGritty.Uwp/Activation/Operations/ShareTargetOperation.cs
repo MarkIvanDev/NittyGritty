@@ -40,7 +40,9 @@ namespace NittyGritty.Uwp.Activation.Operations
             if(picked != null)
             {
                 var payload = new ShareTargetPayload(args.ShareOperation);
+                picked.View.Show(payload, frame);
             }
+            await Task.CompletedTask;
         }
 
         private ShareTargetConfiguration GetConfiguration(string dataFormat)

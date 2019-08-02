@@ -24,6 +24,7 @@
         <uap5:Extension Category="windows.appExecutionAlias" EntryPoint="NittyGritty.Sample.Uwp.App" Executable="NittyGritty.Sample.Uwp.exe">
           <uap5:AppExecutionAlias>
             <uap5:ExecutionAlias Alias="nittygritty-sample.exe" />
+            <uap5:ExecutionAlias Alias="ngs.exe" />
           </uap5:AppExecutionAlias>
         </uap5:Extension>
         <uap:Extension Category="windows.protocol">

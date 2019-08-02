@@ -1,8 +1,10 @@
 ﻿using NittyGritty.Platform.Contacts;
 using NittyGritty.Platform.Payloads;
+using NittyGritty.Uwp.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,16 +16,14 @@ namespace NittyGritty.Uwp.Platform.Payloads
     public class ShareTargetPayload : IShareTargetPayload
     {
         private readonly ShareOperation operation;
-        private readonly DataPackageView data;
 
-        public ShareTargetPayload(ShareOperation operation, DataPackageView data, IList<NGContact> contacts = null)
+        public ShareTargetPayload(ShareOperation operation)
         {
             this.operation = operation;
-            this.data = data;
-            Title = data.Properties.Title;
-            Description = data.Properties.Description;
+            Title = operation.Data.Properties.Title;
+            Description = operation.Data.Properties.Description;
             Id = operation.QuickLinkId;
-            Contacts = new ReadOnlyCollection<NGContact>(contacts ?? Enumerable.Empty<NGContact>().ToList());
+            HasContacts = operation.Contacts.Count > 0;
         }
 
         public string Title { get; }
@@ -32,7 +32,76 @@ namespace NittyGritty.Uwp.Platform.Payloads
 
         public string Id { get; }
 
-        public IReadOnlyCollection<NGContact> Contacts { get; }
+        public bool HasContacts { get; }
+
+        public async Task<IReadOnlyCollection<NGContact>> GetContacts()
+        {
+            var contacts = new List<NGContact>();
+            foreach (var item in operation.Contacts)
+            {
+                var contact = await item.ToNGContact();
+                contacts.Add(contact);
+            }
+            return new ReadOnlyCollection<NGContact>(contacts);
+        }
+
+        #region Data Methods
+
+        public async Task<ShareData> GetData()
+        {
+            var data = await operation.Data.GetData();
+            return data;
+        }
+
+        public async Task<T> GetData<T>(string dataFormat) where T : class
+        {
+            var data = await operation.Data.GetData<T>(dataFormat);
+            return data;
+        }
+
+        public async Task<string> GetText()
+        {
+            var data = await operation.Data.GetText();
+            return data;
+        }
+
+        public async Task<string> GetHtml()
+        {
+            var data = await operation.Data.GetHtml();
+            return data;
+        }
+
+        public async Task<string> GetRtf()
+        {
+            var data = await operation.Data.GetRtf();
+            return data;
+        }
+
+        public async Task<Uri> GetAppLink()
+        {
+            var data = await operation.Data.GetAppLink();
+            return data;
+        }
+
+        public async Task<Uri> GetWebLink()
+        {
+            var data = await operation.Data.GetWebLink();
+            return data;
+        }
+
+        public async Task<Stream> GetBitmap()
+        {
+            var data = await operation.Data.GetBitmap();
+            return data;
+        }
+
+        public async Task<IReadOnlyCollection<Stream>> GetFiles()
+        {
+            var data = await operation.Data.GetFiles();
+            return data;
+        }
+
+        #endregion
 
         public void ShareStarted()
         {

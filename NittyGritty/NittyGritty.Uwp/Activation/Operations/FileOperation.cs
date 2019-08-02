@@ -1,5 +1,5 @@
 ﻿using NittyGritty.Uwp.Activation.Operations.Jobs;
-using NittyGritty.Uwp.Platform;
+using NittyGritty.Uwp.Platform.Payloads;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;

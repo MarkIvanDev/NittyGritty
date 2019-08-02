@@ -1,5 +1,6 @@
 ﻿using NittyGritty.Models;
 using NittyGritty.Utilities;
+using NittyGritty.Uwp.Extensions;
 using NittyGritty.Uwp.Operations;
 using NittyGritty.Uwp.Platform;
 using System;
@@ -9,32 +10,33 @@ using System.Text;
 using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
-using Windows.ApplicationModel.Contacts;
 using Windows.System;
 using Windows.UI;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
-namespace NittyGritty.Uwp.Services.Activation
+namespace NittyGritty.Uwp.Activation
 {
     public class ContactPanelActivationHandler : ActivationHandler<ContactPanelActivatedEventArgs>
     {
-        public ContactPanelActivationHandler(Color headerColor, Type contactView, ContactPanelOperation contactPanelOperation) : base(ActivationStrategy.Hosted)
+        public ContactPanelActivationHandler(Color headerColor, Type contactView, Uri protocolHeader) : base(ActivationStrategy.Hosted)
         {
             HeaderColor = headerColor;
             ContactView = contactView ?? throw new ArgumentNullException(nameof(contactView), "Contact Panel View cannot be null");
-            ContactPanelOperation = contactPanelOperation ?? throw new ArgumentNullException(nameof(contactPanelOperation), "ContactPanelOperation cannot be null");
+            ProtocolHeader = protocolHeader;
         }
 
         public Color HeaderColor { get; }
 
         public Type ContactView { get; }
 
-        public ContactPanelOperation ContactPanelOperation { get; }
+        public Uri ProtocolHeader { get; }
 
         protected override async Task HandleInternal(ContactPanelActivatedEventArgs args)
         {
+            var contact = await Contacts.TryGetContact(args.Contact.Id);
+            contact.RemoteId = await Contacts.TryGetRemoteId(contact);
             args.ContactPanel.HeaderColor = HeaderColor;
             args.ContactPanel.LaunchFullAppRequested += async (contactPanel, e) =>
             {
@@ -48,18 +50,17 @@ namespace NittyGritty.Uwp.Services.Activation
                             TargetApplicationPackageFamilyName = Package.Current.Id.FamilyName
                         };
 
-                        await Launcher.LaunchUriAsync(
-                            ProtocolUtilities.Create(ContactPanelOperation.Scheme, ContactPanelOperation.Path,
-                                new QueryString() { { "id", await Platform.Contacts.TryGetRemoteId(args.Contact.Id) } }),
-                            options);
+                        var uri = new UriBuilder(ProtocolHeader);
+                        uri.Query = new QueryString() { { "id", contact.RemoteId } }.ToString();
+                        await Launcher.LaunchUriAsync(uri.Uri, options);
                         contactPanel.ClosePanel();
                     });
             };
             
             if (Window.Current.Content is Frame frame)
-            {   
-                var payload = await ContactPanelOperation.GetPayload(args);
-                frame.Navigate(ContactView, payload);
+            {
+                var ngContact = await contact.ToNGContact();
+                frame.Navigate(ContactView, ngContact);
             }
         }
 

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using NittyGritty.Uwp.Activation.Operations;
+using NittyGritty.Uwp.Activation.Operations.Configurations;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,13 +8,11 @@ using System.Threading.Tasks;
 using Windows.ApplicationModel.Activation;
 using Windows.UI.Xaml.Controls;
 
-namespace NittyGritty.Uwp.Operations
+namespace NittyGritty.Uwp.Activation.Operations
 {
-    public class LaunchOperation
+    public abstract class LaunchOperation : IViewOperation<LaunchActivatedEventArgs>
     {
-        private readonly Func<LaunchActivatedEventArgs, Frame, Task> callback;
-
-        public LaunchOperation(LaunchSource source, Func<LaunchActivatedEventArgs, Frame, Task> callback = null)
+        public LaunchOperation(LaunchSource source)
         {
             if(source == LaunchSource.Unknown)
             {
@@ -20,15 +20,11 @@ namespace NittyGritty.Uwp.Operations
             }
 
             Source = source;
-            this.callback = callback;
         }
 
         public LaunchSource Source { get; }
 
-        public virtual async Task Run(LaunchActivatedEventArgs args, Frame frame)
-        {
-            await callback?.Invoke(args, frame);
-        }
+        public abstract Task Run(LaunchActivatedEventArgs args, Frame frame);
     }
 
     public enum LaunchSource

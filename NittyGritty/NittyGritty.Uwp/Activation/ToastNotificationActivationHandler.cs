@@ -1,5 +1,5 @@
 ﻿using NittyGritty.Models;
-using NittyGritty.Uwp.Operations;
+using NittyGritty.Uwp.Activation.Operations;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using Windows.ApplicationModel.Activation;
 using Windows.Foundation.Collections;
 
-namespace NittyGritty.Uwp.Services.Activation
+namespace NittyGritty.Uwp.Activation
 {
     public class ToastNotificationActivationHandler : ActivationHandler<ToastNotificationActivatedEventArgs>
     {
@@ -20,7 +20,7 @@ namespace NittyGritty.Uwp.Services.Activation
             this.operations = new Dictionary<string, ToastOperation>();
             foreach (var operation in operations)
             {
-                this.operations.Add(operation.Key, operation);
+                this.operations.Add(operation.ActionKey, operation);
             }
             Operations = new ReadOnlyDictionary<string, ToastOperation>(this.operations);
         }

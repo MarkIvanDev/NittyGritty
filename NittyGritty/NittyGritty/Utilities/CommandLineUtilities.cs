@@ -37,7 +37,7 @@ namespace NittyGritty.Utilities
                         var (key, values) = ParseData(args, ref i);
                         if (key != null)
                         {
-                            // each subsequent command replaces the values by the same previous command
+                            // Uncomment the following line if you want each subsequent command replaces the values by the same previous command
                             // parameters.RemoveAll(key);
                             if (values.Count == 0)
                             {
@@ -54,7 +54,7 @@ namespace NittyGritty.Utilities
                     }
                     else
                     {
-                        // all parts that do not start with - or / will be added to the key string.Empty
+                        // all parts that do not start with - or / will be added to the key of value string.Empty
                         parameters.Add(string.Empty, part);
                     }
                 }
@@ -62,7 +62,7 @@ namespace NittyGritty.Utilities
             return (command, parameters);
         }
 
-        private static (string key, ReadOnlyCollection<string> values) ParseData(string[] args, ref int index)
+        private static (string key, IReadOnlyCollection<string> values) ParseData(string[] args, ref int index)
         {
             string key = null;
             var values = new List<string>();

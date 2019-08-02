@@ -121,10 +121,16 @@
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Activation\Operations\ActionLaunchOperation.cs" />
+    <Compile Include="Activation\Operations\ChaseableLaunchOperation.cs" />
+    <Compile Include="Activation\Operations\Configurations\ActionLaunchConfiguration.cs" />
+    <Compile Include="Activation\Operations\Configurations\CommandLineConfiguration.cs" />
     <Compile Include="Activation\Operations\Configurations\FileConfiguration.cs" />
     <Compile Include="Activation\Operations\Configurations\ProtocolConfiguration.cs" />
     <Compile Include="Activation\Operations\Configurations\ProtocolForResultsConfiguration.cs" />
     <Compile Include="Activation\Operations\Configurations\ShareTargetConfiguration.cs" />
+    <Compile Include="Activation\Operations\Configurations\ToastConfiguration.cs" />
+    <Compile Include="Activation\Operations\PrimaryLaunchOperation.cs" />
     <Compile Include="Activation\Operations\ShareTargetOperation.cs" />
     <Compile Include="Platform\FileProcessor.cs" />
     <Compile Include="Converters\BooleanValueConverter.cs" />
@@ -148,16 +154,14 @@
     <Compile Include="Converters\ValueWhenConverter.cs" />
     <Compile Include="Extensions\NGContactExtensions.cs" />
     <Compile Include="Operations\AppointmentOperation.cs" />
-    <Compile Include="Operations\CommandLineOperation.cs" />
-    <Compile Include="Operations\ContactPanelOperation.cs" />
+    <Compile Include="Activation\Operations\CommandLineOperation.cs" />
     <Compile Include="Operations\HostedOperation.cs" />
     <Compile Include="Activation\Operations\IViewOperation.cs" />
     <Compile Include="Operations\NormalOperation.cs" />
-    <Compile Include="Operations\LaunchOperation.cs" />
+    <Compile Include="Activation\Operations\LaunchOperation.cs" />
     <Compile Include="Activation\Operations\ProtocolOperation.cs" />
     <Compile Include="Activation\Operations\ProtocolForResultsOperation.cs" />
     <Compile Include="Platform\MultiViewConfiguration.cs" />
-    <Compile Include="Operations\ShareTargetOperation.cs" />
     <Compile Include="Extensions\DataPackageViewExtensions.cs" />
     <Compile Include="Extensions\NavigationViewExtensions.cs" />
     <Compile Include="Interactivity\Actions\CloseFlyoutAction.cs" />
@@ -168,9 +172,10 @@
     <Compile Include="Interactivity\Actions\ScrollToElementAction.cs" />
     <Compile Include="Interactivity\Actions\SelectAllAction.cs" />
     <Compile Include="Interactivity\Behaviors\MultiSelectBehavior.cs" />
-    <Compile Include="Operations\ToastOperation.cs" />
+    <Compile Include="Activation\Operations\ToastOperation.cs" />
     <Compile Include="Platform\Contacts.cs" />
-    <Compile Include="Platform\FilePayload.cs" />
+    <Compile Include="Platform\Payloads\CommandLinePayload.cs" />
+    <Compile Include="Platform\Payloads\FilePayload.cs" />
     <Compile Include="Platform\Files.cs" />
     <Compile Include="Platform\Payloads\FileOpenPayload.cs" />
     <Compile Include="Platform\Payloads\FileSavePayload.cs" />
@@ -183,21 +188,21 @@
     <Compile Include="Services\ActivationService.cs" />
     <Compile Include="Activation\ActivationHandler.cs" />
     <Compile Include="Services\Activation\AppointmentsProviderActivationHandler.cs" />
-    <Compile Include="Services\Activation\BackgroundActivationHandler.cs" />
+    <Compile Include="Activation\BackgroundActivationHandler.cs" />
     <Compile Include="Services\Activation\CachedFileUpdaterActivationHandler.cs" />
-    <Compile Include="Services\Activation\CommandLineActivationHandler.cs" />
-    <Compile Include="Services\Activation\ContactPanelActivationHandler.cs" />
+    <Compile Include="Activation\CommandLineActivationHandler.cs" />
+    <Compile Include="Activation\ContactPanelActivationHandler.cs" />
     <Compile Include="Activation\DefaultActivationHandler.cs" />
     <Compile Include="Activation\FileActivationHandler.cs" />
     <Compile Include="Activation\FileOpenPickerActivationHandler.cs" />
     <Compile Include="Activation\FileSavePickerActivationHandler.cs" />
     <Compile Include="Services\Activation\HostedActivationHandler.cs" />
-    <Compile Include="Services\Activation\LaunchActivationHandler.cs" />
+    <Compile Include="Activation\LaunchActivationHandler.cs" />
     <Compile Include="Services\Activation\NormalActivationHandler.cs" />
     <Compile Include="Activation\ProtocolActivationHandler.cs" />
     <Compile Include="Activation\ProtocolForResultsActivationHandler.cs" />
-    <Compile Include="Services\Activation\ShareTargetActivationHandler.cs" />
-    <Compile Include="Services\Activation\ToastNotificationActivationHandler.cs" />
+    <Compile Include="Activation\ShareTargetActivationHandler.cs" />
+    <Compile Include="Activation\ToastNotificationActivationHandler.cs" />
     <Compile Include="Services\DialogService.cs" />
     <Compile Include="Services\NavigationService.cs" />
     <Compile Include="Activation\Operations\FileOperation.cs" />
@@ -205,7 +210,7 @@
     <Compile Include="Platform\StreamFileProcessor.cs" />
     <Compile Include="Views\INGApp.cs" />
     <Compile Include="Views\NGApp.cs" />
-    <Compile Include="Operations\BackgroundTask.cs" />
+    <Compile Include="Activation\Operations\BackgroundTask.cs" />
     <Compile Include="Views\SuspensionManager.cs" />
     <Compile Include="Views\NGPage.cs" />
   </ItemGroup>

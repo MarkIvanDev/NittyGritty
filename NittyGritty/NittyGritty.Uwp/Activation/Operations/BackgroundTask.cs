@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Background;
 
-namespace NittyGritty.Uwp.Operations
+namespace NittyGritty.Uwp.Activation.Operations
 {
     public abstract class BackgroundTask
     {

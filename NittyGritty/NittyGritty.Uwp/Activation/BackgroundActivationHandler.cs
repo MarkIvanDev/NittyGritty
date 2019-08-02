@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using Windows.ApplicationModel.Activation;
 using Windows.ApplicationModel.Background;
 
-namespace NittyGritty.Uwp.Services.Activation
+namespace NittyGritty.Uwp.Activation
 {
     public class BackgroundActivationHandler : ActivationHandler<BackgroundActivatedEventArgs>
     {

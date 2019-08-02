@@ -1,4 +1,4 @@
-﻿using NittyGritty.Uwp.Operations;
+﻿using NittyGritty.Uwp.Activation.Operations;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Activation;
 
-namespace NittyGritty.Uwp.Services.Activation
+namespace NittyGritty.Uwp.Activation
 {
     public sealed class LaunchActivationHandler : ActivationHandler<LaunchActivatedEventArgs>
     {
