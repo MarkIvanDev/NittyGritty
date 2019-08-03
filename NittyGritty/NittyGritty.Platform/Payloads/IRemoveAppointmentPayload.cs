@@ -8,7 +8,7 @@ namespace NittyGritty.Platform.Payloads
     {
         string AppointmentId { get; }
 
-        DateTimeOffset? InstanceStartDate { get; }
+        DateTimeOffset? StartDate { get; }
 
         void Completed();
 

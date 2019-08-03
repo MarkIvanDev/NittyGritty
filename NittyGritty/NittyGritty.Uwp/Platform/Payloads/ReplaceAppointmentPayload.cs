@@ -19,14 +19,14 @@ namespace NittyGritty.Uwp.Platform.Payloads
             this.operation = operation;
             AppointmentId = operation.AppointmentId;
             Appointment = operation.AppointmentInformation.ToNGAppointment();
-            InstanceStartDate = operation.InstanceStartDate;
+            StartDate = operation.InstanceStartDate;
         }
 
         public string AppointmentId { get; }
 
         public NGAppointment Appointment { get; }
 
-        public DateTimeOffset? InstanceStartDate { get; }
+        public DateTimeOffset? StartDate { get; }
 
         public void Canceled()
         {

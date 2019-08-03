@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace NittyGritty.Views.Events
+namespace NittyGritty.Platform.Events
 {
     public class SaveStateEventArgs : EventArgs
     {

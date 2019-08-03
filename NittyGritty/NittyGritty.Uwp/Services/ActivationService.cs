@@ -1,4 +1,4 @@
-﻿using NittyGritty.Uwp.Services.Activation;
+﻿using NittyGritty.Uwp.Activation;
 using NittyGritty.Uwp.Views;
 using System;
 using System.Collections.Generic;

@@ -11,7 +11,7 @@ namespace NittyGritty.Platform.Payloads
 
         NGAppointment Appointment { get; }
 
-        DateTimeOffset? InstanceStartDate { get; }
+        DateTimeOffset? StartDate { get; }
 
         void Completed(string id);
 

@@ -8,7 +8,7 @@ using Windows.Storage.Provider;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
 
-namespace NittyGritty.Uwp.Services.Activation
+namespace NittyGritty.Uwp.Activation
 {
     internal class CachedFileUpdaterActivationHandler : ActivationHandler<CachedFileUpdaterActivatedEventArgs>
     {

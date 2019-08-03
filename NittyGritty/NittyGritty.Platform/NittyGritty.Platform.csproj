@@ -6,7 +6,6 @@
 
   <ItemGroup>
     <Folder Include="CommandLine\" />
-    <Folder Include="Events\" />
   </ItemGroup>
 
   <ItemGroup>

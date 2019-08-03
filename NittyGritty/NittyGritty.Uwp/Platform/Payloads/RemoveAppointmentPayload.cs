@@ -16,12 +16,12 @@ namespace NittyGritty.Uwp.Platform.Payloads
         {
             this.operation = operation;
             AppointmentId = operation.AppointmentId;
-            InstanceStartDate = operation.InstanceStartDate;
+            StartDate = operation.InstanceStartDate;
         }
 
         public string AppointmentId { get; }
 
-        public DateTimeOffset? InstanceStartDate { get; }
+        public DateTimeOffset? StartDate { get; }
 
         public void Canceled()
         {

@@ -25,5 +25,17 @@ namespace NittyGritty.Uwp.Activation.Operations
             var viewConfig = new MultiViewConfiguration<RemoveAppointmentPayload>(View, (p) => true);
             await viewConfig.Show(payload, currentApplicationViewId, frame);
         }
+
+        public override async Task Run(IAppointmentsProviderActivatedEventArgs args, Frame frame)
+        {
+            if (args is AppointmentsProviderRemoveAppointmentActivatedEventArgs removeArgs)
+            {
+                await Run(removeArgs, frame);
+            }
+            else
+            {
+                throw new ArgumentException("Args is not of AppointmentsProviderRemoveAppointmentActivatedEventArgs type");
+            }
+        }
     }
 }

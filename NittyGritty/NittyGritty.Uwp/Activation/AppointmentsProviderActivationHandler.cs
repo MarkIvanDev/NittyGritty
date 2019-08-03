@@ -14,7 +14,7 @@ namespace NittyGritty.Uwp.Activation
     {
         private readonly Dictionary<AppointmentAction, AppointmentOperation> operations;
 
-        public AppointmentsProviderActivationHandler(params AppointmentOperation[] operations) : base(ActivationStrategy.Hosted)
+        public AppointmentsProviderActivationHandler(params AppointmentOperation[] operations) : base(ActivationStrategy.Normal)
         {
             this.operations = new Dictionary<AppointmentAction, AppointmentOperation>();
             foreach (var operation in operations)
@@ -31,7 +31,7 @@ namespace NittyGritty.Uwp.Activation
                     {
                         if (operations.TryGetValue(AppointmentAction.Add, out var operation))
                         {
-                            await operation.Run(add);
+                            await operation.Run(add, NavigationContext);
                         }
                     }
                     break;
@@ -40,7 +40,7 @@ namespace NittyGritty.Uwp.Activation
                     {
                         if (operations.TryGetValue(AppointmentAction.Remove, out var operation))
                         {
-                            await operation.Run(remove);
+                            await operation.Run(remove, NavigationContext);
                         }
                     }
                     break;
@@ -49,7 +49,7 @@ namespace NittyGritty.Uwp.Activation
                     {
                         if (operations.TryGetValue(AppointmentAction.Replace, out var operation))
                         {
-                            await operation.Run(replace);
+                            await operation.Run(replace, NavigationContext);
                         }
                     }
                     break;
@@ -58,7 +58,7 @@ namespace NittyGritty.Uwp.Activation
                     {
                         if (operations.TryGetValue(AppointmentAction.ShowDetails, out var operation))
                         {
-                            await operation.Run(showDetails);
+                            await operation.Run(showDetails, NavigationContext);
                         }
                     }
                     break;
@@ -67,7 +67,7 @@ namespace NittyGritty.Uwp.Activation
                     {
                         if (operations.TryGetValue(AppointmentAction.ShowTimeFrame, out var operation))
                         {
-                            await operation.Run(showTimeFrame);
+                            await operation.Run(showTimeFrame, NavigationContext);
                         }
                     }
                     break;
