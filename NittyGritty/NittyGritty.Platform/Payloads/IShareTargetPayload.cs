@@ -41,10 +41,10 @@ namespace NittyGritty.Platform.Payloads
 
         #endregion
 
-        void ShareStarted();
+        void Started();
 
-        void ShareFailed(string error);
+        void Failed(string error);
 
-        void ShareCompleted();
+        void Completed();
     }
 }

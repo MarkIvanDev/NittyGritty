@@ -103,17 +103,17 @@ namespace NittyGritty.Uwp.Platform.Payloads
 
         #endregion
 
-        public void ShareStarted()
+        public void Started()
         {
             operation.ReportStarted();
         }
 
-        public void ShareFailed(string error)
+        public void Failed(string error)
         {
             operation.ReportError(error);
         }
 
-        public void ShareCompleted()
+        public void Completed()
         {
             operation.ReportCompleted();
         }

@@ -46,13 +46,4 @@ namespace NittyGritty.Uwp.Operations
         }
     }
 
-    public enum AppointmentAction
-    {
-        Unknown = 0,
-        Add = 2,
-        Remove = 4,
-        Replace = 8,
-        ShowDetails = 16,
-        ShowTimeFrame = 32
-    }
 }

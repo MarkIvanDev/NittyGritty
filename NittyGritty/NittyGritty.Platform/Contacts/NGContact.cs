@@ -73,16 +73,16 @@ namespace NittyGritty.Platform.Contacts
             set { Set(ref _suffix, value); }
         }
 
-        private Collection<NGContactEmail> _emails;
+        private ICollection<NGContactEmail> _emails;
 
-        public Collection<NGContactEmail> Emails
+        public ICollection<NGContactEmail> Emails
         {
             get { return _emails ?? (_emails = new Collection<NGContactEmail>()); }
         }
 
-        private Collection<NGContactAddress> _addresses;
+        private ICollection<NGContactAddress> _addresses;
 
-        public Collection<NGContactAddress> Addresses
+        public ICollection<NGContactAddress> Addresses
         {
             get { return _addresses ?? (_addresses = new Collection<NGContactAddress>()); }
         }

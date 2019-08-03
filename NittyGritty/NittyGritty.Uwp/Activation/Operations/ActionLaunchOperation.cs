@@ -16,9 +16,9 @@ namespace NittyGritty.Uwp.Activation.Operations
 
         public ActionLaunchOperation(LaunchSource source, string actionKey, params ActionLaunchConfiguration[] configurations) : base(source)
         {
-            if(source != LaunchSource.Primary)
+            if(source != LaunchSource.Secondary && source != LaunchSource.Jumplist)
             {
-                throw new ArgumentException("Action Launch Operation cannot be from a Primary launch source.");
+                throw new ArgumentException("Action Launch Operation can only be from a Secondary or JumpList launch source.");
             }
 
             if (string.IsNullOrWhiteSpace(actionKey))

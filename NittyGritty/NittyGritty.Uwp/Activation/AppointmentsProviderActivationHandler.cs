@@ -1,4 +1,4 @@
-﻿using NittyGritty.Uwp.Operations;
+﻿using NittyGritty.Uwp.Activation.Operations;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using Windows.ApplicationModel.Activation;
 using Windows.ApplicationModel.Appointments.AppointmentsProvider;
 
-namespace NittyGritty.Uwp.Services.Activation
+namespace NittyGritty.Uwp.Activation
 {
     public class AppointmentsProviderActivationHandler : ActivationHandler<IAppointmentsProviderActivatedEventArgs>
     {
@@ -21,10 +21,7 @@ namespace NittyGritty.Uwp.Services.Activation
             {
                 this.operations.Add(operation.Action, operation);
             }
-            Operations = new ReadOnlyDictionary<AppointmentAction, AppointmentOperation>(this.operations);
         }
-
-        public ReadOnlyDictionary<AppointmentAction, AppointmentOperation> Operations { get; }
 
         protected sealed override async Task HandleInternal(IAppointmentsProviderActivatedEventArgs args)
         {

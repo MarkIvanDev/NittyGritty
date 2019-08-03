@@ -122,6 +122,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Activation\Operations\ActionLaunchOperation.cs" />
+    <Compile Include="Activation\Operations\AddAppointmentOperation.cs" />
+    <Compile Include="Activation\Operations\AppointmentOperation.cs" />
     <Compile Include="Activation\Operations\ChaseableLaunchOperation.cs" />
     <Compile Include="Activation\Operations\Configurations\ActionLaunchConfiguration.cs" />
     <Compile Include="Activation\Operations\Configurations\CommandLineConfiguration.cs" />
@@ -131,7 +133,10 @@
     <Compile Include="Activation\Operations\Configurations\ShareTargetConfiguration.cs" />
     <Compile Include="Activation\Operations\Configurations\ToastConfiguration.cs" />
     <Compile Include="Activation\Operations\PrimaryLaunchOperation.cs" />
+    <Compile Include="Activation\Operations\RemoveAppointmentOperation.cs" />
+    <Compile Include="Activation\Operations\ReplaceAppointmentOperation.cs" />
     <Compile Include="Activation\Operations\ShareTargetOperation.cs" />
+    <Compile Include="Extensions\NGAppointmentExtensions.cs" />
     <Compile Include="Platform\FileProcessor.cs" />
     <Compile Include="Converters\BooleanValueConverter.cs" />
     <Compile Include="Converters\ChainConverter.cs" />
@@ -174,12 +179,15 @@
     <Compile Include="Interactivity\Behaviors\MultiSelectBehavior.cs" />
     <Compile Include="Activation\Operations\ToastOperation.cs" />
     <Compile Include="Platform\Contacts.cs" />
+    <Compile Include="Platform\Payloads\AddAppointmentPayload.cs" />
     <Compile Include="Platform\Payloads\CommandLinePayload.cs" />
     <Compile Include="Platform\Payloads\FilePayload.cs" />
     <Compile Include="Platform\Files.cs" />
     <Compile Include="Platform\Payloads\FileOpenPayload.cs" />
     <Compile Include="Platform\Payloads\FileSavePayload.cs" />
     <Compile Include="Platform\Payloads\ProtocolForResultsPayload.cs" />
+    <Compile Include="Platform\Payloads\RemoveAppointmentPayload.cs" />
+    <Compile Include="Platform\Payloads\ReplaceAppointmentPayload.cs" />
     <Compile Include="Platform\Payloads\ShareTargetPayload.cs" />
     <Compile Include="Platform\TextFileProcessor.cs" />
     <Compile Include="Platform\Toasts.cs" />
@@ -187,7 +195,7 @@
     <Compile Include="Selectors\ShellItemTemplateSelector.cs" />
     <Compile Include="Services\ActivationService.cs" />
     <Compile Include="Activation\ActivationHandler.cs" />
-    <Compile Include="Services\Activation\AppointmentsProviderActivationHandler.cs" />
+    <Compile Include="Activation\AppointmentsProviderActivationHandler.cs" />
     <Compile Include="Activation\BackgroundActivationHandler.cs" />
     <Compile Include="Services\Activation\CachedFileUpdaterActivationHandler.cs" />
     <Compile Include="Activation\CommandLineActivationHandler.cs" />
