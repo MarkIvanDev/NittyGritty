@@ -73,46 +73,46 @@ namespace NittyGritty.Platform.Contacts
             set { Set(ref _suffix, value); }
         }
 
-        private ICollection<NGContactEmail> _emails;
+        private ICollection<NGEmail> _emails;
 
-        public ICollection<NGContactEmail> Emails
+        public ICollection<NGEmail> Emails
         {
-            get { return _emails ?? (_emails = new Collection<NGContactEmail>()); }
+            get { return _emails ?? (_emails = new Collection<NGEmail>()); }
         }
 
-        private ICollection<NGContactAddress> _addresses;
+        private ICollection<NGAddress> _addresses;
 
-        public ICollection<NGContactAddress> Addresses
+        public ICollection<NGAddress> Addresses
         {
-            get { return _addresses ?? (_addresses = new Collection<NGContactAddress>()); }
+            get { return _addresses ?? (_addresses = new Collection<NGAddress>()); }
         }
 
-        private Collection<NGContactDate> _dates;
+        private Collection<NGDate> _dates;
 
-        public Collection<NGContactDate> Dates
+        public Collection<NGDate> Dates
         {
-            get { return _dates ?? (_dates = new Collection<NGContactDate>()); }
+            get { return _dates ?? (_dates = new Collection<NGDate>()); }
         }
 
-        private Collection<NGContactJobInfo> _jobInfo;
+        private Collection<NGJobInfo> _jobInfo;
 
-        public Collection<NGContactJobInfo> JobInfo
+        public Collection<NGJobInfo> JobInfo
         {
-            get { return _jobInfo ?? (_jobInfo = new Collection<NGContactJobInfo>()); }
+            get { return _jobInfo ?? (_jobInfo = new Collection<NGJobInfo>()); }
         }
 
-        private Collection<NGContactPhone> _phones;
+        private Collection<NGPhone> _phones;
 
-        public Collection<NGContactPhone> Phones
+        public Collection<NGPhone> Phones
         {
-            get { return _phones ?? (_phones = new Collection<NGContactPhone>()); }
+            get { return _phones ?? (_phones = new Collection<NGPhone>()); }
         }
 
-        private Collection<NGContactWebsite> _websites;
+        private Collection<NGWebsite> _websites;
 
-        public Collection<NGContactWebsite> Websites
+        public Collection<NGWebsite> Websites
         {
-            get { return _websites ?? (_websites = new Collection<NGContactWebsite>()); }
+            get { return _websites ?? (_websites = new Collection<NGWebsite>()); }
         }
 
         private Stream _picture;

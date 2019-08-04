@@ -1,6 +1,6 @@
 ﻿namespace NittyGritty.Platform.Appointments
 {
-    public enum NGAppointmentSensitivity
+    public enum NGSensitivity
     {
         Public = 0,
         Private = 1

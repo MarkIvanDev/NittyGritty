@@ -1,6 +1,6 @@
 ﻿namespace NittyGritty.Platform.Appointments
 {
-    public enum NGAppointmentParticipantResponse
+    public enum NGParticipantResponse
     {
         None = 0,
         Tentative = 1,

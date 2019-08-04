@@ -2,6 +2,7 @@
 using NittyGritty.Platform.Files;
 using NittyGritty.Platform.Payloads;
 using NittyGritty.Utilities;
+using NittyGritty.Uwp.Platform.Files;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;

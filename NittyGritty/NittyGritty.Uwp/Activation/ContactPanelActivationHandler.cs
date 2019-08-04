@@ -1,7 +1,5 @@
 ﻿using NittyGritty.Models;
-using NittyGritty.Utilities;
 using NittyGritty.Uwp.Extensions;
-using NittyGritty.Uwp.Operations;
 using NittyGritty.Uwp.Platform;
 using System;
 using System.Collections.Generic;

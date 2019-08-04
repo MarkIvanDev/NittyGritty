@@ -5,10 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="CommandLine\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\NittyGritty\NittyGritty.csproj" />
   </ItemGroup>
 

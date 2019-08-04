@@ -5,7 +5,7 @@ using System.Text;
 
 namespace NittyGritty.Platform.Contacts
 {
-    public class NGContactJobInfo : ObservableObject
+    public class NGJobInfo : ObservableObject
     {
 
         private string _title;

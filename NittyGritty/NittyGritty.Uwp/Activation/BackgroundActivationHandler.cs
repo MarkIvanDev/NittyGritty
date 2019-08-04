@@ -1,5 +1,5 @@
 ﻿using NittyGritty.Extensions;
-using NittyGritty.Uwp.Operations;
+using NittyGritty.Uwp.Activation.Operations;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;

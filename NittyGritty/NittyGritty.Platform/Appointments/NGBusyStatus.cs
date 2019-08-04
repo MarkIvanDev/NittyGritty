@@ -1,6 +1,6 @@
 ﻿namespace NittyGritty.Platform.Appointments
 {
-    public enum NGAppointmentBusyStatus
+    public enum NGBusyStatus
     {
         Busy = 0,
         Tentative = 1,

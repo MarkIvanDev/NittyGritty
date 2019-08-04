@@ -8,7 +8,6 @@ using Windows.ApplicationModel.DataTransfer;
 using Windows.Storage;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Collections.ObjectModel;
-using NittyGritty.Views.Payloads;
 using NittyGritty.Platform.Payloads;
 using Windows.Storage.Streams;
 

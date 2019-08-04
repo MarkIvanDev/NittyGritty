@@ -64,17 +64,17 @@ namespace NittyGritty.Platform.Appointments
             set { Set(ref _reminder, value); }
         }
 
-        private NGAppointmentBusyStatus _busyStatus;
+        private NGBusyStatus _busyStatus;
 
-        public NGAppointmentBusyStatus BusyStatus
+        public NGBusyStatus BusyStatus
         {
             get { return _busyStatus; }
             set { Set(ref _busyStatus, value); }
         }
 
-        private NGAppointmentSensitivity _sensitivity;
+        private NGSensitivity _sensitivity;
 
-        public NGAppointmentSensitivity Sensitivity
+        public NGSensitivity Sensitivity
         {
             get { return _sensitivity; }
             set { Set(ref _sensitivity, value); }
@@ -88,24 +88,24 @@ namespace NittyGritty.Platform.Appointments
             set { Set(ref _uri, value); }
         }
         
-        private NGAppointmentOrganizer _organizer;
+        private NGOrganizer _organizer;
 
-        public NGAppointmentOrganizer Organizer
+        public NGOrganizer Organizer
         {
             get { return _organizer; }
             set { Set(ref _organizer, value); }
         }
 
-        private ICollection<NGAppointmentInvitee> _invitees;
+        private ICollection<NGInvitee> _invitees;
 
-        public ICollection<NGAppointmentInvitee> Invitees
+        public ICollection<NGInvitee> Invitees
         {
-            get { return _invitees ?? (_invitees = new Collection<NGAppointmentInvitee>()); }
+            get { return _invitees ?? (_invitees = new Collection<NGInvitee>()); }
         }
 
-        private NGAppointmentParticipantResponse _response;
+        private NGParticipantResponse _response;
 
-        public NGAppointmentParticipantResponse Response
+        public NGParticipantResponse Response
         {
             get { return _response; }
             set { Set(ref _response, value); }

@@ -1,7 +1,6 @@
 ﻿using NittyGritty.Models;
 using NittyGritty.Uwp.Activation.Operations.Configurations;
 using NittyGritty.Uwp.Platform.Payloads;
-using NittyGritty.Views.Payloads;
 using System;
 using System.Collections.Generic;
 using System.Linq;

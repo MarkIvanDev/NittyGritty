@@ -1,18 +1,10 @@
-﻿using NittyGritty.Models;
-using NittyGritty.Utilities;
-using NittyGritty.Uwp.Platform.Payloads;
-using NittyGritty.Views;
-using NittyGritty.Views.Events;
+﻿using NittyGritty.Uwp.Platform.Payloads;
 using System;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Activation;
-using Windows.Foundation;
-using Windows.Storage;
-using Windows.Storage.Pickers.Provider;
-using Windows.Storage.Streams;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 

@@ -5,12 +5,12 @@ using System.Text;
 
 namespace NittyGritty.Platform.Contacts
 {
-    public class NGContactEmail : ObservableObject
+    public class NGEmail : ObservableObject
     {
 
-        private NGContactEmailKind _kind;
+        private NGEmailKind _kind;
 
-        public NGContactEmailKind Kind
+        public NGEmailKind Kind
         {
             get { return _kind; }
             set { Set(ref _kind, value); }

@@ -5,7 +5,7 @@ using System.Text;
 
 namespace NittyGritty.Platform.Contacts
 {
-    public class NGContactPhone : ObservableObject
+    public class NGPhone : ObservableObject
     {
 
         private string _number;
@@ -16,9 +16,9 @@ namespace NittyGritty.Platform.Contacts
             set { Set(ref _number, value); }
         }
 
-        private NGContactPhoneKind _kind;
+        private NGPhoneKind _kind;
 
-        public NGContactPhoneKind Kind
+        public NGPhoneKind Kind
         {
             get { return _kind; }
             set { Set(ref _kind, value); }

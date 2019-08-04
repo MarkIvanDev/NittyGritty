@@ -5,7 +5,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{F54F6DF8-8CDE-42C8-B96E-E0305F5D2480}</ProjectGuid>
-    <OutputType>winmdobj</OutputType>
+    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>NittyGritty.Uwp</RootNamespace>
     <AssemblyName>NittyGritty.Uwp</AssemblyName>
@@ -139,7 +139,7 @@
     <Compile Include="Activation\Operations\ShowAppointmentDetailsOperation.cs" />
     <Compile Include="Activation\Operations\ShowTimeFrameAppointmentOperation.cs" />
     <Compile Include="Extensions\NGAppointmentExtensions.cs" />
-    <Compile Include="Platform\FileProcessor.cs" />
+    <Compile Include="Platform\Files\FileProcessor.cs" />
     <Compile Include="Converters\BooleanValueConverter.cs" />
     <Compile Include="Converters\ChainConverter.cs" />
     <Compile Include="Converters\ChangeTypeConverter.cs" />
@@ -181,14 +181,13 @@
     <Compile Include="Platform\Payloads\AddAppointmentPayload.cs" />
     <Compile Include="Platform\Payloads\CommandLinePayload.cs" />
     <Compile Include="Platform\Payloads\FilePayload.cs" />
-    <Compile Include="Platform\Files.cs" />
     <Compile Include="Platform\Payloads\FileOpenPayload.cs" />
     <Compile Include="Platform\Payloads\FileSavePayload.cs" />
     <Compile Include="Platform\Payloads\ProtocolForResultsPayload.cs" />
     <Compile Include="Platform\Payloads\RemoveAppointmentPayload.cs" />
     <Compile Include="Platform\Payloads\ReplaceAppointmentPayload.cs" />
     <Compile Include="Platform\Payloads\ShareTargetPayload.cs" />
-    <Compile Include="Platform\TextFileProcessor.cs" />
+    <Compile Include="Platform\Files\TextFileProcessor.cs" />
     <Compile Include="Platform\Toasts.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Selectors\ShellItemTemplateSelector.cs" />
@@ -208,11 +207,14 @@
     <Compile Include="Activation\ProtocolForResultsActivationHandler.cs" />
     <Compile Include="Activation\ShareTargetActivationHandler.cs" />
     <Compile Include="Activation\ToastNotificationActivationHandler.cs" />
+    <Compile Include="Services\ContactService.cs" />
     <Compile Include="Services\DialogService.cs" />
+    <Compile Include="Services\FileService.cs" />
     <Compile Include="Services\NavigationService.cs" />
     <Compile Include="Activation\Operations\FileOperation.cs" />
     <Compile Include="Platform\SingleViewConfiguration.cs" />
-    <Compile Include="Platform\StreamFileProcessor.cs" />
+    <Compile Include="Platform\Files\StreamFileProcessor.cs" />
+    <Compile Include="Services\ToastService.cs" />
     <Compile Include="Views\INGApp.cs" />
     <Compile Include="Views\NGApp.cs" />
     <Compile Include="Activation\Operations\BackgroundTask.cs" />
@@ -246,6 +248,9 @@
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
   </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\WindowsXaml\v$(VisualStudioVersion)\Microsoft.Windows.UI.Xaml.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -5,7 +5,7 @@ using System.Text;
 
 namespace NittyGritty.Platform.Contacts
 {
-    public class NGContactAddress : ObservableObject
+    public class NGAddress : ObservableObject
     {
 
         private string _street;
@@ -48,9 +48,9 @@ namespace NittyGritty.Platform.Contacts
             set { Set(ref _postalCode, value); }
         }
 
-        private NGContactAddressKind _kind;
+        private NGAddressKind _kind;
 
-        public NGContactAddressKind Kind
+        public NGAddressKind Kind
         {
             get { return _kind; }
             set { Set(ref _kind, value); }

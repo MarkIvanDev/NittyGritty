@@ -1,6 +1,6 @@
 ﻿namespace NittyGritty.Platform.Appointments
 {
-    public class NGAppointmentOrganizer : ObservableObject, INGAppointmentParticipant
+    public class NGOrganizer : ObservableObject, INGParticipant
     {
 
         private string _name;

@@ -1,0 +1,10 @@
+﻿<Project Sdk="MSBuild.Sdk.Extras/1.6.68">
+
+  <PropertyGroup>
+    <TargetFramework>uap10.0.16299</TargetFramework>
+    <Title>NittyGritty SDK</Title>
+    <Description>The UWP Head of NittyGritty Framework</Description>
+    <PackageTags>UWP Toolkit Windows</PackageTags>
+    <UseUwpMetaPackage>true</UseUwpMetaPackage>
+  </PropertyGroup>
+</Project>

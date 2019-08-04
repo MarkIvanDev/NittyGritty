@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NittyGritty.Platform
+namespace NittyGritty.Sdk
 {
     public class Class1
     {

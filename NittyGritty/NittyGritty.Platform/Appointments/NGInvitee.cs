@@ -1,19 +1,19 @@
 ﻿namespace NittyGritty.Platform.Appointments
 {
-    public class NGAppointmentInvitee : ObservableObject, INGAppointmentParticipant
+    public class NGInvitee : ObservableObject, INGParticipant
     {
 
-        private NGAppointmentParticipantRole _role;
+        private NGParticipantRole _role;
 
-        public NGAppointmentParticipantRole Role
+        public NGParticipantRole Role
         {
             get { return _role; }
             set { Set(ref _role, value); }
         }
 
-        private NGAppointmentParticipantResponse _response;
+        private NGParticipantResponse _response;
 
-        public NGAppointmentParticipantResponse Response
+        public NGParticipantResponse Response
         {
             get { return _response; }
             set { Set(ref _response, value); }

@@ -37,7 +37,7 @@ namespace NittyGritty.Uwp.Extensions
             return winContact;
         }
 
-        public static ContactEmail ToContactEmail(this NGContactEmail email)
+        public static ContactEmail ToContactEmail(this NGEmail email)
         {
             var winEmail = new ContactEmail()
             {
@@ -48,7 +48,7 @@ namespace NittyGritty.Uwp.Extensions
             return winEmail;
         }
 
-        public static ContactAddress ToContactAddress(this NGContactAddress address)
+        public static ContactAddress ToContactAddress(this NGAddress address)
         {
             var winAddress = new ContactAddress()
             {
@@ -63,7 +63,7 @@ namespace NittyGritty.Uwp.Extensions
             return winAddress;
         }
 
-        public static ContactDate ToContactDate(this NGContactDate date)
+        public static ContactDate ToContactDate(this NGDate date)
         {
             var winDate = new ContactDate()
             {
@@ -76,7 +76,7 @@ namespace NittyGritty.Uwp.Extensions
             return winDate;
         }
 
-        public static ContactJobInfo ToContactJobInfo(this NGContactJobInfo jobInfo)
+        public static ContactJobInfo ToContactJobInfo(this NGJobInfo jobInfo)
         {
             var winJobInfo = new ContactJobInfo()
             {
@@ -91,7 +91,7 @@ namespace NittyGritty.Uwp.Extensions
             return winJobInfo;
         }
 
-        public static ContactPhone ToContactPhone(this NGContactPhone phone)
+        public static ContactPhone ToContactPhone(this NGPhone phone)
         {
             var winPhone = new ContactPhone()
             {
@@ -102,7 +102,7 @@ namespace NittyGritty.Uwp.Extensions
             return winPhone;
         }
 
-        public static ContactWebsite ToContactWebsite(this NGContactWebsite website)
+        public static ContactWebsite ToContactWebsite(this NGWebsite website)
         {
             var winWebsite = new ContactWebsite()
             {
@@ -126,32 +126,32 @@ namespace NittyGritty.Uwp.Extensions
                 Picture = (await contact.SourceDisplayPicture.OpenReadAsync()).AsStream(),
                 Notes = contact.Notes
             };
-            ngContact.Emails.AddRange(contact.Emails.Select(e => e.ToNGContactEmail()));
-            ngContact.Addresses.AddRange(contact.Addresses.Select(a => a.ToNGContactAddress()));
-            ngContact.Dates.AddRange(contact.ImportantDates.Select(d => d.ToNGContactDate()));
-            ngContact.JobInfo.AddRange(contact.JobInfo.Select(j => j.ToNGContactJobInfo()));
-            ngContact.Phones.AddRange(contact.Phones.Select(p => p.ToNGContactPhone()));
-            ngContact.Websites.AddRange(contact.Websites.Select(w => w.ToNGContactWebsite()));
+            ngContact.Emails.AddRange(contact.Emails.Select(e => e.ToNGEmail()));
+            ngContact.Addresses.AddRange(contact.Addresses.Select(a => a.ToNGAddress()));
+            ngContact.Dates.AddRange(contact.ImportantDates.Select(d => d.ToNGDate()));
+            ngContact.JobInfo.AddRange(contact.JobInfo.Select(j => j.ToNGJobInfo()));
+            ngContact.Phones.AddRange(contact.Phones.Select(p => p.ToNGPhone()));
+            ngContact.Websites.AddRange(contact.Websites.Select(w => w.ToNGWebsite()));
 
             return ngContact;
         }
 
-        public static NGContactEmail ToNGContactEmail(this ContactEmail email)
+        public static NGEmail ToNGEmail(this ContactEmail email)
         {
-            var ngEmail = new NGContactEmail()
+            var ngEmail = new NGEmail()
             {
-                Kind = (NGContactEmailKind)email.Kind,
+                Kind = (NGEmailKind)email.Kind,
                 Address = email.Address,
                 Description = email.Description
             };
             return ngEmail;
         }
 
-        public static NGContactAddress ToNGContactAddress(this ContactAddress address)
+        public static NGAddress ToNGAddress(this ContactAddress address)
         {
-            var ngAddress = new NGContactAddress()
+            var ngAddress = new NGAddress()
             {
-                Kind = (NGContactAddressKind)address.Kind,
+                Kind = (NGAddressKind)address.Kind,
                 Street = address.StreetAddress,
                 Locality = address.Locality,
                 Region = address.Region,
@@ -162,11 +162,11 @@ namespace NittyGritty.Uwp.Extensions
             return ngAddress;
         }
 
-        public static NGContactDate ToNGContactDate(this ContactDate date)
+        public static NGDate ToNGDate(this ContactDate date)
         {
-            var ngDate = new NGContactDate()
+            var ngDate = new NGDate()
             {
-                Kind = (NGContactDateKind)date.Kind,
+                Kind = (NGDateKind)date.Kind,
                 Month = date.Month,
                 Day = date.Day,
                 Year = date.Year,
@@ -175,9 +175,9 @@ namespace NittyGritty.Uwp.Extensions
             return ngDate;
         }
 
-        public static NGContactJobInfo ToNGContactJobInfo(this ContactJobInfo jobInfo)
+        public static NGJobInfo ToNGJobInfo(this ContactJobInfo jobInfo)
         {
-            var ngJobInfo = new NGContactJobInfo()
+            var ngJobInfo = new NGJobInfo()
             {
                 Title = jobInfo.Title,
                 Office = jobInfo.Office,
@@ -190,11 +190,11 @@ namespace NittyGritty.Uwp.Extensions
             return ngJobInfo;
         }
 
-        public static NGContactPhone ToNGContactPhone(this ContactPhone phone)
+        public static NGPhone ToNGPhone(this ContactPhone phone)
         {
-            var ngPhone = new NGContactPhone()
+            var ngPhone = new NGPhone()
             {
-                Kind = (NGContactPhoneKind)phone.Kind,
+                Kind = (NGPhoneKind)phone.Kind,
 
                 Number = phone.Number,
                 Description = phone.Description
@@ -202,9 +202,9 @@ namespace NittyGritty.Uwp.Extensions
             return ngPhone;
         }
 
-        public static NGContactWebsite ToNGContactWebsite(this ContactWebsite website)
+        public static NGWebsite ToNGWebsite(this ContactWebsite website)
         {
-            var ngWebsite = new NGContactWebsite()
+            var ngWebsite = new NGWebsite()
             {
                 Raw = website.RawValue,
                 Description = website.Description

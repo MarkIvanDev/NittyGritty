@@ -1,6 +1,6 @@
 ﻿namespace NittyGritty.Platform.Appointments
 {
-    public enum NGAppointmentParticipantRole
+    public enum NGParticipantRole
     {
         Required = 0,
         Optional = 1,

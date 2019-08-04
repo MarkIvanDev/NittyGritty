@@ -1,4 +1,4 @@
-﻿using NittyGritty.Extensions
+﻿using NittyGritty.Extensions;
 using NittyGritty.Platform.Appointments;
 using System;
 using System.Collections.Generic;
@@ -22,19 +22,19 @@ namespace NittyGritty.Uwp.Extensions
                 Duration = appointment.Duration,
                 AllDay = appointment.AllDay,
                 Reminder = appointment.Reminder,
-                BusyStatus = (NGAppointmentBusyStatus)appointment.BusyStatus,
-                Sensitivity = (NGAppointmentSensitivity)appointment.Sensitivity,
+                BusyStatus = (NGBusyStatus)appointment.BusyStatus,
+                Sensitivity = (NGSensitivity)appointment.Sensitivity,
                 Uri = appointment.Uri,
-                Organizer = appointment.Organizer.ToNGAppointmentOrganizer(),
-                Response = (NGAppointmentParticipantResponse)appointment.UserResponse
+                Organizer = appointment.Organizer.ToNGOrganizer(),
+                Response = (NGParticipantResponse)appointment.UserResponse
             };
-            ngAppointment.Invitees.AddRange(appointment.Invitees.Select(i => i.ToNGAppointmentInvitee()));
+            ngAppointment.Invitees.AddRange(appointment.Invitees.Select(i => i.ToNGInvitee()));
             return ngAppointment;
         }
 
-        public static NGAppointmentOrganizer ToNGAppointmentOrganizer(this AppointmentOrganizer organizer)
+        public static NGOrganizer ToNGOrganizer(this AppointmentOrganizer organizer)
         {
-            var ngOrganizer = new NGAppointmentOrganizer()
+            var ngOrganizer = new NGOrganizer()
             {
                 Name = organizer.DisplayName,
                 Email = organizer.Address
@@ -42,12 +42,12 @@ namespace NittyGritty.Uwp.Extensions
             return ngOrganizer;
         }
 
-        public static NGAppointmentInvitee ToNGAppointmentInvitee(this AppointmentInvitee invitee)
+        public static NGInvitee ToNGInvitee(this AppointmentInvitee invitee)
         {
-            var ngInvitee = new NGAppointmentInvitee()
+            var ngInvitee = new NGInvitee()
             {
-                Role = (NGAppointmentParticipantRole)invitee.Role,
-                Response = (NGAppointmentParticipantResponse)invitee.Response,
+                Role = (NGParticipantRole)invitee.Role,
+                Response = (NGParticipantResponse)invitee.Response,
                 Name = invitee.DisplayName,
                 Email = invitee.Address
             };

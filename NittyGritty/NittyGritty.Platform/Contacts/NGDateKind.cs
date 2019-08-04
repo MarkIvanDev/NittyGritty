@@ -5,10 +5,10 @@ using System.Text;
 
 namespace NittyGritty.Platform.Contacts
 {
-    public enum NGContactAddressKind
+    public enum NGDateKind
     {
-        Home = 0,
-        Work = 1,
+        Birthday = 0,
+        Anniversary = 1,
         Other = 2
     }
 }

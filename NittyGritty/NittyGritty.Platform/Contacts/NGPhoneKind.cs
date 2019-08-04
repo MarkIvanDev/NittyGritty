@@ -5,7 +5,7 @@ using System.Text;
 
 namespace NittyGritty.Platform.Contacts
 {
-    public enum NGContactPhoneKind
+    public enum NGPhoneKind
     {
         Home = 0,
         Mobile = 1,

@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NittyGritty.Uwp.Platform
+namespace NittyGritty.Uwp.Services
 {
-    internal static class Toasts
+    class ContactService
     {
     }
 }

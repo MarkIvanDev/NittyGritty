@@ -1,6 +1,6 @@
 ﻿namespace NittyGritty.Platform.Appointments
 {
-    public interface INGAppointmentParticipant
+    public interface INGParticipant
     {
         string Name { get; set; }
 

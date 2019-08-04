@@ -5,7 +5,7 @@ using System.Text;
 
 namespace NittyGritty.Platform.Contacts
 {
-    public class NGContactDate : ObservableObject
+    public class NGDate : ObservableObject
     {
 
         private int? _year;
@@ -32,9 +32,9 @@ namespace NittyGritty.Platform.Contacts
             set { Set(ref _day, value); }
         }
 
-        private NGContactDateKind _kind;
+        private NGDateKind _kind;
 
-        public NGContactDateKind Kind
+        public NGDateKind Kind
         {
             get { return _kind; }
             set { Set(ref _kind, value); }

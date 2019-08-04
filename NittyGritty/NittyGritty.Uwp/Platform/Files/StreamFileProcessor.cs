@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Windows.Storage;
 
-namespace NittyGritty.Uwp.Platform
+namespace NittyGritty.Uwp.Platform.Files
 {
     public class StreamFileProcessor : FileProcessor<Stream>
     {

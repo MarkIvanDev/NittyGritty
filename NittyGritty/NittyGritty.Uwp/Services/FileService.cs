@@ -5,15 +5,13 @@ using System.Text;
 using System.Threading.Tasks;
 using Windows.System;
 
-namespace NittyGritty.Uwp.Platform
+namespace NittyGritty.Uwp.Services
 {
-    public static class Files
+    internal class FileService
     {
-        public static async Task  RequestAccess()
+        public async Task RequestPermission()
         {
             await Launcher.LaunchUriAsync(new Uri("ms-settings:privacy-broadfilesystemaccess"));
         }
-
-
     }
 }

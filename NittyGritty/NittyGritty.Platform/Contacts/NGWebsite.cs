@@ -5,7 +5,7 @@ using System.Text;
 
 namespace NittyGritty.Platform.Contacts
 {
-    public class NGContactWebsite : ObservableObject
+    public class NGWebsite : ObservableObject
     {
 
         private string _description;

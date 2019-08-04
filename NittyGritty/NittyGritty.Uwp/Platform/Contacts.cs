@@ -8,7 +8,7 @@ using Windows.System;
 
 namespace NittyGritty.Uwp.Platform
 {
-    public static class Contacts
+    internal static class Contacts
     {
         public static async Task RequestAccess()
         {
