@@ -12,7 +12,7 @@ using Windows.UI.Core;
 using Windows.UI.Popups;
 using Windows.UI.Xaml;
 
-namespace NittyGritty.Uwp.Platform.Payloads
+namespace NittyGritty.UI.Platform.Payloads
 {
     public class FileSavePayload : IFileSavePayload
     {

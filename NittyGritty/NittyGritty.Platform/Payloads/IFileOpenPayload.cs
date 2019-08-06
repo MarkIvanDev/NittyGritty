@@ -9,7 +9,9 @@ namespace NittyGritty.Platform.Payloads
 {
     public interface IFileOpenPayload
     {
-        FilePickerSettings Settings { get; }
+        bool IsMultiSelect { get; }
+
+        IReadOnlyList<string> FileTypes { get; }
 
         Task Add(PickedFile file);
 

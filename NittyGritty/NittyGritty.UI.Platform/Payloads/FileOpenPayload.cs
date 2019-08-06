@@ -11,7 +11,7 @@ using Windows.Storage;
 using Windows.Storage.Pickers.Provider;
 using Windows.Storage.Streams;
 
-namespace NittyGritty.Uwp.Platform.Payloads
+namespace NittyGritty.UI.Platform.Payloads
 {
     public class FileOpenPayload : IFileOpenPayload
     {

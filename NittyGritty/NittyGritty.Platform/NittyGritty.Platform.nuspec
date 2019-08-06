@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>NittyGritty.Platform</id>
+    <version>1.1.0-beta1</version>
+    <title>NittyGritty Platform</title>
+    <authors>markivan.basto</authors>
+    <owners>markivan.basto</owners>
+    <license type="expression">MIT</license>
+    <projectUrl>https://github.com/MarkIvanDev/NittyGritty</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Boilerplate code that can speed up your development</description>
+	<dependencies>
+		<dependency id="NittyGritty" version="1.1.0-beta" />
+	</dependencies>
+    <copyright>(c) 2019 Mark Ivan Basto</copyright>
+    <tags>c# mvvm helpers extensions utilities view viewmodel model collections data nittygritty markivan platform</tags>
+  </metadata>
+</package>

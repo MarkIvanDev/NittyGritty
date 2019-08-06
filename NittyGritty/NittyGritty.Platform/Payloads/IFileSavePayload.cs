@@ -7,7 +7,7 @@ namespace NittyGritty.Platform.Payloads
 {
     public interface IFileSavePayload
     {
-        FilePickerSettings Settings { get; }
+        IReadOnlyList<string> FileTypes { get; }
 
         string SavePath { get; set; }
     }
