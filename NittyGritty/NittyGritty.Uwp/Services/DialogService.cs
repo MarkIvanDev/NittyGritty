@@ -1,4 +1,4 @@
-﻿using NittyGritty.Views;
+﻿using NittyGritty.Platform;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,33 +14,6 @@ namespace NittyGritty.Uwp.Services
     public class DialogService : IDialogService
     {
         
-        //public string CurrentKey
-        //{
-        //    get
-        //    {
-        //        var popups = VisualTreeHelper.GetOpenPopups(Window.Current);
-        //        foreach (var popup in popups)
-        //        {
-        //            if (popup.Child is ContentDialog dialog)
-        //            {
-        //                try
-        //                {
-        //                    return GetKeyForValue(dialog.GetType());
-        //                }
-        //                catch (Exception)
-        //                {
-        //                    return ViewConstants.UnknownKey;
-        //                }
-        //            }
-        //            else
-        //            {
-        //                return ViewConstants.OOBKey;
-        //            }
-        //        }
-        //        return ViewConstants.UnknownKey;
-        //    }
-        //}
-
         private readonly Dictionary<string, Type> _dialogsByKey = new Dictionary<string, Type>();
 
         public void Configure(string key, Type value)
@@ -97,11 +70,21 @@ namespace NittyGritty.Uwp.Services
 
         public async Task<bool> Show(string key)
         {
-            return await Show(key, null);
+            return await Show<object>(key, null);
         }
 
-        public async Task<bool> Show(string key, object parameter)
+        public async Task<bool> Show<T>(string key, T parameter)
         {
+            return await Show<T>(key, parameter, null);
+        }
+
+        public async Task<bool> Show<T>(string key, T parameter, Func<T, Task> onOpened)
+        {
+            if (string.IsNullOrWhiteSpace(key))
+            {
+                throw new ArgumentException("Key cannot be null, empty or whitespace", nameof(key));
+            }
+
             object uObject = null;
             lock (_dialogsByKey)
             {
@@ -113,6 +96,13 @@ namespace NittyGritty.Uwp.Services
             }
             if (uObject is ContentDialog dialog)
             {
+                if(onOpened != null)
+                {
+                    dialog.Opened += async (sender, e) =>
+                    {
+                        await onOpened.Invoke(parameter);
+                    };
+                }
                 dialog.DataContext = parameter;
                 var result = await dialog.ShowAsync();
                 if (result == ContentDialogResult.Primary)

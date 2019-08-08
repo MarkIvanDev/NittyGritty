@@ -17,6 +17,10 @@ namespace NittyGritty.Platform.Payloads
 
         QueryString Parameters { get; }
 
-        Task<IReadOnlyCollection<NGFile>> GetFiles();
+        Task<IReadOnlyCollection<NGFile>> GetFiles(bool canWrite);
+
+        Task<NGFile> GetFile(string fileName, bool canWrite);
+
+        Task<NGFile> WriteFile(string fileName);
     }
 }

@@ -1,6 +1,5 @@
 ﻿using NittyGritty.Models;
-using NittyGritty.Uwp.Extensions;
-using NittyGritty.Uwp.Platform;
+using NittyGritty.Uwp.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,8 +32,9 @@ namespace NittyGritty.Uwp.Activation
 
         protected override async Task HandleInternal(ContactPanelActivatedEventArgs args)
         {
-            var contact = await Contacts.TryGetContact(args.Contact.Id);
-            contact.RemoteId = await Contacts.TryGetRemoteId(contact);
+            var contactService = Singleton<ContactService>.Instance;
+            var contact = await contactService.GetContact(args.Contact.Id);
+            contact.RemoteId = await contactService.GetRemoteId(contact);
             args.ContactPanel.HeaderColor = HeaderColor;
             args.ContactPanel.LaunchFullAppRequested += async (contactPanel, e) =>
             {
@@ -57,8 +57,7 @@ namespace NittyGritty.Uwp.Activation
             
             if (Window.Current.Content is Frame frame)
             {
-                var ngContact = await contact.ToNGContact();
-                frame.Navigate(ContactView, ngContact);
+                frame.Navigate(ContactView, contact);
             }
         }
 

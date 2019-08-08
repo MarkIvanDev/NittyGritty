@@ -53,5 +53,48 @@ namespace NittyGritty.Uwp.Extensions
             };
             return ngInvitee;
         }
+
+        public static Appointment ToAppointment(this NGAppointment appointment)
+        {
+            var winAppointment = new Appointment()
+            {
+                Subject = appointment.Subject,
+                Location = appointment.Location,
+                Details = appointment.Details,
+                StartTime = appointment.StartTime,
+                Duration = appointment.Duration,
+                AllDay = appointment.AllDay,
+                Reminder = appointment.Reminder,
+                BusyStatus = (AppointmentBusyStatus)appointment.BusyStatus,
+                Sensitivity = (AppointmentSensitivity)appointment.Sensitivity,
+                Uri = appointment.Uri,
+                Organizer = appointment.Organizer.ToOrganizer(),
+                UserResponse = (AppointmentParticipantResponse)appointment.Response
+            };
+            winAppointment.Invitees.AddRange(appointment.Invitees.Select(i => i.ToInvitee()));
+            return winAppointment;
+        }
+
+        public static AppointmentOrganizer ToOrganizer(this NGOrganizer organizer)
+        {
+            var winOrganizer = new AppointmentOrganizer()
+            {
+                DisplayName = organizer.Name,
+                Address = organizer.Email
+            };
+            return winOrganizer;
+        }
+
+        public static AppointmentInvitee ToInvitee(this NGInvitee invitee)
+        {
+            var winInvitee = new AppointmentInvitee()
+            {
+                Role = (AppointmentParticipantRole)invitee.Role,
+                Response = (AppointmentParticipantResponse)invitee.Response,
+                DisplayName = invitee.Name,
+                Address = invitee.Email
+            };
+            return winInvitee;
+        }
     }
 }

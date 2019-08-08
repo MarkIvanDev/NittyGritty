@@ -9,7 +9,7 @@ namespace NittyGritty.Uwp.Services
 {
     internal class FileService
     {
-        public async Task RequestPermission()
+        public async Task RequestAccess()
         {
             await Launcher.LaunchUriAsync(new Uri("ms-settings:privacy-broadfilesystemaccess"));
         }

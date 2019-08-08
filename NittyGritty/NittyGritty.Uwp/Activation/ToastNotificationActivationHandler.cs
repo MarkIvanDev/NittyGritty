@@ -22,10 +22,7 @@ namespace NittyGritty.Uwp.Activation
             {
                 this.operations.Add(operation.ActionKey, operation);
             }
-            Operations = new ReadOnlyDictionary<string, ToastOperation>(this.operations);
         }
-
-        public ReadOnlyDictionary<string, ToastOperation> Operations { get; }
 
         protected override async Task HandleInternal(ToastNotificationActivatedEventArgs args)
         {
@@ -35,7 +32,7 @@ namespace NittyGritty.Uwp.Activation
                 return;
             }
 
-            if (Operations.TryGetValue(query.FirstOrDefault()?.Name ?? string.Empty, out var operation))
+            if (operations.TryGetValue(query.FirstOrDefault()?.Name ?? string.Empty, out var operation))
             {
                 await operation.Run(args, NavigationContext);
             }

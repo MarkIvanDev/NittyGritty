@@ -23,7 +23,7 @@ namespace NittyGritty.Uwp.Activation
             }
         }
 
-        protected sealed override async Task HandleInternal(IAppointmentsProviderActivatedEventArgs args)
+        protected override async Task HandleInternal(IAppointmentsProviderActivatedEventArgs args)
         {
             switch (args)
             {
@@ -78,7 +78,7 @@ namespace NittyGritty.Uwp.Activation
             }
         }
 
-        protected sealed override bool CanHandleInternal(IAppointmentsProviderActivatedEventArgs args)
+        protected override bool CanHandleInternal(IAppointmentsProviderActivatedEventArgs args)
         {
             if(args.Verb == AppointmentsProviderLaunchActionVerbs.AddAppointment)
             {

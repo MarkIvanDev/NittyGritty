@@ -1,5 +1,4 @@
 ﻿using NittyGritty.Models;
-using NittyGritty.Views;
 using System;
 using System.Collections.Generic;
 using System.Text;

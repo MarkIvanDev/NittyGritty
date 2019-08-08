@@ -1,5 +1,4 @@
 ﻿using NittyGritty.Models;
-using NittyGritty.Uwp.Platform;
 using System;
 using System.Collections.Generic;
 using System.Linq;

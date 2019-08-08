@@ -1,5 +1,4 @@
-﻿using NittyGritty.Uwp.Platform;
-using NittyGritty.Uwp.Platform.Payloads;
+﻿using NittyGritty.Uwp.Payloads;
 using System;
 using System.Collections.Generic;
 using System.Linq;

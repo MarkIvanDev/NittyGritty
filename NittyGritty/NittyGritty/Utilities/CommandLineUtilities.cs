@@ -8,14 +8,14 @@ namespace NittyGritty.Utilities
 {
     public static class CommandLineUtilities
     {
-        public static (string command, QueryString parameters) Parse(string cmdArgs = null)
+        public static ParsedCommand Parse(string cmdArgs = null)
         {
             var command = string.Empty;
             var parameters = new QueryString();
 
             if(cmdArgs == null)
             {
-                return (command, parameters);
+                return new ParsedCommand(command, parameters);
             }
             
             string[] args = cmdArgs.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
@@ -59,7 +59,7 @@ namespace NittyGritty.Utilities
                     }
                 }
             }
-            return (command, parameters);
+            return new ParsedCommand(command, parameters);
         }
 
         private static (string key, IReadOnlyCollection<string> values) ParseData(string[] args, ref int index)

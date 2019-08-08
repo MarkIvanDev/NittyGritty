@@ -138,59 +138,26 @@
     <Compile Include="Activation\Operations\ShareTargetOperation.cs" />
     <Compile Include="Activation\Operations\ShowAppointmentDetailsOperation.cs" />
     <Compile Include="Activation\Operations\ShowTimeFrameAppointmentOperation.cs" />
-    <Compile Include="Extensions\NGAppointmentExtensions.cs" />
-    <Compile Include="Platform\Files\FileProcessor.cs" />
-    <Compile Include="Converters\BooleanValueConverter.cs" />
-    <Compile Include="Converters\ChainConverter.cs" />
-    <Compile Include="Converters\ChangeTypeConverter.cs" />
-    <Compile Include="Converters\ColorBrushConverter.cs" />
-    <Compile Include="Converters\ColorInfoConverter.cs" />
-    <Compile Include="Converters\EventArgs\AutoSuggestBoxQuerySubmittedEventArgsConverter.cs" />
-    <Compile Include="Converters\EventArgs\ItemClickEventArgsConverter.cs" />
-    <Compile Include="Converters\EventArgs\NavigationViewItemInvokedEventArgsConverter.cs" />
-    <Compile Include="Converters\IsLessThanZeroConverter.cs" />
-    <Compile Include="Converters\IsMoreThanZeroConverter.cs" />
-    <Compile Include="Converters\IsNullConverter.cs" />
-    <Compile Include="Converters\IsZeroConverter.cs" />
-    <Compile Include="Converters\LowercaseConverter.cs" />
-    <Compile Include="Converters\NegateBooleanConverter.cs" />
-    <Compile Include="Converters\StringEmptyConverter.cs" />
-    <Compile Include="Converters\StringFormatConverter.cs" />
-    <Compile Include="Converters\StringVisibilityConverter.cs" />
-    <Compile Include="Converters\UppercaseConverter.cs" />
-    <Compile Include="Converters\ValueWhenConverter.cs" />
-    <Compile Include="Extensions\NGContactExtensions.cs" />
     <Compile Include="Activation\Operations\CommandLineOperation.cs" />
     <Compile Include="Activation\Operations\IViewOperation.cs" />
     <Compile Include="Activation\Operations\LaunchOperation.cs" />
     <Compile Include="Activation\Operations\ProtocolOperation.cs" />
     <Compile Include="Activation\Operations\ProtocolForResultsOperation.cs" />
-    <Compile Include="Platform\MultiViewConfiguration.cs" />
     <Compile Include="Extensions\DataPackageViewExtensions.cs" />
-    <Compile Include="Extensions\NavigationViewExtensions.cs" />
-    <Compile Include="Interactivity\Actions\CloseFlyoutAction.cs" />
-    <Compile Include="Interactivity\Actions\ConditionalAction.cs" />
-    <Compile Include="Interactivity\Actions\DeselectAllAction.cs" />
-    <Compile Include="Interactivity\Actions\FocusAction.cs" />
-    <Compile Include="Interactivity\Actions\OpenFlyoutAction.cs" />
-    <Compile Include="Interactivity\Actions\ScrollToElementAction.cs" />
-    <Compile Include="Interactivity\Actions\SelectAllAction.cs" />
-    <Compile Include="Interactivity\Behaviors\MultiSelectBehavior.cs" />
+    <Compile Include="Extensions\NGContactExtensions.cs" />
+    <Compile Include="Extensions\NGAppointmentExtensions.cs" />
+    <Compile Include="Payloads\AddAppointmentPayload.cs" />
+    <Compile Include="Payloads\CommandLinePayload.cs" />
+    <Compile Include="Payloads\FileOpenPayload.cs" />
+    <Compile Include="Payloads\FilePayload.cs" />
+    <Compile Include="Payloads\FileSavePayload.cs" />
+    <Compile Include="Payloads\ProtocolForResultsPayload.cs" />
+    <Compile Include="Payloads\RemoveAppointmentPayload.cs" />
+    <Compile Include="Payloads\ReplaceAppointmentPayload.cs" />
+    <Compile Include="Payloads\ShareTargetPayload.cs" />
+    <Compile Include="MultiViewConfiguration.cs" />
     <Compile Include="Activation\Operations\ToastOperation.cs" />
-    <Compile Include="Platform\Contacts.cs" />
-    <Compile Include="Platform\Payloads\AddAppointmentPayload.cs" />
-    <Compile Include="Platform\Payloads\CommandLinePayload.cs" />
-    <Compile Include="Platform\Payloads\FilePayload.cs" />
-    <Compile Include="Platform\Payloads\FileOpenPayload.cs" />
-    <Compile Include="Platform\Payloads\FileSavePayload.cs" />
-    <Compile Include="Platform\Payloads\ProtocolForResultsPayload.cs" />
-    <Compile Include="Platform\Payloads\RemoveAppointmentPayload.cs" />
-    <Compile Include="Platform\Payloads\ReplaceAppointmentPayload.cs" />
-    <Compile Include="Platform\Payloads\ShareTargetPayload.cs" />
-    <Compile Include="Platform\Files\TextFileProcessor.cs" />
-    <Compile Include="Platform\Toasts.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Selectors\ShellItemTemplateSelector.cs" />
     <Compile Include="Services\ActivationService.cs" />
     <Compile Include="Activation\ActivationHandler.cs" />
     <Compile Include="Activation\AppointmentsProviderActivationHandler.cs" />
@@ -212,14 +179,13 @@
     <Compile Include="Services\FileService.cs" />
     <Compile Include="Services\NavigationService.cs" />
     <Compile Include="Activation\Operations\FileOperation.cs" />
-    <Compile Include="Platform\SingleViewConfiguration.cs" />
-    <Compile Include="Platform\Files\StreamFileProcessor.cs" />
+    <Compile Include="SingleViewConfiguration.cs" />
     <Compile Include="Services\ToastService.cs" />
-    <Compile Include="Views\INGApp.cs" />
-    <Compile Include="Views\NGApp.cs" />
+    <Compile Include="INGApp.cs" />
+    <Compile Include="NGApp.cs" />
     <Compile Include="Activation\Operations\BackgroundTask.cs" />
-    <Compile Include="Views\SuspensionManager.cs" />
-    <Compile Include="Views\NGPage.cs" />
+    <Compile Include="SuspensionManager.cs" />
+    <Compile Include="NGPage.cs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
@@ -239,12 +205,6 @@
       <Project>{E9EFE766-9D0A-4304-9920-5D0D6E0D2DC5}</Project>
       <Name>NittyGritty</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Page Include="Themes\Generic.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>

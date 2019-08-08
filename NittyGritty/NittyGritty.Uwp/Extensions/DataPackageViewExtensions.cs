@@ -11,7 +11,7 @@ using System.Collections.ObjectModel;
 using NittyGritty.Platform.Payloads;
 using Windows.Storage.Streams;
 
-namespace NittyGritty.UI.Platform.Extensions
+namespace NittyGritty.Uwp.Extensions
 {
     public static class DataPackageViewExtensions
     {
@@ -156,7 +156,7 @@ namespace NittyGritty.UI.Platform.Extensions
             shareData.Files = await data.GetFiles();
             formats.Remove(StandardDataFormats.StorageItems);
 
-            // Since we removed all the built-in data formats, the remaining will be the custom data formats that the developer has indicated
+            // Since we removed all the built-in data formats, the remaining will be the custom data formats that the developer has included
             var customData = new Dictionary<string, object>();
             foreach (var customFormat in formats)
             {

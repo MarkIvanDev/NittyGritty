@@ -4,23 +4,16 @@ using System.Text;
 
 namespace NittyGritty.Models
 {
-    public class PickedFile : ObservableObject
+    public class PickedFile
     {
-        private string _path;
-
-        public string Path
+        public PickedFile(string path, PickedFileSource source)
         {
-            get { return _path; }
-            set { Set(ref _path, value); }
+            Path = path;
+            Source = source;
         }
 
-        private PickedFileSource _source;
+        public string Path { get; }
 
-        public PickedFileSource Source
-        {
-            get { return _source; }
-            set { Set(ref _source, value); }
-        }
-
+        public PickedFileSource Source { get; }
     }
 }

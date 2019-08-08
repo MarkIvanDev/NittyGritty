@@ -1,13 +1,12 @@
 ﻿using NittyGritty.Models;
 using NittyGritty.Uwp.Activation.Operations.Configurations;
-using NittyGritty.Uwp.Platform.Payloads;
+using NittyGritty.Uwp.Payloads;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Activation;
-using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
 namespace NittyGritty.Uwp.Activation.Operations

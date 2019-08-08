@@ -6,14 +6,14 @@ namespace NittyGritty.Models
 {
     public class ParsedCommand
     {
-        public ParsedCommand(string command, string parameter)
+        public ParsedCommand(string command, QueryString parameters)
         {
             Command = command;
-            Parameter = parameter;
+            Parameters = parameters;
         }
 
         public string Command { get; }
 
-        public string Parameter { get; }
+        public QueryString Parameters { get; }
     }
 }

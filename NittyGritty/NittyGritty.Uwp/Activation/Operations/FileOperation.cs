@@ -1,5 +1,5 @@
 ﻿using NittyGritty.Uwp.Activation.Operations.Jobs;
-using NittyGritty.Uwp.Platform.Payloads;
+using NittyGritty.Uwp.Payloads;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -69,7 +69,7 @@ namespace NittyGritty.Uwp.Activation.Operations
                 {
                     // We only have 1 file type
                     var config = GetConfiguration(files[0].FileType);
-                    var payload = new FilePayload(Verb, files, config.Processor);
+                    var payload = new FilePayload(Verb, files);
                     await config.View.Show(payload, args.CurrentlyShownApplicationViewId, frame);
                 }
                 else
@@ -77,7 +77,7 @@ namespace NittyGritty.Uwp.Activation.Operations
                     // If the file operation strategy is Single, we could only use one file processor.
                     // We should have a file processor that processes any file type
                     var config = GetConfiguration("*");
-                    var payload = new FilePayload(Verb, files, config.Processor);
+                    var payload = new FilePayload(Verb, files);
                     await config.View.Show(payload, args.CurrentlyShownApplicationViewId, frame);
                 }
             }
@@ -86,7 +86,7 @@ namespace NittyGritty.Uwp.Activation.Operations
                 foreach (var key in groupedFiles.Keys)
                 {
                     var config = GetConfiguration(key);
-                    var payload = new FilePayload(Verb, groupedFiles[key], config.Processor);
+                    var payload = new FilePayload(Verb, groupedFiles[key]);
                     await config.View.Show(payload, args.CurrentlyShownApplicationViewId, frame);
                 }
             }
@@ -95,7 +95,7 @@ namespace NittyGritty.Uwp.Activation.Operations
                 foreach (var file in files)
                 {
                     var config = GetConfiguration(file.FileType);
-                    var payload = new FilePayload(Verb, new[] { file }, config.Processor);
+                    var payload = new FilePayload(Verb, new[] { file });
                     await config.View.Show(payload, args.CurrentlyShownApplicationViewId, frame);
                 }
             }

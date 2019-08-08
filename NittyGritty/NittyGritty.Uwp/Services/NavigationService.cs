@@ -1,4 +1,4 @@
-﻿using NittyGritty.Views;
+﻿using NittyGritty.Platform;
 using System;
 using System.Collections.Generic;
 using System.Linq;
