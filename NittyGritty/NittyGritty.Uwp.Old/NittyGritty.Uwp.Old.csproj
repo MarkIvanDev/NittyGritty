@@ -1,0 +1,220 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{F54F6DF8-8CDE-42C8-B96E-E0305F5D2480}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>NittyGritty.Uwp</RootNamespace>
+    <AssemblyName>NittyGritty.Uwp.Old</AssemblyName>
+    <DefaultLanguage>en-US</DefaultLanguage>
+    <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
+    <TargetPlatformVersion Condition=" '$(TargetPlatformVersion)' == '' ">10.0.17763.0</TargetPlatformVersion>
+    <TargetPlatformMinVersion>10.0.16299.0</TargetPlatformMinVersion>
+    <MinimumVisualStudioVersion>14</MinimumVisualStudioVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{A5A43C5B-DE2A-4C0C-9213-0A381AF9435A};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <AllowCrossPlatformRetargeting>false</AllowCrossPlatformRetargeting>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>full</DebugType>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <PlatformTarget>x86</PlatformTarget>
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
+    <Optimize>true</Optimize>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>pdbonly</DebugType>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|ARM'">
+    <PlatformTarget>ARM</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\ARM\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>full</DebugType>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|ARM'">
+    <PlatformTarget>ARM</PlatformTarget>
+    <OutputPath>bin\ARM\Release\</OutputPath>
+    <DefineConstants>TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
+    <Optimize>true</Optimize>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>pdbonly</DebugType>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|ARM64'">
+    <PlatformTarget>ARM64</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\ARM64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>full</DebugType>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|ARM64'">
+    <PlatformTarget>ARM64</PlatformTarget>
+    <OutputPath>bin\ARM64\Release\</OutputPath>
+    <DefineConstants>TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
+    <Optimize>true</Optimize>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>pdbonly</DebugType>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <PlatformTarget>x64</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>full</DebugType>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <PlatformTarget>x64</PlatformTarget>
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
+    <Optimize>true</Optimize>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>pdbonly</DebugType>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup>
+    <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Activation\Operations\ActionLaunchOperation.cs" />
+    <Compile Include="Activation\Operations\AddAppointmentOperation.cs" />
+    <Compile Include="Activation\Operations\AppointmentOperation.cs" />
+    <Compile Include="Activation\Operations\ChaseableLaunchOperation.cs" />
+    <Compile Include="Activation\Operations\Configurations\ActionLaunchConfiguration.cs" />
+    <Compile Include="Activation\Operations\Configurations\CommandLineConfiguration.cs" />
+    <Compile Include="Activation\Operations\Configurations\FileConfiguration.cs" />
+    <Compile Include="Activation\Operations\Configurations\ProtocolConfiguration.cs" />
+    <Compile Include="Activation\Operations\Configurations\ProtocolForResultsConfiguration.cs" />
+    <Compile Include="Activation\Operations\Configurations\ShareTargetConfiguration.cs" />
+    <Compile Include="Activation\Operations\Configurations\ToastConfiguration.cs" />
+    <Compile Include="Activation\Operations\PrimaryLaunchOperation.cs" />
+    <Compile Include="Activation\Operations\RemoveAppointmentOperation.cs" />
+    <Compile Include="Activation\Operations\ReplaceAppointmentOperation.cs" />
+    <Compile Include="Activation\Operations\ShareTargetOperation.cs" />
+    <Compile Include="Activation\Operations\ShowAppointmentDetailsOperation.cs" />
+    <Compile Include="Activation\Operations\ShowTimeFrameAppointmentOperation.cs" />
+    <Compile Include="Activation\Operations\CommandLineOperation.cs" />
+    <Compile Include="Activation\Operations\IViewOperation.cs" />
+    <Compile Include="Activation\Operations\LaunchOperation.cs" />
+    <Compile Include="Activation\Operations\ProtocolOperation.cs" />
+    <Compile Include="Activation\Operations\ProtocolForResultsOperation.cs" />
+    <Compile Include="Extensions\DataPackageViewExtensions.cs" />
+    <Compile Include="Extensions\NGContactExtensions.cs" />
+    <Compile Include="Extensions\NGAppointmentExtensions.cs" />
+    <Compile Include="Payloads\AddAppointmentPayload.cs" />
+    <Compile Include="Payloads\CommandLinePayload.cs" />
+    <Compile Include="Payloads\FileOpenPayload.cs" />
+    <Compile Include="Payloads\FilePayload.cs" />
+    <Compile Include="Payloads\FileSavePayload.cs" />
+    <Compile Include="Payloads\ProtocolForResultsPayload.cs" />
+    <Compile Include="Payloads\RemoveAppointmentPayload.cs" />
+    <Compile Include="Payloads\ReplaceAppointmentPayload.cs" />
+    <Compile Include="Payloads\ShareTargetPayload.cs" />
+    <Compile Include="MultiViewConfiguration.cs" />
+    <Compile Include="Activation\Operations\ToastOperation.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\ActivationService.cs" />
+    <Compile Include="Activation\ActivationHandler.cs" />
+    <Compile Include="Activation\AppointmentsProviderActivationHandler.cs" />
+    <Compile Include="Activation\BackgroundActivationHandler.cs" />
+    <Compile Include="Activation\CachedFileUpdaterActivationHandler.cs" />
+    <Compile Include="Activation\CommandLineActivationHandler.cs" />
+    <Compile Include="Activation\ContactPanelActivationHandler.cs" />
+    <Compile Include="Activation\DefaultActivationHandler.cs" />
+    <Compile Include="Activation\FileActivationHandler.cs" />
+    <Compile Include="Activation\FileOpenPickerActivationHandler.cs" />
+    <Compile Include="Activation\FileSavePickerActivationHandler.cs" />
+    <Compile Include="Activation\LaunchActivationHandler.cs" />
+    <Compile Include="Activation\ProtocolActivationHandler.cs" />
+    <Compile Include="Activation\ProtocolForResultsActivationHandler.cs" />
+    <Compile Include="Activation\ShareTargetActivationHandler.cs" />
+    <Compile Include="Activation\ToastNotificationActivationHandler.cs" />
+    <Compile Include="Services\ContactService.cs" />
+    <Compile Include="Services\DialogService.cs" />
+    <Compile Include="Services\FileService.cs" />
+    <Compile Include="Services\NavigationService.cs" />
+    <Compile Include="Activation\Operations\FileOperation.cs" />
+    <Compile Include="SingleViewConfiguration.cs" />
+    <Compile Include="Services\ToastService.cs" />
+    <Compile Include="INGApp.cs" />
+    <Compile Include="NGApp.cs" />
+    <Compile Include="Activation\Operations\BackgroundTask.cs" />
+    <Compile Include="SuspensionManager.cs" />
+    <Compile Include="NGPage.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
+      <Version>6.2.8</Version>
+    </PackageReference>
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\NittyGritty.Platform\NittyGritty.Platform.csproj">
+      <Project>{9F764D3A-893F-4B2D-A560-2E03419763DD}</Project>
+      <Name>NittyGritty.Platform</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NittyGritty\NittyGritty.csproj">
+      <Project>{E9EFE766-9D0A-4304-9920-5D0D6E0D2DC5}</Project>
+      <Name>NittyGritty</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
+    <VisualStudioVersion>14.0</VisualStudioVersion>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\WindowsXaml\v$(VisualStudioVersion)\Microsoft.Windows.UI.Xaml.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

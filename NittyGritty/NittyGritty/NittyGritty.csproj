@@ -2,21 +2,23 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-    <Authors>markivan.basto</Authors>
-    <Company />
-    <PackageId>NittyGritty</PackageId>
-    <PackageLicenseUrl>https://github.com/MarkIvanDev/NittyGritty/blob/master/LICENSE</PackageLicenseUrl>
-    <PackageProjectUrl>https://github.com/MarkIvanDev/NittyGritty</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/MarkIvanDev/NittyGritty.git</RepositoryUrl>
-    <Version>1.1.0-beta</Version>
-    <Description>Boilerplate code that can speed up your development</Description>
-    <Copyright>(c) 2019 Mark Ivan Basto</Copyright>
-    <PackageTags>c# mvvm helpers extensions utilities view viewmodel model collections data nittygritty markivan</PackageTags>
-    <AssemblyVersion>1.1.0.0</AssemblyVersion>
-    <FileVersion>1.1.0.0</FileVersion>
-    <RepositoryType>git</RepositoryType>
+    <AssemblyName>NittyGritty</AssemblyName>
+    <RootNamespace>NittyGritty</RootNamespace>
+    <Owners>markivan.basto</Owners>
   </PropertyGroup>
 
-
+  <PropertyGroup>
+    <PackageId>NittyGritty</PackageId>
+    <PackageVersion>1.2.0-beta1</PackageVersion>
+    <Title>NittyGritty</Title>
+    <Authors>markivan.basto</Authors>
+    <Description>Boilerplate code that can speed up your development</Description>
+    <Copyright>(c) 2019 Mark Ivan Basto</Copyright>
+    <PackageProjectUrl>https://github.com/MarkIvanDev/NittyGritty</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/MarkIvanDev/NittyGritty.git</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageTags>c# mvvm helpers extensions utilities view viewmodel model collections data nittygritty markivan</PackageTags>
+  </PropertyGroup>
 </Project>

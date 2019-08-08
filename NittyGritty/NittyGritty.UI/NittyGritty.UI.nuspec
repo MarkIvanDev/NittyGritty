@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>NittyGritty.UI</id>
+    <version>1.2.0-beta1</version>
+    <title>NittyGritty.UI</title>
+    <authors>markivan.basto</authors>
+    <owners>markivan.basto</owners>
+    <license type="expression">MIT</license>
+    <projectUrl>https://github.com/MarkIvanDev/NittyGritty</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Boilerplate code that can speed up your development</description>
+    <dependencies>
+      <group targetFramework="MonoAndroid8.1">
+        <dependency id="Xamarin.Forms" version="4.1.0.618606" />
+        <dependency id="NittyGritty" version="1.2.0-beta1" />
+      </group>
+      <group targetFramework="MonoAndroid9.0">
+        <dependency id="Xamarin.Forms" version="4.1.0.618606" />
+        <dependency id="NittyGritty" version="1.2.0-beta1" />
+      </group>
+      <group targetFramework="Xamarin.iOS10">
+        <dependency id="Xamarin.Forms" version="4.1.0.618606" />
+        <dependency id="NittyGritty" version="1.2.0-beta1" />
+      </group>
+      <group targetFramework="uap10.0.16299">
+        <dependency id="Microsoft.NETCore.UniversalWindowsPlatform" version="6.1.9" exclude="Build,Analyzers" />
+        <dependency id="NittyGritty" version="1.2.0-beta1" />
+      </group>
+    </dependencies>
+    <frameworkAssemblies>
+      <frameworkAssembly assemblyName="OpenTK-1.0" targetFramework="Xamarin.iOS1.0" />
+      <frameworkAssembly assemblyName="System.Numerics" targetFramework="Xamarin.iOS1.0" />
+      <frameworkAssembly assemblyName="System.Numerics.Vectors" targetFramework="Xamarin.iOS1.0" />
+      <frameworkAssembly assemblyName="System.Numerics" targetFramework="MonoAndroid8.1" />
+      <frameworkAssembly assemblyName="System.Numerics.Vectors" targetFramework="MonoAndroid8.1" />
+      <frameworkAssembly assemblyName="System.Numerics" targetFramework="MonoAndroid9.0" />
+      <frameworkAssembly assemblyName="System.Numerics.Vectors" targetFramework="MonoAndroid9.0" />
+    </frameworkAssemblies>
+    <copyright>(c) 2019 Mark Ivan Basto</copyright>
+    <tags>c# mvvm helpers extensions utilities view viewmodel model collections data nittygritty markivan platform</tags>
+  </metadata>
+</package>
