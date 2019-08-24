@@ -73,6 +73,7 @@ namespace NittyGritty.Uwp.Activation
         Unknown = 0,
         Normal = 1,
         Background = 2,
-        Hosted = 3
+        Hosted = 3,
+        Custom = 4
     }
 }

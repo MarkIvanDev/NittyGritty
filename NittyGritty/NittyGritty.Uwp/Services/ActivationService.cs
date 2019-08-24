@@ -16,14 +16,14 @@ namespace NittyGritty.Uwp.Services
     public class ActivationService
     {
         private readonly Func<Task> initialization;
-        private readonly Lazy<UIElement> shell;
+        private readonly Lazy<Page> shell;
         private readonly Lazy<Frame> navigationContext;
         private readonly IEnumerable<IActivationHandler> handlers;
         private readonly DefaultActivationHandler defaultHandler;
         private readonly Func<Task> startup;
 
         public ActivationService(Func<Task> initialization,
-                                 Lazy<UIElement> shell,
+                                 Lazy<Page> shell,
                                  Lazy<Frame> navigationContext,
                                  IEnumerable<IActivationHandler> handlers,
                                  Type defaultView,
@@ -40,7 +40,7 @@ namespace NittyGritty.Uwp.Services
 
         public ActivationService(INGApp app) : this(
             app.Initialization,
-            new Lazy<UIElement>(app.CreateShell),
+            new Lazy<Page>(app.CreateShell),
             new Lazy<Frame>(app.GetNavigationContext),
             app.GetActivationHandlers(),
             app.DefaultView,
@@ -69,7 +69,13 @@ namespace NittyGritty.Uwp.Services
                 if (Window.Current.Content == null)
                 {
                     // Create a Frame to act as the navigation context and navigate to the first page
-                    Window.Current.Content = shell?.Value ?? new Frame();
+                    var rootFrame = new Frame();
+                    var shellPage = shell?.Value;
+                    if(shellPage != null)
+                    {
+                        rootFrame.Navigate(shellPage.GetType());
+                    }
+                    Window.Current.Content = rootFrame;
                 }
 
                 // If there is already a view showing, then the app is a multi-view
@@ -101,6 +107,7 @@ namespace NittyGritty.Uwp.Services
                 // Normal activations can request for a navigation context (in this case, a Frame) to be used in their HandleAsync logic
                 // Pickers can just use Window.Current.Content as Frame to have a navigation context
                 // Background activation does not show any UI so can continue without navigation context
+                // Custom activations must manually set the Window.Current.Content in their implementation
                 if(activationHandler.Strategy == ActivationStrategy.Normal)
                 {
                     // We used a Lazy object for this because the navigation context is only relevant after

@@ -6,20 +6,24 @@ namespace NittyGritty.Models
 {
     public class ShellItem : ObservableObject
     {
-        public ShellItem(string key, object parameter, ShellItemType type, object content)
+        public ShellItem(ShellItemType type, object content, string key, object parameter, string tag)
         {
             Key = key;
             Parameter = parameter;
+            Tag = tag;
             Type = type;
             Content = content;
         }
+
+        public ShellItemType Type { get; }
+
+        public object Content { get; }
 
         public string Key { get; }
 
         public object Parameter { get; }
 
-        public ShellItemType Type { get; }
+        public string Tag { get; }
 
-        public object Content { get; }
     }
 }
