@@ -4,19 +4,44 @@ using System.Text;
 
 namespace NittyGritty.Models
 {
-    public class ProgressInfo
+    public class ProgressInfo : ObservableObject
     {
-        public ProgressInfo(long? total, long value, string name = null)
+        public ProgressInfo(double? total, double value, string name = null)
         {
             Total = total;
             Value = value;
             Name = name;
         }
 
-        public long? Total { get; }
+        private double? _total;
 
-        public long Value { get; }
+        public double? Total
+        {
+            get { return _total; }
+            private set { Set(ref _total, value); }
+        }
 
-        public string Name { get; }
+        private double _value;
+
+        public double Value
+        {
+            get { return _value; }
+            private set { Set(ref _value, value); }
+        }
+
+        private string _name;
+
+        public string Name
+        {
+            get { return _name; }
+            private set { Set(ref _name, value); }
+        }
+
+        public void Update(double? total, double value, string name)
+        {
+            Total = total;
+            Value = value;
+            Name = name;
+        }
     }
 }

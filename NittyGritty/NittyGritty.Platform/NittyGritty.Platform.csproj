@@ -5,12 +5,11 @@
     <AssemblyName>NittyGritty.Platform</AssemblyName>
     <RootNamespace>NittyGritty.Platform</RootNamespace>
     <Owners>markivan.basto</Owners>
-    <Version>1.2.0-beta1</Version>
   </PropertyGroup>
 
   <PropertyGroup>
     <PackageId>NittyGritty.Platform</PackageId>
-    <PackageVersion>1.2.0-beta1</PackageVersion>
+    <PackageVersion>1.2.1-beta1</PackageVersion>
     <Title>NittyGritty.Platform</Title>
     <Authors>markivan.basto</Authors>
     <Description>Boilerplate code that can speed up your development</Description>

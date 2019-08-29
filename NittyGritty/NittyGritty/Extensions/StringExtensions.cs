@@ -77,19 +77,22 @@ namespace NittyGritty.Extensions
         }
 
         /// <summary>
-        /// Returns true if <paramref name="path"/> starts with the path <paramref name="baseDirPath"/>.
+        /// Returns true if <paramref name="path"/> starts with the path <paramref name="basePath"/>.
         /// The comparison is case-insensitive, handles / and \ slashes as folder separators and
         /// only matches if the base dir folder name is matched exactly ("c:\foobar\file.txt" is not a sub path of "c:\foo").
         /// </summary>
-        public static bool IsSubPathOf(this string path, string baseDirPath)
+        public static bool IsSubPathOf(this string path, string basePath)
         {
-            string normalizedPath = Path.GetFullPath(path.Replace('/', '\\')
-                .WithEnding("\\"));
+            string normalizedPath = path.NormalizeDirectory();
+            string normalizedBasePath = basePath.NormalizeDirectory();
 
-            string normalizedBaseDirPath = Path.GetFullPath(baseDirPath.Replace('/', '\\')
-                .WithEnding("\\"));
+            return normalizedPath.StartsWith(normalizedBasePath, StringComparison.OrdinalIgnoreCase);
+        }
 
-            return normalizedPath.StartsWith(normalizedBaseDirPath, StringComparison.OrdinalIgnoreCase);
+        public static string NormalizeDirectory(this string path)
+        {
+            return Path.GetFullPath(path.Replace('/', '\\')
+                .WithEnding("\\"));
         }
 
         /// <summary>

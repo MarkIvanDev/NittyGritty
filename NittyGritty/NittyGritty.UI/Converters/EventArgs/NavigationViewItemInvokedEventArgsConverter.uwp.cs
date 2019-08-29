@@ -24,10 +24,11 @@ namespace NittyGritty.UI.Converters.EventArgs
                     if (Strategy != NavigationViewItemStrategy.Other)
                     {
                         return new ShellItem(
+                            type: ShellItemType.Settings,
+                            content: null,
                             key: navigationView.GetValue(NavigationViewExtensions.SettingsKeyProperty).ToString(),
                             parameter: navigationView.GetValue(NavigationViewExtensions.SettingsParameterProperty),
-                            type: ShellItemType.Settings,
-                            content: null);
+                            tag: null);
                     }
                     else
                     {
@@ -41,10 +42,11 @@ namespace NittyGritty.UI.Converters.EventArgs
                         if (ApiInformation.IsReadOnlyPropertyPresent("Windows.UI.Xaml.Controls.NavigationViewItemInvokedEventArgs", "InvokedItemContainer"))
                         {
                             return new ShellItem(
+                                type: ShellItemType.Item,
+                                content: args.InvokedItemContainer.Content,
                                 key: args.InvokedItemContainer.GetValue(NavigationViewExtensions.KeyProperty).ToString(),
                                 parameter: args.InvokedItemContainer.GetValue(NavigationViewExtensions.ParameterProperty),
-                                type: ShellItemType.Item,
-                                content: args.InvokedItemContainer.Content);
+                                tag: null);
                         }
                         else
                         {
@@ -52,10 +54,11 @@ namespace NittyGritty.UI.Converters.EventArgs
                                 .OfType<NavigationViewItem>()
                                     .FirstOrDefault(menuItem => (string)menuItem.Content == (string)args.InvokedItem);
                             return new ShellItem(
+                                type: ShellItemType.Item,
+                                content: item?.Content,
                                 key: item?.GetValue(NavigationViewExtensions.KeyProperty).ToString(),
                                 parameter: item?.GetValue(NavigationViewExtensions.ParameterProperty),
-                                type: ShellItemType.Item,
-                                content: item?.Content);
+                                tag: null);
                         }
                     }
                     else

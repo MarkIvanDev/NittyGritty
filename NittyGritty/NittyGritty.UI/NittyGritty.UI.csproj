@@ -11,7 +11,7 @@
 
   <PropertyGroup>
     <PackageId>NittyGritty.UI</PackageId>
-    <PackageVersion>1.2.0-beta1</PackageVersion>
+    <PackageVersion>1.2.1-beta1</PackageVersion>
     <Title>NittyGritty.UI</Title>
     <Authors>markivan.basto</Authors>
     <Description>Boilerplate code that can speed up your development</Description>
@@ -78,5 +78,5 @@
     <Reference Include="System.Numerics.Vectors" />
     <PackageReference Include="Xamarin.Forms" Version="4.1.0.618606" />
   </ItemGroup>
-
+  
 </Project>

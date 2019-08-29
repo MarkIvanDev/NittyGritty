@@ -11,7 +11,7 @@ namespace NittyGritty.Uwp
 {
     public interface INGApp
     {
-        Page CreateShell();
+        Type Shell { get; }
 
         Frame GetNavigationContext();
 

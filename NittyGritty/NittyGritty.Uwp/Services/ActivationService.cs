@@ -16,14 +16,14 @@ namespace NittyGritty.Uwp.Services
     public class ActivationService
     {
         private readonly Func<Task> initialization;
-        private readonly Lazy<Page> shell;
+        private readonly Type shell;
         private readonly Lazy<Frame> navigationContext;
         private readonly IEnumerable<IActivationHandler> handlers;
         private readonly DefaultActivationHandler defaultHandler;
         private readonly Func<Task> startup;
 
         public ActivationService(Func<Task> initialization,
-                                 Lazy<Page> shell,
+                                 Type shell,
                                  Lazy<Frame> navigationContext,
                                  IEnumerable<IActivationHandler> handlers,
                                  Type defaultView,
@@ -40,7 +40,7 @@ namespace NittyGritty.Uwp.Services
 
         public ActivationService(INGApp app) : this(
             app.Initialization,
-            new Lazy<Page>(app.CreateShell),
+            app.Shell,
             new Lazy<Frame>(app.GetNavigationContext),
             app.GetActivationHandlers(),
             app.DefaultView,
@@ -70,10 +70,9 @@ namespace NittyGritty.Uwp.Services
                 {
                     // Create a Frame to act as the navigation context and navigate to the first page
                     var rootFrame = new Frame();
-                    var shellPage = shell?.Value;
-                    if(shellPage != null)
+                    if(shell != null)
                     {
-                        rootFrame.Navigate(shellPage.GetType());
+                        rootFrame.Navigate(shell);
                     }
                     Window.Current.Content = rootFrame;
                 }

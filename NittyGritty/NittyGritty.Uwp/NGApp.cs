@@ -51,10 +51,7 @@ namespace NittyGritty.Uwp
             await Task.CompletedTask;
         }
 
-        public virtual Page CreateShell()
-        {
-            return null;
-        }
+        public Type Shell { get; protected set; }
 
         public abstract Frame GetNavigationContext();
 
