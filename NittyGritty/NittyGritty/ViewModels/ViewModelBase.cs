@@ -194,25 +194,9 @@ namespace NittyGritty.ViewModels
 
         #region State Management
 
-        public virtual void OnLoading()
-        {
+        public abstract void LoadState(object parameter, Dictionary<string, object> state);
 
-        }
-
-        public virtual void LoadState(object parameter, Dictionary<string, object> state)
-        {
-            OnLoading();
-        }
-
-        public virtual void OnSaving()
-        {
-            CancelAll();
-        }
-
-        public virtual void SaveState(Dictionary<string, object> state)
-        {
-            OnSaving();
-        }
+        public abstract void SaveState(Dictionary<string, object> state);
 
         public T RestoreStateItem<T>(Dictionary<string, object> state, string stateKey, T defaultValue = default(T))
         {

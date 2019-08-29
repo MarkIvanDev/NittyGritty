@@ -91,8 +91,8 @@ namespace NittyGritty.Extensions
 
         public static string NormalizeDirectory(this string path)
         {
-            return Path.GetFullPath(path.Replace('/', '\\')
-                .WithEnding("\\"));
+            return Path.GetFullPath(path.Replace(Path.AltDirectorySeparatorChar, Path.DirectorySeparatorChar)
+                .WithEnding(Path.DirectorySeparatorChar.ToString()));
         }
 
         /// <summary>
