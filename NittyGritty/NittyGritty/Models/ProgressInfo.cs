@@ -6,11 +6,9 @@ namespace NittyGritty.Models
 {
     public class ProgressInfo : ObservableObject
     {
-        public ProgressInfo(double? total, double value, string name = null)
+        public ProgressInfo()
         {
-            Total = total;
-            Value = value;
-            Name = name;
+            Reset();
         }
 
         private double? _total;
@@ -42,6 +40,13 @@ namespace NittyGritty.Models
             Total = total;
             Value = value;
             Name = name;
+        }
+
+        public void Reset()
+        {
+            Total = null;
+            Value = 0;
+            Name = string.Empty;
         }
     }
 }

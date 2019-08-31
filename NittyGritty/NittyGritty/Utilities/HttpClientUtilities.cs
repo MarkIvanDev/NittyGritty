@@ -27,7 +27,9 @@ namespace NittyGritty.Utilities
                 {
                     var totalBytes = response.Content.Headers.ContentLength;
                     var name = Path.GetFileName(onlinePath.AbsolutePath);
-                    progressCallback?.Report(new ProgressInfo(totalBytes, 0, name));
+                    var progressInfo = new ProgressInfo();
+                    progressInfo.Update(totalBytes, 0, name);
+                    progressCallback?.Report(progressInfo);
 
                     using (var contentStream = await response.Content.ReadAsStreamAsync())
                     {
@@ -43,14 +45,16 @@ namespace NittyGritty.Utilities
                                 if (bytesRead == 0)
                                 {
                                     isMoreToRead = false;
-                                    progressCallback?.Report(new ProgressInfo(totalBytes, totalBytesRead));
+                                    progressInfo.Update(totalBytes, totalBytesRead, name);
+                                    progressCallback?.Report(progressInfo);
                                     continue;
                                 }
 
                                 await fileStream.WriteAsync(buffer, 0, bytesRead);
 
                                 totalBytesRead += bytesRead;
-                                progressCallback?.Report(new ProgressInfo(totalBytes, totalBytesRead));
+                                progressInfo.Update(totalBytes, totalBytesRead, name);
+                                progressCallback?.Report(progressInfo);
                             }
                             while (isMoreToRead);
                         }
