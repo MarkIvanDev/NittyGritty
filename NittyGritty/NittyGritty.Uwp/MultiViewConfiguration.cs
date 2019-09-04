@@ -13,11 +13,24 @@ namespace NittyGritty.Uwp
     {
         public MultiViewConfiguration(Type view, Predicate<T> createsNewView = null)
         {
-            View = view ?? throw new ArgumentNullException(nameof(view));
+            if(view != null)
+            {
+                ViewSelector = (payload) => view;
+            }
+            else
+            {
+                throw new ArgumentNullException(nameof(view));
+            }
             CreatesNewView = createsNewView ?? (createsNewView = (payload) => false);
         }
 
-        public Type View { get; }
+        public MultiViewConfiguration(Func<T, Type> viewSelector, Predicate<T> createsNewView = null)
+        {
+            ViewSelector = viewSelector ?? throw new ArgumentNullException(nameof(viewSelector));
+            CreatesNewView = createsNewView ?? (createsNewView = (payload) => false);
+        }
+
+        public Func<T, Type> ViewSelector { get; }
 
         public Predicate<T> CreatesNewView { get; }
 
@@ -30,7 +43,7 @@ namespace NittyGritty.Uwp
                 await newView.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
                 {
                     var newViewFrame = new Frame();
-                    newViewFrame.Navigate(View, payload);
+                    newViewFrame.Navigate(ViewSelector(payload), payload);
                     Window.Current.Content = newViewFrame;
                     // You have to activate the window in order to show it later.
                     Window.Current.Activate();
@@ -53,7 +66,7 @@ namespace NittyGritty.Uwp
             }
             else
             {
-                frame.Navigate(View, payload);
+                frame.Navigate(ViewSelector(payload), payload);
             }
         }
     }

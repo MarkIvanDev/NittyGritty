@@ -123,6 +123,9 @@
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ProtocolPage.xaml.cs">
+      <DependentUpon>ProtocolPage.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
@@ -149,11 +152,29 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="ProtocolPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
       <Version>6.2.8</Version>
     </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\NittyGritty.Platform\NittyGritty.Platform.csproj">
+      <Project>{9f764d3a-893f-4b2d-a560-2e03419763dd}</Project>
+      <Name>NittyGritty.Platform</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\NittyGritty.Uwp\NittyGritty.Uwp.csproj">
+      <Project>{f7f26639-ddc1-420f-9b1f-f1a3545857a0}</Project>
+      <Name>NittyGritty.Uwp</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\NittyGritty\NittyGritty.csproj">
+      <Project>{e9efe766-9d0a-4304-9920-5d0d6e0d2dc5}</Project>
+      <Name>NittyGritty</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>

@@ -18,7 +18,7 @@ namespace NittyGritty.Uwp.Payloads
         public ProtocolForResultsPayload(string path, IDictionary<string, object> data, QueryString parameters, ProtocolForResultsOperation operation)
         {
             Path = path;
-            Data = new ReadOnlyDictionary<string, object>(data);
+            Data = data != null ? new ReadOnlyDictionary<string, object>(data) : null;
             Parameters = parameters;
             this.operation = operation;
         }

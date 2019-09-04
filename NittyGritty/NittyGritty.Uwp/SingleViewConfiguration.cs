@@ -12,16 +12,29 @@ namespace NittyGritty.Uwp
         public SingleViewConfiguration(string key, Type view)
         {
             Key = key;
-            View = view;
+            if(view != null)
+            {
+                ViewSelector = (payload) => view;
+            }
+            else
+            {
+                throw new ArgumentNullException(nameof(view));
+            }
+        }
+
+        public SingleViewConfiguration(string key, Func<T, Type> viewSelector)
+        {
+            Key = key;
+            ViewSelector = viewSelector ?? throw new ArgumentNullException(nameof(viewSelector));
         }
 
         public string Key { get; }
 
-        public Type View { get; }
+        public Func<T, Type> ViewSelector { get; }
 
         public void Show(T payload, Frame frame)
         {
-            frame.Navigate(View, payload);
+            frame.Navigate(ViewSelector(payload), payload);
         }
     }
 }

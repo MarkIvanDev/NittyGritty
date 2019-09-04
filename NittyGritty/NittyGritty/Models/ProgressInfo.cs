@@ -8,7 +8,15 @@ namespace NittyGritty.Models
     {
         public ProgressInfo()
         {
-            Reset();
+            Stop();
+        }
+
+        private bool _isRunning;
+
+        public bool IsRunning
+        {
+            get { return _isRunning; }
+            private set { Set(ref _isRunning, value); }
         }
 
         private double? _total;
@@ -42,9 +50,18 @@ namespace NittyGritty.Models
             Name = name;
         }
 
-        public void Reset()
+        public void Start()
         {
+            IsRunning = true;
             Total = null;
+            Value = 0;
+            Name = string.Empty;
+        }
+
+        public void Stop()
+        {
+            IsRunning = false;
+            Total = 0;
             Value = 0;
             Name = string.Empty;
         }

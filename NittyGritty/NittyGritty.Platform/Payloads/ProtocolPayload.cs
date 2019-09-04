@@ -16,7 +16,7 @@ namespace NittyGritty.Platform.Payloads
         public ProtocolPayload(string path, IDictionary<string, object> data, QueryString parameters)
         {
             Path = path;
-            Data = new ReadOnlyDictionary<string, object>(data);
+            Data = data != null ? new ReadOnlyDictionary<string, object>(data) : null;
             Parameters = parameters;
         }
 
