@@ -22,10 +22,10 @@ namespace NittyGritty.UI.Converters
         {
             if (value is IComparable comparable)
             {
-                return comparable.CompareTo(0) < 0;
+                return comparable.CompareTo(System.Convert.ChangeType(0, comparable.GetType())) < 0;
             }
 
-            return null;
+            return false;
         }
 
 #if UWP

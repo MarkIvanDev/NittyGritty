@@ -12,20 +12,17 @@ using Xamarin.Forms;
 
 namespace NittyGritty.UI.Converters
 {
-    public class IsMoreThanZeroConverter : IValueConverter
+    public class ConverterContainer : IValueConverter
     {
+        public IValueConverter Converter { get; set; }
+
 #if UWP
         public object Convert(object value, Type targetType, object parameter, string language)
 #else
         public object Convert(object value, Type targetType, object parameter, CultureInfo language)
 #endif
         {
-            if (value is IComparable comparable)
-            {
-                return comparable.CompareTo(System.Convert.ChangeType(0, comparable.GetType())) > 0;
-            }
-
-            return false;
+            return Converter.Convert(value, targetType, parameter, language);
         }
 
 #if UWP
@@ -34,7 +31,7 @@ namespace NittyGritty.UI.Converters
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo language)
 #endif
         {
-            throw new NotImplementedException();
+            return Converter.ConvertBack(value, targetType, parameter, language);
         }
     }
 }
