@@ -10,15 +10,15 @@ using System.Text;
 
 namespace NittyGritty.Collections
 {
-    public class TrackableCollection<TItem> : ITrackable<TItem>, ICollection<TItem>, ICollection, INotifyCollectionChanged, IDisposable
-        where TItem : INotifyPropertyChanged
+    public class TrackableCollection<TItem> : ITrackable<TItem>, IList<TItem>, IList, INotifyCollectionChanged, IDisposable
+        // where TItem : INotifyPropertyChanged
     {
         private NotifyCollectionChangedEventHandler _itemsChangedHandler;
         private SafeObservableCollection<TItem> _internalCollection = new SafeObservableCollection<TItem>();
         private readonly Dictionary<TItem, PropertyChangedEventHandler> _events =
             new Dictionary<TItem, PropertyChangedEventHandler>();
 
-        public TrackableCollection() : this(new ObservableCollection<TItem>(), false)
+        public TrackableCollection() : this(Enumerable.Empty<TItem>(), false)
         {
         }
 
@@ -28,12 +28,13 @@ namespace NittyGritty.Collections
 
         public TrackableCollection(IEnumerable<TItem> items, bool trackItemChanges)
         {
-            if (!(items is INotifyCollectionChanged collection))
-            {
-                throw new ArgumentException($"{items} must implement INotifyCollectionChanged", nameof(items));
-            }
+            //if (!(items is INotifyCollectionChanged collection))
+            //{
+            //    throw new ArgumentException($"{items} must implement INotifyCollectionChanged", nameof(items));
+            //}
 
-            Items = items.ToList();
+            //Items = items.ToList();
+            Items = new ObservableCollection<TItem>(items);
 
             TrackItemChanges = trackItemChanges;
             TrackCollectionChanges = true;
@@ -91,14 +92,17 @@ namespace NittyGritty.Collections
             if (_events.ContainsKey(item))
                 return;
 
-            var handler = EventUtilities.RegisterEvent<TrackableCollection<TItem>, PropertyChangedEventHandler, PropertyChangedEventArgs>(
+            if(item is INotifyPropertyChanged i)
+            {
+                var handler = EventUtilities.RegisterEvent<TrackableCollection<TItem>, PropertyChangedEventHandler, PropertyChangedEventArgs>(
                 this,
-                h => item.PropertyChanged += h,
-                h => item.PropertyChanged -= h,
+                h => i.PropertyChanged += h,
+                h => i.PropertyChanged -= h,
                 h => (o, e) => h(o, e),
                 (subscriber, s, e) => subscriber.Refresh());
 
-            _events.Add(item, handler);
+                _events.Add(item, handler);
+            }
         }
 
         private void DeregisterEvent(TItem item)
@@ -106,9 +110,12 @@ namespace NittyGritty.Collections
             if (!_events.ContainsKey(item))
                 return;
 
-            var handler = _events[item];
-            item.PropertyChanged -= handler;
-            _events.Remove(item);
+            if(item is INotifyPropertyChanged i)
+            {
+                var handler = _events[item];
+                i.PropertyChanged -= handler;
+                _events.Remove(item);
+            }
         }
 
         private void TrackCollection()
@@ -221,7 +228,7 @@ namespace NittyGritty.Collections
             }
         }
 
-        public virtual IEnumerable<TItem> GetItems()
+        public virtual IList<TItem> GetItems()
         {
             return Items;
         }
@@ -266,6 +273,11 @@ namespace NittyGritty.Collections
             get { return true; }
         }
 
+        public bool IsFixedSize
+        {
+            get { return false; }
+        }
+
         private object _syncRoot;
 
         public object SyncRoot
@@ -281,6 +293,24 @@ namespace NittyGritty.Collections
             Items.Add(item);
         }
 
+        int IList.Add(object value)
+        {
+            return ((IList)Items).Add(value);
+        }
+
+        public void Insert(int index, TItem item)
+        {
+            Items.Insert(index, item);
+        }
+
+        void IList.Insert(int index, object value)
+        {
+            if(value is TItem item)
+            {
+                Insert(index, item);
+            }
+        }
+
         public void Clear()
         {
             Items.Clear();
@@ -294,9 +324,45 @@ namespace NittyGritty.Collections
             }
         }
 
+        bool IList.Contains(object value)
+        {
+            if(value is TItem item)
+            {
+                return Contains(item);
+            }
+            return false;
+        }
+
         public bool Remove(TItem item)
         {
             return Items.Remove(item);
+        }
+
+        void IList.Remove(object value)
+        {
+            ((IList)Items).Remove(value);
+        }
+
+        public void RemoveAt(int index)
+        {
+            Items.RemoveAt(index);
+        }
+
+        public int IndexOf(TItem item)
+        {
+            lock (SyncRoot)
+            {
+                return _internalCollection.IndexOf(item);
+            }
+        }
+
+        int IList.IndexOf(object value)
+        {
+            if(value is TItem item)
+            {
+                return IndexOf(item);
+            }
+            return -1;
         }
 
         public void CopyTo(TItem[] array, int arrayIndex)
@@ -310,6 +376,30 @@ namespace NittyGritty.Collections
         public void CopyTo(Array array, int index)
         {
             CopyTo((TItem[])array, index);
+        }
+
+        public TItem this[int index]
+        {
+            get
+            {
+                lock (SyncRoot)
+                {
+                    return _internalCollection[index];
+                }
+            }
+            set { throw new NotSupportedException("Use TrackableCollection.Items[] instead"); }
+        }
+
+        object IList.this[int index]
+        {
+            get
+            {
+                lock (SyncRoot)
+                {
+                    return _internalCollection[index];
+                }
+            }
+            set { throw new NotSupportedException("Use TrackableCollection.Items[] instead."); }
         }
 
         public IEnumerator<TItem> GetEnumerator()

@@ -5,7 +5,8 @@ using System.Text;
 
 namespace NittyGritty.Collections
 {
-    public interface ITrackable<TItem> where TItem : INotifyPropertyChanged
+    public interface ITrackable<TItem>
+        // where TItem : INotifyPropertyChanged
     {
         bool IsTracking { get; set; }
 
@@ -13,7 +14,7 @@ namespace NittyGritty.Collections
 
         bool TrackItemChanges { get; set; }
 
-        IEnumerable<TItem> GetItems();
+        IList<TItem> GetItems();
 
         void Refresh();
     }

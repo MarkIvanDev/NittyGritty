@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using NittyGritty.Sample.ViewModels;
+using NittyGritty.Uwp;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.System;
@@ -21,12 +23,14 @@ namespace NittyGritty.Sample.Uwp
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class MainPage : Page
+    public sealed partial class MainPage : NGPage
     {
         public MainPage()
         {
             this.InitializeComponent();
         }
+
+        public MainViewModel ViewModel => DataContext as MainViewModel;
 
         private async void Button_Click(object sender, RoutedEventArgs e)
         {

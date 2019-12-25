@@ -119,6 +119,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\ServiceLocator.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
@@ -161,6 +162,9 @@
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
       <Version>6.2.8</Version>
     </PackageReference>
+    <PackageReference Include="MvvmLightLibsStd10">
+      <Version>5.4.1.1</Version>
+    </PackageReference>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\NittyGritty.Platform\NittyGritty.Platform.csproj">
@@ -174,6 +178,10 @@
     <ProjectReference Include="..\..\NittyGritty\NittyGritty.csproj">
       <Project>{e9efe766-9d0a-4304-9920-5d0d6e0d2dc5}</Project>
       <Name>NittyGritty</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NittyGritty.Sample.ViewModels\NittyGritty.Sample.ViewModels.csproj">
+      <Project>{712A1048-4526-454F-B9D2-E447CF5AD036}</Project>
+      <Name>NittyGritty.Sample.ViewModels</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">

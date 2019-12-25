@@ -26,12 +26,9 @@ namespace NittyGritty.Commands
         /// <summary>Defines the method to be called when the command is invoked. </summary>
         protected override void Execute()
         {
-            if (CanExecute)
-            {
-                SetRunning(true);
-                _execute();
-                SetRunning(false);
-            }
+            SetRunning(true);
+            _execute();
+            SetRunning(false);
         }
 
         public bool TryExecute()
@@ -82,12 +79,9 @@ namespace NittyGritty.Commands
         /// <summary>Defines the method to be called when the command is invoked. </summary>
         protected override void Execute(T parameter)
         {
-            if (CanExecute(parameter))
-            {
-                SetRunning(true);
-                _execute(parameter);
-                SetRunning(false);
-            }   
+            SetRunning(true);
+            _execute(parameter);
+            SetRunning(false);
         }
 
         public bool TryExecute(T parameter)

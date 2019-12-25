@@ -10,11 +10,11 @@ using System.Text;
 namespace NittyGritty.Collections
 {
     public class DynamicCollection<TItem> : TrackableCollection<TItem>, ICollection<TItem>, IDynamic<TItem>
-        where TItem : INotifyPropertyChanged
+        // where TItem : INotifyPropertyChanged
     {
         
         public DynamicCollection()
-            : this(new ObservableCollection<TItem>())
+            : this(Enumerable.Empty<TItem>())
         {
         }
 
@@ -108,41 +108,29 @@ namespace NittyGritty.Collections
             }
         }
 
-        public override IEnumerable<TItem> GetItems()
+        public override IList<TItem> GetItems()
         {
-            IEnumerable<TItem> items = Items;
+            List<TItem> list;
 
-            //if (Filter != null && Order != null && Ascending)
-            //    items = Items.Where(Filter).OrderBy(Order);
-            //else if (Filter != null && Order != null && !Ascending)
-            //    items = Items.Where(Filter).OrderByDescending(Order);
-            //else if (Filter == null && Order != null && Ascending)
-            //    items = Items.OrderBy(Order);
-            //else if (Filter == null && Order != null && !Ascending)
-            //    items = Items.OrderByDescending(Order);
-            //else if (Filter != null && Order == null)
-            //    items = Items.Where(Filter);
-            //else if (Filter == null && Order == null)
-            //    items = Items;
-            //else
-            //    throw new Exception();
-
-            if(Filter != null)
-            {
-                items = items.Where(Filter);
-            }
-
-            if(Order != null)
-            {
-                items = Ascending ? items.OrderBy(Order) : items.OrderByDescending(Order);
-            }
+            if (Filter != null && Order != null && Ascending)
+                list = Items.Where(Filter).OrderBy(Order).ToList();
+            else if (Filter != null && Order != null && !Ascending)
+                list = Items.Where(Filter).OrderByDescending(Order).ToList();
+            else if (Filter == null && Order != null && Ascending)
+                list = Items.OrderBy(Order).ToList();
+            else if (Filter == null && Order != null && !Ascending)
+                list = Items.OrderByDescending(Order).ToList();
+            else if (Filter != null && Order == null)
+                list = Items.Where(Filter).ToList();
+            else if (Filter == null && Order == null)
+                list = Items.ToList();
+            else
+                throw new Exception();
 
             if (Limit > 0 || Offset > 0)
-            {
-                items = items.Skip(Offset).Take(Limit);
-            }
+                list = list.Skip(Offset).Take(Limit).ToList();
 
-            return items;
+            return list;
         }
 
         #endregion
