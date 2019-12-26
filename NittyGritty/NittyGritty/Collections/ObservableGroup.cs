@@ -1,22 +1,18 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Collections.Specialized;
-using System.ComponentModel;
-using System.Linq;
 using System.Text;
 
 namespace NittyGritty.Collections
 {
-    public class Group<TKey, TItem>
+    public class ObservableGroup<TKey, TItem>
     {
-        public Group(TKey key) : this(key, new Collection<TItem>())
+        public ObservableGroup(TKey key) : this(key, new ObservableCollection<TItem>())
         {
 
         }
 
-        public Group(TKey key, IList<TItem> items)
+        public ObservableGroup(TKey key, IList<TItem> items)
         {
             if (items == null)
             {
@@ -24,11 +20,11 @@ namespace NittyGritty.Collections
             }
 
             Key = key;
-            Items = new Collection<TItem>(items);
+            Items = new ObservableCollection<TItem>(items);
         }
 
         public TKey Key { get; }
 
-        public Collection<TItem> Items { get; }
+        public ObservableCollection<TItem> Items { get; }
     }
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using NittyGritty.Collections;
+using NittyGritty.Commands;
 using NittyGritty.ViewModels;
 
 namespace NittyGritty.Sample.ViewModels
@@ -11,6 +12,17 @@ namespace NittyGritty.Sample.ViewModels
         public MainViewModel()
         {
             
+        }
+
+        private string _addText = string.Empty;
+
+        public string AddText
+        {
+            get { return _addText; }
+            set
+            {
+                Set(ref _addText, value);
+            }
         }
 
         private string _Text = string.Empty;
@@ -27,6 +39,16 @@ namespace NittyGritty.Sample.ViewModels
                 }
             }
         }
+
+        /// <summary>
+        /// Gets the AddCommand.
+        /// </summary>
+        public RelayCommand AddCommand => new RelayCommand(
+            () =>
+            {
+                if(!string.IsNullOrWhiteSpace(AddText))
+                    DynamicCollection.Add(AddText);
+            });
 
         private DynamicCollection<string> _dynamicCollection;
 

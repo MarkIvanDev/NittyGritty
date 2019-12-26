@@ -9,7 +9,7 @@ using System.Text;
 
 namespace NittyGritty.Collections
 {
-    public class DynamicCollection<TItem> : TrackableCollection<TItem>, ICollection<TItem>, IDynamic<TItem>
+    public class DynamicCollection<TItem> : TrackableCollection<TItem>, IDynamic<TItem>
         // where TItem : INotifyPropertyChanged
     {
         
@@ -113,17 +113,17 @@ namespace NittyGritty.Collections
             List<TItem> list;
 
             if (Filter != null && Order != null && Ascending)
-                list = Items.Where(Filter).OrderBy(Order).ToList();
+                list = InternalCollection.Where(Filter).OrderBy(Order).ToList();
             else if (Filter != null && Order != null && !Ascending)
-                list = Items.Where(Filter).OrderByDescending(Order).ToList();
+                list = InternalCollection.Where(Filter).OrderByDescending(Order).ToList();
             else if (Filter == null && Order != null && Ascending)
-                list = Items.OrderBy(Order).ToList();
+                list = InternalCollection.OrderBy(Order).ToList();
             else if (Filter == null && Order != null && !Ascending)
-                list = Items.OrderByDescending(Order).ToList();
+                list = InternalCollection.OrderByDescending(Order).ToList();
             else if (Filter != null && Order == null)
-                list = Items.Where(Filter).ToList();
+                list = InternalCollection.Where(Filter).ToList();
             else if (Filter == null && Order == null)
-                list = Items.ToList();
+                list = InternalCollection.ToList();
             else
                 throw new Exception();
 

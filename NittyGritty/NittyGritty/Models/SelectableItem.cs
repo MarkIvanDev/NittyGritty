@@ -7,9 +7,9 @@ namespace NittyGritty.Models
     public class SelectableItem<T> : ObservableObject
     {
 
-        private bool _isSelected;
+        private bool? _isSelected;
 
-        public bool IsSelected
+        public bool? IsSelected
         {
             get { return _isSelected; }
             set { Set(ref _isSelected, value); }

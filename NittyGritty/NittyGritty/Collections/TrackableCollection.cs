@@ -10,13 +10,13 @@ using System.Text;
 
 namespace NittyGritty.Collections
 {
-    public class TrackableCollection<TItem> : ITrackable<TItem>, IList<TItem>, IList, INotifyCollectionChanged, IDisposable
+    public class TrackableCollection<TItem> : Collection<TItem>, ITrackable<TItem>, INotifyCollectionChanged, IDisposable
         // where TItem : INotifyPropertyChanged
     {
         private NotifyCollectionChangedEventHandler _itemsChangedHandler;
-        private SafeObservableCollection<TItem> _internalCollection = new SafeObservableCollection<TItem>();
         private readonly Dictionary<TItem, PropertyChangedEventHandler> _events =
             new Dictionary<TItem, PropertyChangedEventHandler>();
+        private readonly object syncRoot = new object();
 
         public TrackableCollection() : this(Enumerable.Empty<TItem>(), false)
         {
@@ -26,39 +26,24 @@ namespace NittyGritty.Collections
         {
         }
 
-        public TrackableCollection(IEnumerable<TItem> items, bool trackItemChanges)
+        public TrackableCollection(IEnumerable<TItem> items, bool trackItemChanges) : base(items.ToList())
         {
-            //if (!(items is INotifyCollectionChanged collection))
-            //{
-            //    throw new ArgumentException($"{items} must implement INotifyCollectionChanged", nameof(items));
-            //}
-
-            //Items = items.ToList();
-            Items = new ObservableCollection<TItem>(items);
+            InternalCollection = new SafeObservableCollection<TItem>(items);
 
             TrackItemChanges = trackItemChanges;
             TrackCollectionChanges = true;
 
-            if (TrackItemChanges)
-            {
-                TrackItems();
-            }
-
-            _internalCollection.CollectionChanged += OnInternalCollectionChanged;
-            _internalCollection.PropertyChanged += OnInternalPropertyChanged;
-
             IsTracking = true;
-            Refresh();
         }
 
         /// <summary>Gets the original items source. </summary>
-        protected IList<TItem> Items { get; private set; }
+        protected SafeObservableCollection<TItem> InternalCollection { get; private set; }
 
         #region Trackers
 
         private void OnOriginalCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            lock (SyncRoot)
+            lock (syncRoot)
             {
                 Refresh();
 
@@ -120,7 +105,7 @@ namespace NittyGritty.Collections
 
         private void TrackCollection()
         {
-            if (Items is INotifyCollectionChanged items)
+            if (InternalCollection is INotifyCollectionChanged items)
             {
                 var collection = items;
                 _itemsChangedHandler = EventUtilities.RegisterEvent<TrackableCollection<TItem>, NotifyCollectionChangedEventHandler, NotifyCollectionChangedEventArgs>(
@@ -136,14 +121,17 @@ namespace NittyGritty.Collections
         {
             if (_itemsChangedHandler != null)
             {
-                ((INotifyCollectionChanged)Items).CollectionChanged -= _itemsChangedHandler;
+                if(InternalCollection is INotifyCollectionChanged items)
+                {
+                    items.CollectionChanged -= _itemsChangedHandler;
+                }
                 _itemsChangedHandler = null;
             }
         }
 
         private void TrackItems()
         {
-            foreach (var i in Items)
+            foreach (var i in InternalCollection)
             {
                 RegisterEvent(i);
             }
@@ -230,7 +218,7 @@ namespace NittyGritty.Collections
 
         public virtual IList<TItem> GetItems()
         {
-            return Items;
+            return InternalCollection;
         }
 
         public void Refresh()
@@ -238,186 +226,53 @@ namespace NittyGritty.Collections
             if (!IsTracking)
                 return;
 
-            lock (SyncRoot)
+            lock (syncRoot)
             {
                 var list = GetItems();
-                if (!_internalCollection.SequenceEqual(list))
+                if (!Items.SequenceEqual(list))
                 {
-                    _internalCollection.Reset(list);
+                    Reset(list);
                 }
             }
+        }
+
+        public void Reset(IEnumerable<TItem> list)
+        {
+            if (list == null)
+                throw new ArgumentNullException(nameof(list));
+
+            Items.Clear();
+            foreach (var i in list)
+            {
+                Items.Add(i);
+            }
+
+            OnPropertyChanged(this, new PropertyChangedEventArgs(nameof(Count)));
+            OnCollectionChanged(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
         }
 
         #endregion
 
-        #region ICollection Implementation
-
-        public int Count
+        #region Override Collection Methods
+        protected override void ClearItems()
         {
-            get
-            {
-                lock (SyncRoot)
-                {
-                    return _internalCollection.Count;
-                }
-            }
+            InternalCollection.Clear();
         }
 
-        public bool IsReadOnly
+        protected override void InsertItem(int index, TItem item)
         {
-            get { return true; }
+            InternalCollection.Insert(index, item);
         }
 
-        public bool IsSynchronized
+        protected override void RemoveItem(int index)
         {
-            get { return true; }
+            InternalCollection.RemoveAt(index);
         }
 
-        public bool IsFixedSize
+        protected override void SetItem(int index, TItem item)
         {
-            get { return false; }
+            InternalCollection[index] = item;
         }
-
-        private object _syncRoot;
-
-        public object SyncRoot
-        {
-            get
-            {
-                return _syncRoot ?? (_syncRoot = new object());
-            }
-        }
-
-        public void Add(TItem item)
-        {
-            Items.Add(item);
-        }
-
-        int IList.Add(object value)
-        {
-            return ((IList)Items).Add(value);
-        }
-
-        public void Insert(int index, TItem item)
-        {
-            Items.Insert(index, item);
-        }
-
-        void IList.Insert(int index, object value)
-        {
-            if(value is TItem item)
-            {
-                Insert(index, item);
-            }
-        }
-
-        public void Clear()
-        {
-            Items.Clear();
-        }
-
-        public bool Contains(TItem item)
-        {
-            lock (SyncRoot)
-            {
-                return _internalCollection.Contains(item);
-            }
-        }
-
-        bool IList.Contains(object value)
-        {
-            if(value is TItem item)
-            {
-                return Contains(item);
-            }
-            return false;
-        }
-
-        public bool Remove(TItem item)
-        {
-            return Items.Remove(item);
-        }
-
-        void IList.Remove(object value)
-        {
-            ((IList)Items).Remove(value);
-        }
-
-        public void RemoveAt(int index)
-        {
-            Items.RemoveAt(index);
-        }
-
-        public int IndexOf(TItem item)
-        {
-            lock (SyncRoot)
-            {
-                return _internalCollection.IndexOf(item);
-            }
-        }
-
-        int IList.IndexOf(object value)
-        {
-            if(value is TItem item)
-            {
-                return IndexOf(item);
-            }
-            return -1;
-        }
-
-        public void CopyTo(TItem[] array, int arrayIndex)
-        {
-            lock (SyncRoot)
-            {
-                _internalCollection.CopyTo(array, arrayIndex);
-            }
-        }
-
-        public void CopyTo(Array array, int index)
-        {
-            CopyTo((TItem[])array, index);
-        }
-
-        public TItem this[int index]
-        {
-            get
-            {
-                lock (SyncRoot)
-                {
-                    return _internalCollection[index];
-                }
-            }
-            set { throw new NotSupportedException("Use TrackableCollection.Items[] instead"); }
-        }
-
-        object IList.this[int index]
-        {
-            get
-            {
-                lock (SyncRoot)
-                {
-                    return _internalCollection[index];
-                }
-            }
-            set { throw new NotSupportedException("Use TrackableCollection.Items[] instead."); }
-        }
-
-        public IEnumerator<TItem> GetEnumerator()
-        {
-            lock (SyncRoot)
-            {
-                return _internalCollection.GetEnumerator();
-            }
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            lock (SyncRoot)
-            {
-                return _internalCollection.GetEnumerator();
-            }
-        }
-
         #endregion
 
         #region Extra Collection Methods
@@ -427,7 +282,7 @@ namespace NittyGritty.Collections
             var old = TrackCollectionChanges;
             TrackCollectionChanges = false;
             
-            if (Items != null)
+            if (InternalCollection != null)
             {
                 foreach (var item in items)
                 {
@@ -443,7 +298,7 @@ namespace NittyGritty.Collections
             var old = TrackCollectionChanges;
             TrackCollectionChanges = false;
 
-            if (Items != null)
+            if (InternalCollection != null)
             {
                 foreach (var item in items)
                 {
@@ -460,14 +315,14 @@ namespace NittyGritty.Collections
 
         public event NotifyCollectionChangedEventHandler CollectionChanged;
 
-        private void OnInternalCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        private void OnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             CollectionChanged?.Invoke(this, e);
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        private void OnInternalPropertyChanged(object sender, PropertyChangedEventArgs e)
+        private void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             PropertyChanged?.Invoke(this, e);
         }
@@ -481,9 +336,8 @@ namespace NittyGritty.Collections
             IsTracking = false;
             TrackCollectionChanges = false;
             TrackItemChanges = false;
-
-            _internalCollection = null;
-            Items = null;
+            
+            InternalCollection = null;
         }
 
         #endregion
