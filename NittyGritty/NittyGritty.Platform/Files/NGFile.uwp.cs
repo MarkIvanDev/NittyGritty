@@ -5,7 +5,7 @@ using System.Text;
 
 namespace NittyGritty.Platform.Files
 {
-    public class NGFile : ObservableObject
+    public class NGFile : ObservableObject, IFile
     {
         public NGFile(string path, Stream content)
         {

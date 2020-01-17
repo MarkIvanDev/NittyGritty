@@ -1,10 +1,8 @@
-﻿using NittyGritty.Platform.Contacts;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using System.Threading.Tasks;
 
-namespace NittyGritty.Platform.Services
+namespace NittyGritty.Services.ContactService
 {
     public interface IContactService
     {

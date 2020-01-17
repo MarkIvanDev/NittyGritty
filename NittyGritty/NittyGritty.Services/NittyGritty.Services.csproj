@@ -57,8 +57,16 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Remove="ContactService\IContactService.shared.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="AdService\" />
     <Folder Include="AddOnService\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\NittyGritty.Platform\NittyGritty.Platform.csproj" />
   </ItemGroup>
 
 </Project>
