@@ -11,7 +11,7 @@
 
   <PropertyGroup>
     <PackageId>NittyGritty.Services</PackageId>
-    <PackageVersion>1.2.5-beta1</PackageVersion>
+    <PackageVersion>1.2.6-beta1</PackageVersion>
     <Title>NittyGritty.Services</Title>
     <Authors>markivan.basto</Authors>
     <Description>Boilerplate code that can speed up your development</Description>
@@ -54,10 +54,6 @@
   <ItemGroup Condition=" $(TargetFramework.StartsWith('uap10.0')) ">
     <Compile Include="**\*.uwp.cs" />
     <Compile Include="**\*.uwp.*.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Remove="ContactService\IContactService.shared.cs" />
   </ItemGroup>
 
   <ItemGroup>

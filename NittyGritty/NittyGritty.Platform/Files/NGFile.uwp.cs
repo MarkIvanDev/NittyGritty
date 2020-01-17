@@ -2,19 +2,29 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Threading.Tasks;
+using Windows.Storage;
 
 namespace NittyGritty.Platform.Files
 {
-    public class NGFile : ObservableObject, IFile
+    public class NGFile : IFile
     {
-        public NGFile(string path, Stream content)
+        private readonly IStorageFile file;
+
+        public NGFile(IStorageFile file)
         {
-            Path = path;
-            Content = content;
+            this.file = file;
         }
 
-        public string Path { get; }
+        public string Name { get { return file.Name; } }
 
-        public Stream Content { get; }
+        public string FileType { get { return file.FileType; } }
+
+        public string Path { get { return file.Path; } }
+
+        public async Task<Stream> GetStream(bool canWrite)
+        {
+            var content = canWrite ? await file.OpenAsync(FileAccessMode.ReadWrite) : await file.OpenAsync(FileAccessMode.Read);            return canWrite ? content.AsStreamForWrite() : content.AsStreamForRead();
+        }
     }
 }
