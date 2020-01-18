@@ -20,6 +20,12 @@ namespace NittyGritty.Platform.Files
 
         public string Path { get { return folder.Path; } }
 
+        public string DisplayName { get { return (folder as IStorageItemProperties)?.DisplayName; } }
+
+        public string DisplayType { get { return (folder as IStorageItemProperties)?.DisplayType; } }
+
+        public StorageItemType Type { get; } = StorageItemType.Folder;
+
         public async Task<IFile> GetFile(string name)
         {
             var file = await folder.GetFileAsync(name);            return new NGFile(file);

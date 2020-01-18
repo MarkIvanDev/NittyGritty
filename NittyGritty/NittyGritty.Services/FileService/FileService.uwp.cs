@@ -1,15 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.System;
 
-namespace NittyGritty.Uwp.Services
+namespace NittyGritty.Services
 {
-    internal class FileService
+    public partial class FileService
     {
-        public async Task RequestAccess()
+        async Task PlatformRequestAccess()
         {
             await Launcher.LaunchUriAsync(new Uri("ms-settings:privacy-broadfilesystemaccess"));
         }

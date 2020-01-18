@@ -5,12 +5,8 @@ using System.Threading.Tasks;
 
 namespace NittyGritty.Platform.Files
 {
-    public interface IFolder
+    public interface IFolder : IStorageItem
     {
-        string Name { get; }
-
-        string Path { get; }
-
         Task<IFile> GetFile(string name);        Task<IReadOnlyList<IFile>> GetFiles();
         Task<IFolder> GetFolder(string name);        Task<IReadOnlyList<IFolder>> GetFolders();
     }

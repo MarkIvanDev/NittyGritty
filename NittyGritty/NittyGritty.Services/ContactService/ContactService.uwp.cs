@@ -1,19 +1,17 @@
-﻿using NittyGritty.Platform.Contacts;
-using NittyGritty.Platform.Services;
-using NittyGritty.Uwp.Extensions;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using NittyGritty.Platform.Contacts;
 using Windows.ApplicationModel.Contacts;
 using Windows.System;
 
-namespace NittyGritty.Uwp.Services
+namespace NittyGritty.Services
 {
-    public class ContactService : IContactService
+    public partial class ContactService
     {
-        public async Task Annotate(NGContact contact, NGAnnotations annotations)
+        async Task PlatformAnnotate(NGContact contact, NGAnnotations annotations)
         {
             ContactAnnotationOperations winAnnotations = (ContactAnnotationOperations)annotations;
             if (winAnnotations == ContactAnnotationOperations.None)
@@ -41,7 +39,7 @@ namespace NittyGritty.Uwp.Services
             await annotationList.TrySaveAnnotationAsync(contactAnnotation);
         }
 
-        public async Task CreateContact(NGContact contact, string listName)
+        async Task PlatformCreateContact(NGContact contact, string listName)
         {
             var winContact = contact.ToContact();
             var contactList = await FindOrRegisterContactList(listName);
@@ -49,7 +47,7 @@ namespace NittyGritty.Uwp.Services
             contact.Id = winContact.Id;
         }
 
-        public async Task DeleteContact(NGContact contact, string listName)
+        async Task PlatformDeleteContact(NGContact contact, string listName)
         {
             var winContact = contact.ToContact();
             var contactList = await FindOrRegisterContactList(listName);
@@ -59,7 +57,7 @@ namespace NittyGritty.Uwp.Services
             }
         }
 
-        public async Task<NGContact> GetContact(string id)
+        async Task<NGContact> PlatformGetContact(string id)
         {
             var store = await ContactManager.RequestStoreAsync(ContactStoreAccessType.AppContactsReadWrite);
             var winContact = await store.GetContactAsync(id);
@@ -67,7 +65,7 @@ namespace NittyGritty.Uwp.Services
             return contact;
         }
 
-        public async Task<NGContact> GetContactUsingRemoteId(string remoteId, string listName)
+        async Task<NGContact> PlatformGetContactUsingRemoteId(string remoteId, string listName)
         {
             var contactList = await FindOrRegisterContactList(listName);
             var winContact = await contactList.GetContactFromRemoteIdAsync(remoteId);
@@ -75,7 +73,7 @@ namespace NittyGritty.Uwp.Services
             return contact;
         }
 
-        public async Task<string> GetRemoteId(NGContact contact)
+        async Task<string> PlatformGetRemoteId(NGContact contact)
         {
             var winContact = contact.ToContact();
             var store = await ContactManager.RequestAnnotationStoreAsync(ContactAnnotationStoreAccessType.AppAnnotationsReadWrite);
@@ -83,7 +81,7 @@ namespace NittyGritty.Uwp.Services
             return contactAnnotations.FirstOrDefault()?.RemoteId ?? string.Empty;
         }
 
-        public async Task Pin(NGContact contact)
+        async Task PlatformPin(NGContact contact)
         {
             var pinnedContactManager = PinnedContactManager.GetDefault();
 
@@ -103,12 +101,12 @@ namespace NittyGritty.Uwp.Services
             await pinnedContactManager.RequestPinContactAsync(winContact, PinnedContactSurface.Taskbar);
         }
 
-        public async Task RequestAccess()
+        async Task PlatformRequestAccess()
         {
             await Launcher.LaunchUriAsync(new Uri("ms-settings:privacy-contacts"));
         }
 
-        public async Task Unpin(NGContact contact)
+        async Task PlatformUnpin(NGContact contact)
         {
             var pinnedContactManager = PinnedContactManager.GetDefault();
             var winContact = contact.ToContact();
@@ -145,6 +143,5 @@ namespace NittyGritty.Uwp.Services
 
             return list;
         }
-
     }
 }

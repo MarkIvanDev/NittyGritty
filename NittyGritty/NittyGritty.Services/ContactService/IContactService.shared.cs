@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
+using NittyGritty.Platform.Contacts;
 
-namespace NittyGritty.Services.ContactService
+namespace NittyGritty.Services
 {
     public interface IContactService
     {
