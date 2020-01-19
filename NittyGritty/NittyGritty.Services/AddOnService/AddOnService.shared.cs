@@ -4,7 +4,7 @@ using System.Text;
 
 namespace NittyGritty.Services
 {
-    public partial class AddOnService
+    public partial class AddOnService : IAddOnService
     {
     }
 }
