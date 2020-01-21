@@ -11,36 +11,37 @@ namespace NittyGritty.Platform.Store
 
         }
 
-        private SubscriptionPeriod _period;
+        private uint _billingPeriod;
 
-        public SubscriptionPeriod Period
+        public uint BillingPeriod
         {
-            get { return _period; }
-            set { Set(ref _period, value); }
+            get { return _billingPeriod; }
+            set { Set(ref _billingPeriod, value); }
         }
 
-        private SubscriptionTrial _trial;
+        private DurationUnit _billingPeriodUnit;
 
-        public SubscriptionTrial Trial
+        public DurationUnit BillingPeriodUnit
         {
-            get { return _trial; }
-            set { Set(ref _trial, value); }
+            get { return _billingPeriodUnit; }
+            set { Set(ref _billingPeriodUnit, value); }
         }
 
-        public enum SubscriptionPeriod
+        private uint _trialPeriod;
+
+        public uint TrialPeriod
         {
-            Monthly = 0,
-            Quarterly = 1,
-            Semiannually = 2,
-            Annually = 3,
-            Biennially = 4
+            get { return _trialPeriod; }
+            set { Set(ref _trialPeriod, value); }
         }
 
-        public enum SubscriptionTrial
+        private DurationUnit _trialPeriodUnit;
+
+        public DurationUnit TrialPeriodUnit
         {
-            None = 0,
-            OneWeek = 1,
-            OneMonth = 2
+            get { return _trialPeriodUnit; }
+            set { Set(ref _trialPeriodUnit, value); }
         }
+
     }
 }
