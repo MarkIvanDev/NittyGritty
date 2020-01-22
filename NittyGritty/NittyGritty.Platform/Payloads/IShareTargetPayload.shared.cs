@@ -1,4 +1,5 @@
 ﻿using NittyGritty.Platform.Contacts;
+using NittyGritty.Platform.Files;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -37,7 +38,7 @@ namespace NittyGritty.Platform.Payloads
 
         Task<Stream> GetBitmap();
 
-        Task<IReadOnlyCollection<Stream>> GetFiles();
+        Task<IReadOnlyCollection<IStorageItem>> GetFiles();
 
         #endregion
 

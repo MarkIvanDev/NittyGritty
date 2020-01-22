@@ -12,8 +12,8 @@ namespace NittyGritty.Platform.Payloads
 
         IReadOnlyCollection<string> AvailableFileTypes { get; }
 
-        Task<IReadOnlyCollection<NGFile>> GetFiles(bool canWrite);
+        Task<IReadOnlyCollection<IFile>> GetFiles(bool canWrite);
 
-        Task<NGFile> GetFile(string fileName, bool canWrite);
+        Task<IFile> GetFile(string fileName, bool canWrite);
     }
 }

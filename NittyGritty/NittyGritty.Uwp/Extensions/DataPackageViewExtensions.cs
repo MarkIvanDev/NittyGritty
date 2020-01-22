@@ -48,15 +48,15 @@ namespace NittyGritty.Uwp.Extensions
             return stream?.AsStream();
         }
 
-        public static async Task<IReadOnlyCollection<Stream>> GetFiles(this DataPackageView data)
+        public static async Task<IReadOnlyCollection<Platform.Files.IStorageItem>> GetFiles(this DataPackageView data)
         {
-            var files = new List<Stream>();
+            var files = new List<Platform.Files.IStorageItem>();
             var storageItems = await GetData<IReadOnlyList<IStorageItem>>(data, StandardDataFormats.StorageItems) ?? new List<IStorageItem>().AsReadOnly();
             foreach (var item in storageItems)
             {
                 if(item is IStorageFile storageFile)
                 {
-                    files.Add(await storageFile.OpenStreamForReadAsync());
+                    files.Add(new Platform.Files.NGFile(storageFile));
                 }
                 else if (item is IStorageFolder storageFolder)
                 {
@@ -67,7 +67,7 @@ namespace NittyGritty.Uwp.Extensions
                     }
                 }
             }
-            return new ReadOnlyCollection<Stream>(files);
+            return new ReadOnlyCollection<Platform.Files.IStorageItem>(files);
         }
 
         public static async Task<T> GetData<T>(this DataPackageView data, string dataFormat)

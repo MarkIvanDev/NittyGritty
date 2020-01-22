@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using NittyGritty.Platform.Files;
 
 namespace NittyGritty.Platform.Payloads
 {
@@ -64,9 +65,9 @@ namespace NittyGritty.Platform.Payloads
             set { Set(ref _customData, value); }
         }
 
-        private IReadOnlyCollection<Stream> _files;
+        private IReadOnlyCollection<IStorageItem> _files;
 
-        public IReadOnlyCollection<Stream> Files
+        public IReadOnlyCollection<IStorageItem> Files
         {
             get { return _files; }
             set { Set(ref _files, value); }
