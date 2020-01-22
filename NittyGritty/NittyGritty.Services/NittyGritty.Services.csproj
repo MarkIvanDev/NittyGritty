@@ -7,6 +7,7 @@
     <AssemblyName>NittyGritty.Services</AssemblyName>
     <RootNamespace>NittyGritty.Services</RootNamespace>
     <Owners>markivan.basto</Owners>
+    <Platforms>AnyCPU;x86</Platforms>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -41,6 +42,10 @@
     <DefineConstants>$(DefineConstants);UWP</DefineConstants>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard2.0|AnyCPU'">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+  </PropertyGroup>
+
   <ItemGroup>
     <Compile Include="**\*.shared.cs" />
     <Compile Include="**\*.shared.*.cs" />
@@ -54,6 +59,8 @@
   <ItemGroup Condition=" $(TargetFramework.StartsWith('uap10.0')) ">
     <Compile Include="**\*.uwp.cs" />
     <Compile Include="**\*.uwp.*.cs" />
+    <SDKReference Include="Microsoft.Advertising.Xaml, Version=10.0" />
+    <SDKReference Include="Microsoft.VCLibs, Version=14.0" />
   </ItemGroup>
 
   <ItemGroup>

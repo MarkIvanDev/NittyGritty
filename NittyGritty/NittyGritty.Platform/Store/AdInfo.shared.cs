@@ -4,17 +4,20 @@ using System.Text;
 
 namespace NittyGritty.Platform.Store
 {
-    public abstract class Ad : ObservableObject
+    public class AdInfo : ObservableObject
     {
-        public Ad(string id, AdType type)
+        public AdInfo(string id, AdType type, string appId)
         {
             Id = id;
             Type = type;
+            AppId = appId;
         }
 
         public string Id { get; }
 
         public AdType Type { get; }
+
+        public string AppId { get; }
 
         public enum AdType
         {

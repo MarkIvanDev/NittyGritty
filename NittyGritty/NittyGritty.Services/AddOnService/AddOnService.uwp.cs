@@ -62,7 +62,7 @@ namespace NittyGritty.Services
                         Price = product.Price.FormattedPrice,
                         CustomData = product.Skus[0].CustomDeveloperData,
                         Balance = balanceResult.Status == StoreConsumableStatus.Succeeded ? balanceResult.BalanceRemaining : 0,
-                        // Read quantity in ExtendedJsonData
+                        // TODO: Read quantity in ExtendedJsonData
                     });
                 }
             }
@@ -119,8 +119,7 @@ namespace NittyGritty.Services
                             Description = product.Description,
                             Price = product.Price.FormattedPrice,
                             CustomData = product.Skus[0].CustomDeveloperData,
-                            
-
+                            // TODO: Read lifetime from ExtendedJsonData
                         });
                     }
 

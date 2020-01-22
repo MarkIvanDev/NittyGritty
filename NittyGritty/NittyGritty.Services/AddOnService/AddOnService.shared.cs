@@ -10,6 +10,7 @@ namespace NittyGritty.Services
 {
     public partial class AddOnService : IAddOnService, IConfigurable<AddOn>
     {
+
         #region IConfigurable
         private readonly Dictionary<string, AddOn> _addOnsByKey = new Dictionary<string, AddOn>();
 

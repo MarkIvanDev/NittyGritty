@@ -10,8 +10,6 @@ namespace NittyGritty.Services
         private const string UnknownKey = "-- UNKNOWN -- ";
         private const string OOBKey = "-- OOB --";
 
-        private static readonly object _instanceLock = new object();        private static NavigationService _default;
-        public static NavigationService Default        {            get            {                if (_default == null)                {                    lock (_instanceLock)                    {                        if (_default == null)                        {                            _default = new NavigationService();                        }                    }                }                return _default;            }        }
         public string CurrentKey { get { return PlatformCurrentKey; } }
 
         public bool CanGoBack { get { return PlatformCanGoBack; } }

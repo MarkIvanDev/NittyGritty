@@ -9,28 +9,28 @@ namespace NittyGritty.Platform.Files
 {
     public class NGFile : IFile
     {
-        private readonly IStorageFile file;
-
         public NGFile(IStorageFile file)
         {
-            this.file = file;
+            this.Context = file;
         }
 
-        public string Name { get { return file.Name; } }
+        public IStorageFile Context { get; }
 
-        public string FileType { get { return file.FileType; } }
+        public string Name { get { return Context.Name; } }
 
-        public string Path { get { return file.Path; } }
+        public string FileType { get { return Context.FileType; } }
 
-        public string DisplayName { get { return (file as IStorageItemProperties)?.DisplayName; } }
+        public string Path { get { return Context.Path; } }
 
-        public string DisplayType { get { return (file as IStorageItemProperties)?.DisplayType; } }
+        public string DisplayName { get { return (Context as IStorageItemProperties)?.DisplayName; } }
+
+        public string DisplayType { get { return (Context as IStorageItemProperties)?.DisplayType; } }
 
         public StorageItemType Type { get; } = StorageItemType.File;
 
         public async Task<Stream> GetStream(bool canWrite)
         {
-            var content = canWrite ? await file.OpenAsync(FileAccessMode.ReadWrite) : await file.OpenAsync(FileAccessMode.Read);            return canWrite ? content.AsStreamForWrite() : content.AsStreamForRead();
+            var content = canWrite ? await Context.OpenAsync(FileAccessMode.ReadWrite) : await Context.OpenAsync(FileAccessMode.Read);            return canWrite ? content.AsStreamForWrite() : content.AsStreamForRead();
         }
     }
 }

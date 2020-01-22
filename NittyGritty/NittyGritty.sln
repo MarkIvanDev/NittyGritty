@@ -43,7 +43,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NittyGritty.Sample.ViewMode
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{9D9A21C4-90BB-41CD-BB0A-A7863A0C5576}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NittyGritty.Services", "NittyGritty.Services\NittyGritty.Services.csproj", "{870C6CCC-63D5-480E-A725-9C1BB2533B39}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NittyGritty.Services", "NittyGritty.Services\NittyGritty.Services.csproj", "{870C6CCC-63D5-480E-A725-9C1BB2533B39}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -253,8 +253,8 @@ Global
 		{870C6CCC-63D5-480E-A725-9C1BB2533B39}.Debug|ARM64.Build.0 = Debug|Any CPU
 		{870C6CCC-63D5-480E-A725-9C1BB2533B39}.Debug|x64.ActiveCfg = Debug|Any CPU
 		{870C6CCC-63D5-480E-A725-9C1BB2533B39}.Debug|x64.Build.0 = Debug|Any CPU
-		{870C6CCC-63D5-480E-A725-9C1BB2533B39}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{870C6CCC-63D5-480E-A725-9C1BB2533B39}.Debug|x86.Build.0 = Debug|Any CPU
+		{870C6CCC-63D5-480E-A725-9C1BB2533B39}.Debug|x86.ActiveCfg = Debug|x86
+		{870C6CCC-63D5-480E-A725-9C1BB2533B39}.Debug|x86.Build.0 = Debug|x86
 		{870C6CCC-63D5-480E-A725-9C1BB2533B39}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{870C6CCC-63D5-480E-A725-9C1BB2533B39}.Release|Any CPU.Build.0 = Release|Any CPU
 		{870C6CCC-63D5-480E-A725-9C1BB2533B39}.Release|ARM.ActiveCfg = Release|Any CPU

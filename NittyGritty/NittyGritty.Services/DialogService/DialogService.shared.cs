@@ -7,9 +7,6 @@ namespace NittyGritty.Services
 {
     public partial class DialogService : IDialogService
     {
-        private static readonly object _instanceLock = new object();        private static DialogService _default;
-        public static DialogService Default        {            get            {                if (_default == null)                {                    lock (_instanceLock)                    {                        if (_default == null)                        {                            _default = new DialogService();                        }                    }                }                return _default;            }        }
-
         public void HideAll()
         {
             PlatformHideAll();
