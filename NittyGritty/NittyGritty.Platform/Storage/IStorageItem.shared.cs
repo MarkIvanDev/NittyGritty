@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace NittyGritty.Platform.Files
+namespace NittyGritty.Platform.Storage
 {
     public interface IStorageItem
     {

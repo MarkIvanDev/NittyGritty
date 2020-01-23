@@ -153,7 +153,7 @@ namespace NittyGritty.UI.Platform.Extensions
             shareData.WebLink = await data.GetWebLink();
             formats.Remove(StandardDataFormats.WebLink);
 
-            shareData.Files = await data.GetFiles();
+            shareData.StorageItems = await data.GetFiles();
             formats.Remove(StandardDataFormats.StorageItems);
 
             // Since we removed all the built-in data formats, the remaining will be the custom data formats that the developer has included

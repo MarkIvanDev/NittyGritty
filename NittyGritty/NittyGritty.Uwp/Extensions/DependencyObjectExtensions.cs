@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Media;
 
-namespace NittyGritty.UI.Extensions
+namespace NittyGritty.Uwp.Extensions
 {
     public static class DependencyObjectExtensions
     {

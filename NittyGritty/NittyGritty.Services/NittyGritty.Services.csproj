@@ -7,12 +7,12 @@
     <AssemblyName>NittyGritty.Services</AssemblyName>
     <RootNamespace>NittyGritty.Services</RootNamespace>
     <Owners>markivan.basto</Owners>
-    <Platforms>AnyCPU;x86</Platforms>
+    <Platforms>x86;x64;ARM;ARM64</Platforms>
   </PropertyGroup>
 
   <PropertyGroup>
     <PackageId>NittyGritty.Services</PackageId>
-    <PackageVersion>1.2.6-beta1</PackageVersion>
+    <PackageVersion>1.2.7-beta1</PackageVersion>
     <Title>NittyGritty.Services</Title>
     <Authors>markivan.basto</Authors>
     <Description>Boilerplate code that can speed up your development</Description>
@@ -28,7 +28,7 @@
   <PropertyGroup Condition=" '$(Configuration)'=='Debug' ">
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
-
+  
   <PropertyGroup Condition=" $(TargetFramework.StartsWith('netstandard')) ">
     <DefineConstants>$(DefineConstants);NETSTANDARD</DefineConstants>
   </PropertyGroup>
@@ -40,10 +40,7 @@
     <TargetFrameworkIdentifier>.NETCore</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v5.0</TargetFrameworkVersion>
     <DefineConstants>$(DefineConstants);UWP</DefineConstants>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard2.0|AnyCPU'">
-    <PlatformTarget>AnyCPU</PlatformTarget>
+    <RuntimeIdentifiers>win10-x86;win10-x64;win10-arm;win10-arm64</RuntimeIdentifiers>
   </PropertyGroup>
 
   <ItemGroup>

@@ -1,5 +1,5 @@
 ﻿using NittyGritty.Platform.Contacts;
-using NittyGritty.Platform.Files;
+using NittyGritty.Platform.Storage;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -26,7 +26,7 @@ namespace NittyGritty.Platform.Payloads
 
         Task<Stream> GetBitmap();
 
-        Task<IReadOnlyCollection<IStorageItem>> GetFiles();
+        Task<IReadOnlyCollection<IStorageItem>> GetStorageItems();
 
         Task<object> GetCustomData(string format);
     }

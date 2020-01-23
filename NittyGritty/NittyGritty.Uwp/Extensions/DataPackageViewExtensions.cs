@@ -5,10 +5,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.DataTransfer;
-using Windows.Storage;
+using WinStorage = Windows.Storage;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Collections.ObjectModel;
 using NittyGritty.Platform.Payloads;
+using NGStorage = NittyGritty.Platform.Storage;
 using Windows.Storage.Streams;
 
 namespace NittyGritty.Uwp.Extensions
@@ -48,26 +49,22 @@ namespace NittyGritty.Uwp.Extensions
             return stream?.AsStream();
         }
 
-        public static async Task<IReadOnlyCollection<Platform.Files.IStorageItem>> GetFiles(this DataPackageView data)
+        public static async Task<IReadOnlyCollection<NGStorage.IStorageItem>> GetStorageItems(this DataPackageView data)
         {
-            var files = new List<Platform.Files.IStorageItem>();
-            var storageItems = await GetData<IReadOnlyList<IStorageItem>>(data, StandardDataFormats.StorageItems) ?? new List<IStorageItem>().AsReadOnly();
+            var items = new List<NGStorage.IStorageItem>();
+            var storageItems = await GetData<IReadOnlyList<WinStorage.IStorageItem>>(data, StandardDataFormats.StorageItems) ?? new List<WinStorage.IStorageItem>().AsReadOnly();
             foreach (var item in storageItems)
             {
-                if(item is IStorageFile storageFile)
+                if(item is WinStorage.IStorageFile storageFile)
                 {
-                    files.Add(new Platform.Files.NGFile(storageFile));
+                    items.Add(new NGStorage.NGFile(storageFile));
                 }
-                else if (item is IStorageFolder storageFolder)
+                else if (item is WinStorage.IStorageFolder storageFolder)
                 {
-                    var sf = await storageFolder.GetFilesAsync();
-                    foreach (var f in sf)
-                    {
-                        files.Add(await f.OpenStreamForReadAsync());
-                    }
+                    items.Add(new NGStorage.NGFolder(storageFolder));
                 }
             }
-            return new ReadOnlyCollection<Platform.Files.IStorageItem>(files);
+            return new ReadOnlyCollection<NGStorage.IStorageItem>(items);
         }
 
         public static async Task<T> GetData<T>(this DataPackageView data, string dataFormat)
@@ -153,7 +150,7 @@ namespace NittyGritty.Uwp.Extensions
             shareData.WebLink = await data.GetWebLink();
             formats.Remove(StandardDataFormats.WebLink);
 
-            shareData.Files = await data.GetFiles();
+            shareData.StorageItems = await data.GetStorageItems();
             formats.Remove(StandardDataFormats.StorageItems);
 
             // Since we removed all the built-in data formats, the remaining will be the custom data formats that the developer has included

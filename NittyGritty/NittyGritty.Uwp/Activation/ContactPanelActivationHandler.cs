@@ -1,5 +1,5 @@
 ﻿using NittyGritty.Models;
-using NittyGritty.Uwp.Services;
+using NittyGritty.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;

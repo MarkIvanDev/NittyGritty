@@ -6,6 +6,7 @@
     <AssemblyName>NittyGritty.Uwp</AssemblyName>
     <RootNamespace>NittyGritty.Uwp</RootNamespace>
     <Owners>markivan.basto</Owners>
+    <Platforms>AnyCPU;x86</Platforms>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -37,6 +38,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\NittyGritty.Services\NittyGritty.Services.csproj" />
     <ProjectReference Include="..\NittyGritty\NittyGritty.csproj" />
     <ProjectReference Include="..\NittyGritty.Platform\NittyGritty.Platform.csproj" />
   </ItemGroup>

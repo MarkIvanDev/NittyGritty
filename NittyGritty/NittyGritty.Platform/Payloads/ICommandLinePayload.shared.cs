@@ -1,5 +1,5 @@
 ﻿using NittyGritty.Models;
-using NittyGritty.Platform.Files;
+using NittyGritty.Platform.Storage;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -11,16 +11,10 @@ namespace NittyGritty.Platform.Payloads
     {
         string OriginalArguments { get; }
 
-        string CurrentDirectory { get; }
+        IFolder CurrentDirectory { get; }
 
         string Command { get; }
 
         QueryString Parameters { get; }
-
-        Task<IReadOnlyCollection<NGFile>> GetFiles(bool canWrite);
-
-        Task<NGFile> GetFile(string fileName, bool canWrite);
-
-        Task<NGFile> WriteFile(string fileName);
     }
 }

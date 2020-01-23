@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
-using NittyGritty.Platform.Files;
+using NittyGritty.Platform.Storage;
 using Windows.System;
 
 namespace NittyGritty.Services

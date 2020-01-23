@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using NittyGritty.Platform.Files;
+using NittyGritty.Platform.Storage;
 
 namespace NittyGritty.Platform.Payloads
 {
@@ -65,12 +65,12 @@ namespace NittyGritty.Platform.Payloads
             set { Set(ref _customData, value); }
         }
 
-        private IReadOnlyCollection<IStorageItem> _files;
+        private IReadOnlyCollection<IStorageItem> _storageItems;
 
-        public IReadOnlyCollection<IStorageItem> Files
+        public IReadOnlyCollection<IStorageItem> StorageItems
         {
-            get { return _files; }
-            set { Set(ref _files, value); }
+            get { return _storageItems; }
+            set { Set(ref _storageItems, value); }
         }
 
     }

@@ -4,7 +4,7 @@ using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NittyGritty.Platform.Files
+namespace NittyGritty.Platform.Storage
 {
     public interface IFile : IStorageItem
     {

@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Windows.Storage;
 
-namespace NittyGritty.Platform.Files
+namespace NittyGritty.Platform.Storage
 {
     public class NGFile : IFile
     {

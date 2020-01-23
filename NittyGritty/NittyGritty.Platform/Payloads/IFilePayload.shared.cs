@@ -1,4 +1,4 @@
-﻿using NittyGritty.Platform.Files;
+﻿using NittyGritty.Platform.Storage;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -12,8 +12,8 @@ namespace NittyGritty.Platform.Payloads
 
         IReadOnlyCollection<string> AvailableFileTypes { get; }
 
-        Task<IReadOnlyCollection<IFile>> GetFiles(bool canWrite);
+        Task<IReadOnlyCollection<IFile>> GetFiles();
 
-        Task<IFile> GetFile(string fileName, bool canWrite);
+        Task<IFile> GetFile(string fileName);
     }
 }

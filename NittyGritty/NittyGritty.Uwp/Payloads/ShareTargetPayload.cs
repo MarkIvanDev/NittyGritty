@@ -1,5 +1,6 @@
 ﻿using NittyGritty.Platform.Contacts;
 using NittyGritty.Platform.Payloads;
+using NittyGritty.Platform.Storage;
 using NittyGritty.Uwp.Extensions;
 using System;
 using System.Collections.Generic;
@@ -94,9 +95,9 @@ namespace NittyGritty.Uwp.Payloads
             return data;
         }
 
-        public async Task<IReadOnlyCollection<Stream>> GetFiles()
+        public async Task<IReadOnlyCollection<IStorageItem>> GetStorageItems()
         {
-            var data = await operation.Data.GetFiles();
+            var data = await operation.Data.GetStorageItems();
             return data;
         }
 

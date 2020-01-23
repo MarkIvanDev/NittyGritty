@@ -1,4 +1,4 @@
-﻿using NittyGritty.Platform.Files;
+﻿using NittyGritty.Platform.Storage;
 using NittyGritty.Platform.Payloads;
 using System;
 using System.Collections.Generic;
@@ -31,26 +31,24 @@ namespace NittyGritty.Uwp.Payloads
 
         public IReadOnlyCollection<string> AvailableFileTypes { get; }
 
-        public async Task<IReadOnlyCollection<NGFile>> GetFiles(bool canWrite)
+        public async Task<IReadOnlyCollection<IFile>> GetFiles()
         {
             var list = new List<NGFile>();
             foreach (var file in files)
             {
-                var content = canWrite ? await file.OpenAsync(FileAccessMode.ReadWrite) : await file.OpenAsync(FileAccessMode.Read);
-                var ngFile = new NGFile(file.Path, canWrite ? content.AsStreamForWrite() : content.AsStreamForRead());
+                var ngFile = new NGFile(file);
                 list.Add(ngFile);
             }
-            return new ReadOnlyCollection<NGFile>(list);
+            return await Task.FromResult(new ReadOnlyCollection<NGFile>(list));
         }
 
-        public async Task<NGFile> GetFile(string fileName, bool canWrite)
+        public async Task<IFile> GetFile(string fileName)
         {
             var file = files.FirstOrDefault(f => Path.GetFileName(f.Path) == fileName);
             if (file != null)
             {
-                var content = canWrite ? await file.OpenAsync(FileAccessMode.ReadWrite) : await file.OpenAsync(FileAccessMode.Read);
-                var ngFile = new NGFile(file.Path, canWrite ? content.AsStreamForWrite() : content.AsStreamForRead());
-                return ngFile;
+                var ngFile = new NGFile(file);
+                return await Task.FromResult(ngFile);
             }
             return null;
         }

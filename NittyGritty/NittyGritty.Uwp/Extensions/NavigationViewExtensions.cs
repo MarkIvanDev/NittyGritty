@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Windows.UI.Xaml;
 
-namespace NittyGritty.UI.Extensions
+namespace NittyGritty.Uwp.Extensions
 {
     public static class NavigationViewExtensions
     {
