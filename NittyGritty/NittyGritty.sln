@@ -26,45 +26,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NittyGritty.UI.Interactivit
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{ACAB4266-A38E-4755-AFCC-883CA5A662AE}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "nuget", "nuget", "{BC4CC060-B30A-4E01-B5CC-329D1EDF6C11}"
-	ProjectSection(SolutionItems) = preProject
-		nuget\NittyGritty.1.2.0-beta1.nupkg = nuget\NittyGritty.1.2.0-beta1.nupkg
-		nuget\NittyGritty.1.2.1-beta1.nupkg = nuget\NittyGritty.1.2.1-beta1.nupkg
-		nuget\NittyGritty.1.2.2-beta1.nupkg = nuget\NittyGritty.1.2.2-beta1.nupkg
-		nuget\NittyGritty.1.2.3-beta1.nupkg = nuget\NittyGritty.1.2.3-beta1.nupkg
-		nuget\NittyGritty.1.2.4-beta1.nupkg = nuget\NittyGritty.1.2.4-beta1.nupkg
-		nuget\NittyGritty.1.2.5-beta1.nupkg = nuget\NittyGritty.1.2.5-beta1.nupkg
-		nuget\NittyGritty.1.2.6-beta1.nupkg = nuget\NittyGritty.1.2.6-beta1.nupkg
-		nuget\NittyGritty.Platform.1.2.0-beta1.nupkg = nuget\NittyGritty.Platform.1.2.0-beta1.nupkg
-		nuget\NittyGritty.Platform.1.2.1-beta1.nupkg = nuget\NittyGritty.Platform.1.2.1-beta1.nupkg
-		nuget\NittyGritty.Platform.1.2.2-beta1.nupkg = nuget\NittyGritty.Platform.1.2.2-beta1.nupkg
-		nuget\NittyGritty.Platform.1.2.3-beta1.nupkg = nuget\NittyGritty.Platform.1.2.3-beta1.nupkg
-		nuget\NittyGritty.Platform.1.2.4-beta1.nupkg = nuget\NittyGritty.Platform.1.2.4-beta1.nupkg
-		nuget\NittyGritty.Platform.1.2.5-beta1.nupkg = nuget\NittyGritty.Platform.1.2.5-beta1.nupkg
-		nuget\NittyGritty.Platform.1.2.6-beta1.nupkg = nuget\NittyGritty.Platform.1.2.6-beta1.nupkg
-		nuget\NittyGritty.UI.1.2.0-beta1.nupkg = nuget\NittyGritty.UI.1.2.0-beta1.nupkg
-		nuget\NittyGritty.UI.1.2.1-beta1.nupkg = nuget\NittyGritty.UI.1.2.1-beta1.nupkg
-		nuget\NittyGritty.UI.1.2.2-beta1.nupkg = nuget\NittyGritty.UI.1.2.2-beta1.nupkg
-		nuget\NittyGritty.UI.1.2.3-beta1.nupkg = nuget\NittyGritty.UI.1.2.3-beta1.nupkg
-		nuget\NittyGritty.UI.1.2.4-beta1.nupkg = nuget\NittyGritty.UI.1.2.4-beta1.nupkg
-		nuget\NittyGritty.UI.1.2.5-beta1.nupkg = nuget\NittyGritty.UI.1.2.5-beta1.nupkg
-		nuget\NittyGritty.UI.1.2.6-beta1.nupkg = nuget\NittyGritty.UI.1.2.6-beta1.nupkg
-		nuget\NittyGritty.UI.Interactivity.1.2.0-beta1.nupkg = nuget\NittyGritty.UI.Interactivity.1.2.0-beta1.nupkg
-		nuget\NittyGritty.UI.Interactivity.1.2.1-beta1.nupkg = nuget\NittyGritty.UI.Interactivity.1.2.1-beta1.nupkg
-		nuget\NittyGritty.UI.Interactivity.1.2.2-beta1.nupkg = nuget\NittyGritty.UI.Interactivity.1.2.2-beta1.nupkg
-		nuget\NittyGritty.UI.Interactivity.1.2.3-beta1.nupkg = nuget\NittyGritty.UI.Interactivity.1.2.3-beta1.nupkg
-		nuget\NittyGritty.UI.Interactivity.1.2.4-beta1.nupkg = nuget\NittyGritty.UI.Interactivity.1.2.4-beta1.nupkg
-		nuget\NittyGritty.UI.Interactivity.1.2.5-beta1.nupkg = nuget\NittyGritty.UI.Interactivity.1.2.5-beta1.nupkg
-		nuget\NittyGritty.UI.Interactivity.1.2.6-beta1.nupkg = nuget\NittyGritty.UI.Interactivity.1.2.6-beta1.nupkg
-		nuget\NittyGritty.Uwp.1.2.0-beta1.nupkg = nuget\NittyGritty.Uwp.1.2.0-beta1.nupkg
-		nuget\NittyGritty.Uwp.1.2.1-beta1.nupkg = nuget\NittyGritty.Uwp.1.2.1-beta1.nupkg
-		nuget\NittyGritty.Uwp.1.2.2-beta1.nupkg = nuget\NittyGritty.Uwp.1.2.2-beta1.nupkg
-		nuget\NittyGritty.Uwp.1.2.3-beta1.nupkg = nuget\NittyGritty.Uwp.1.2.3-beta1.nupkg
-		nuget\NittyGritty.Uwp.1.2.4-beta1.nupkg = nuget\NittyGritty.Uwp.1.2.4-beta1.nupkg
-		nuget\NittyGritty.Uwp.1.2.5-beta1.nupkg = nuget\NittyGritty.Uwp.1.2.5-beta1.nupkg
-		nuget\NittyGritty.Uwp.1.2.6-beta1.nupkg = nuget\NittyGritty.Uwp.1.2.6-beta1.nupkg
-	EndProjectSection
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UWP", "UWP", "{F2C1AB75-FCAB-4EC8-9E0A-AD245A284C46}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NittyGritty.Uwp", "NittyGritty.Uwp\NittyGritty.Uwp.csproj", "{F7F26639-DDC1-420F-9B1F-F1A3545857A0}"
@@ -301,7 +262,6 @@ Global
 		{B7664BD2-FE91-4DE3-89FC-71EC6E21915C} = {1D5ECDAF-F356-4155-A64A-DA9A6B70B6CA}
 		{457B87E0-D705-49D7-9A71-E7B361814861} = {1D5ECDAF-F356-4155-A64A-DA9A6B70B6CA}
 		{ACAB4266-A38E-4755-AFCC-883CA5A662AE} = {1C9E9621-BDD4-4E0A-A9A6-31F4A08BE410}
-		{BC4CC060-B30A-4E01-B5CC-329D1EDF6C11} = {FD0C72EF-E28A-4212-9A1B-37089933A97F}
 		{F2C1AB75-FCAB-4EC8-9E0A-AD245A284C46} = {1C9E9621-BDD4-4E0A-A9A6-31F4A08BE410}
 		{F7F26639-DDC1-420F-9B1F-F1A3545857A0} = {F2C1AB75-FCAB-4EC8-9E0A-AD245A284C46}
 		{712A1048-4526-454F-B9D2-E447CF5AD036} = {45AB8857-6521-45EC-B28E-452B666182FE}
