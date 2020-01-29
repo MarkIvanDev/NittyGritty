@@ -1,0 +1,31 @@
+﻿<Project Sdk="MSBuild.Sdk.Extras">
+
+  <PropertyGroup>
+    <TargetFrameworks>netstandard2.0;uap10.0.16299</TargetFrameworks>
+    <Platforms>x86;x64;ARM;ARM64</Platforms>
+    <AssemblyName>NittyGritty.Services</AssemblyName>
+    <RootNamespace>NittyGritty.Services</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\..\NittyGritty.Services\**\*.shared.cs" Exclude="..\..\NittyGritty.Services\obj\**" />
+    <Compile Include="..\..\NittyGritty.Services\**\*.shared.*.cs" Exclude="..\..\NittyGritty.Services\obj\**" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" $(TargetFramework.StartsWith('netstandard')) ">
+    <Compile Include="..\..\NittyGritty.Services\**\*.netstandard.cs" Exclude="..\..\NittyGritty.Services\obj\**" />
+    <Compile Include="..\..\NittyGritty.Services\**\*.netstandard.*.cs" Exclude="..\..\NittyGritty.Services\obj\**" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" $(TargetFramework.StartsWith('uap10.0')) ">
+    <Compile Include="..\..\NittyGritty.Services\**\*.uwp.cs" Exclude="..\..\NittyGritty.Services\obj\**" />
+    <Compile Include="..\..\NittyGritty.Services\**\*.uwp.*.cs" Exclude="..\..\NittyGritty.Services\obj\**" />
+    <SDKReference Include="Microsoft.Advertising.Xaml, Version=10.0" />
+    <SDKReference Include="Microsoft.VCLibs, Version=14.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\NittyGritty.Platform\NittyGritty.Platform.csproj" />
+  </ItemGroup>
+
+</Project>

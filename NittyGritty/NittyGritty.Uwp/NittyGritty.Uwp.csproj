@@ -6,12 +6,11 @@
     <AssemblyName>NittyGritty.Uwp</AssemblyName>
     <RootNamespace>NittyGritty.Uwp</RootNamespace>
     <Owners>markivan.basto</Owners>
-    <Platforms>AnyCPU;x86</Platforms>
   </PropertyGroup>
 
   <PropertyGroup>
     <PackageId>NittyGritty.Uwp</PackageId>
-    <PackageVersion>1.2.6-beta1</PackageVersion>
+    <PackageVersion>1.2.7-beta1</PackageVersion>
     <Title>NittyGritty.Uwp</Title>
     <Authors>markivan.basto</Authors>
     <Description>Boilerplate code that can speed up your development</Description>

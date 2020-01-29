@@ -7,7 +7,6 @@
     <AssemblyName>NittyGritty.Services</AssemblyName>
     <RootNamespace>NittyGritty.Services</RootNamespace>
     <Owners>markivan.basto</Owners>
-    <Platforms>x86;x64;ARM;ARM64</Platforms>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -40,7 +39,6 @@
     <TargetFrameworkIdentifier>.NETCore</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v5.0</TargetFrameworkVersion>
     <DefineConstants>$(DefineConstants);UWP</DefineConstants>
-    <RuntimeIdentifiers>win10-x86;win10-x64;win10-arm;win10-arm64</RuntimeIdentifiers>
   </PropertyGroup>
 
   <ItemGroup>
@@ -56,8 +54,6 @@
   <ItemGroup Condition=" $(TargetFramework.StartsWith('uap10.0')) ">
     <Compile Include="**\*.uwp.cs" />
     <Compile Include="**\*.uwp.*.cs" />
-    <SDKReference Include="Microsoft.Advertising.Xaml, Version=10.0" />
-    <SDKReference Include="Microsoft.VCLibs, Version=14.0" />
   </ItemGroup>
 
   <ItemGroup>
