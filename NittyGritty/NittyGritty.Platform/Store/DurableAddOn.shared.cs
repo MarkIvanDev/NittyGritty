@@ -11,6 +11,14 @@ namespace NittyGritty.Platform.Store
 
         }
 
+        private bool _isActive;
+
+        public bool IsActive
+        {
+            get { return _isActive; }
+            set { Set(ref _isActive, value); }
+        }
+
         private uint? _lifetime;
 
         public uint? Lifetime

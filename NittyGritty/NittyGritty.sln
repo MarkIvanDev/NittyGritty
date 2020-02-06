@@ -40,9 +40,14 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Source", "Source", "{1C9E96
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "helpers", "helpers", "{17DC55E8-B662-4D1C-A86F-7BA99D3C976D}"
 	ProjectSection(SolutionItems) = preProject
+		helpers\AdInfo.shared.cs = helpers\AdInfo.shared.cs
 		helpers\AdService.netstandard.cs = helpers\AdService.netstandard.cs
 		helpers\AdService.shared.cs = helpers\AdService.shared.cs
 		helpers\AdService.uwp.cs = helpers\AdService.uwp.cs
+		helpers\IAdService.shared.cs = helpers\IAdService.shared.cs
+		helpers\IInterstitialAd.shared.cs = helpers\IInterstitialAd.shared.cs
+		helpers\INativeAd.shared.cs = helpers\INativeAd.shared.cs
+		helpers\INativeAdManager.shared.cs = helpers\INativeAdManager.shared.cs
 		helpers\InterstitialAd.uwp.cs = helpers\InterstitialAd.uwp.cs
 		helpers\NativeAd.uwp.cs = helpers\NativeAd.uwp.cs
 		helpers\NativeAdManager.uwp.cs = helpers\NativeAdManager.uwp.cs
