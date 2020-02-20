@@ -6,9 +6,10 @@ namespace NittyGritty.Platform.Store
 {
     public class DurableAddOn : AddOn
     {
-        public DurableAddOn(string id) : base(id, AddOnType.Durable)
+        public DurableAddOn(string id, uint? durationPeriod = null, DurationUnit? durationUnit = null) : base(id, AddOnType.Durable)
         {
-
+            DurationPeriod = durationPeriod;
+            DurationUnit = durationUnit;
         }
 
         private bool _isActive;
@@ -19,12 +20,20 @@ namespace NittyGritty.Platform.Store
             set { Set(ref _isActive, value); }
         }
 
-        private uint? _lifetime;
+        private uint? _durationPeriod;
 
-        public uint? Lifetime
+        public uint? DurationPeriod
         {
-            get { return _lifetime; }
-            set { Set(ref _lifetime, value); }
+            get { return _durationPeriod; }
+            set { Set(ref _durationPeriod, value); }
+        }
+
+        private DurationUnit? _durationUnit;
+
+        public DurationUnit? DurationUnit
+        {
+            get { return _durationUnit; }
+            set { Set(ref _durationUnit, value); }
         }
 
     }

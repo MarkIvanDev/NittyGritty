@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using NittyGritty.Extensions;
 using NittyGritty.Platform.Store;
 using Windows.Services.Store;
 
@@ -28,42 +29,33 @@ namespace NittyGritty.Services
             var consumables = new Collection<ConsumableAddOn>();
 
             // Specify the kinds of add-ons to retrieve.
-            var storeIds = new Collection<string>();
             if (keys.Length == 0)
             {
-                foreach (var item in _addOnsByKey.Values.OfType<ConsumableAddOn>())
-                {
-                    storeIds.Add(item.Id);
-                }
+                consumables.AddRange(_addOnsByKey.Values.OfType<ConsumableAddOn>());
             }
             else
             {
                 foreach (var key in keys)
                 {
-                    storeIds.Add(_addOnsByKey[key].Id);
+                    if(_addOnsByKey[key] is ConsumableAddOn cao)
+                    {
+                        consumables.Add(cao);
+                    }
                 }
             }
             
-            var queryResult = await context.GetStoreProductsAsync(new List<string>() { "Consumable" }, storeIds);
+            var queryResult = await context.GetStoreProductsAsync(new List<string>() { "Consumable" }, consumables.Select(c => c.Id));
             if (queryResult.ExtendedError == null)
             {
-                var products = queryResult.Products.OrderBy(p => p.Value.Title);
-                foreach (var item in products)
+                foreach (var consumable in consumables)
                 {
-                    // Access the Store info for the product.
-                    StoreProduct product = item.Value;
-
-                    // Use members of the product object to access info for the product...
+                    var product = queryResult.Products[consumable.Id];
                     var balanceResult = await context.GetConsumableBalanceRemainingAsync(product.StoreId);
-                    consumables.Add(new ConsumableAddOn(product.StoreId)
-                    {
-                        Title = product.Title,
-                        Description = product.Description,
-                        Price = product.Price.FormattedPrice,
-                        CustomData = product.Skus[0].CustomDeveloperData,
-                        Balance = balanceResult.Status == StoreConsumableStatus.Succeeded ? balanceResult.BalanceRemaining : 0,
-                        // TODO: Read quantity in ExtendedJsonData
-                    });
+                    consumable.Title = product.Title;
+                    consumable.Description = product.Description;
+                    consumable.Price = product.Price.FormattedPrice;
+                    consumable.CustomData = product.Skus[0].CustomDeveloperData;
+                    consumable.Balance = balanceResult.Status == StoreConsumableStatus.Succeeded ? balanceResult.BalanceRemaining : 0;
                 }
             }
 
@@ -85,45 +77,36 @@ namespace NittyGritty.Services
             var durables = new Collection<DurableAddOn>();
 
             // Specify the kinds of add-ons to retrieve.
-            var storeIds = new Collection<string>();
             if (keys.Length == 0)
             {
-                foreach (var item in _addOnsByKey.Values.OfType<DurableAddOn>())
-                {
-                    storeIds.Add(item.Id);
-                }
+                durables.AddRange(_addOnsByKey.Values.OfType<DurableAddOn>());
             }
             else
             {
                 foreach (var key in keys)
                 {
-                    storeIds.Add(_addOnsByKey[key].Id);
+                    if(_addOnsByKey[key] is DurableAddOn dao)
+                    {
+                        durables.Add(dao);
+                    }
                 }
             }
 
-            var queryResult = await context.GetStoreProductsAsync(new List<string>() { "Durable" }, storeIds);
+            var queryResult = await context.GetStoreProductsAsync(new List<string>() { "Durable" }, durables.Select(d => d.Id));
             if (queryResult.ExtendedError == null)
             {
-                var products = queryResult.Products.OrderBy(p => p.Value.Title);
-                foreach (var item in products)
+                var license = await context.GetAppLicenseAsync();
+                foreach (var durable in durables)
                 {
-                    // Access the Store info for the product.
-                    StoreProduct product = item.Value;
-
+                    var product = queryResult.Products[durable.Id];
                     if(!product.Skus[0].IsSubscription)
                     {
-                        // Use members of the product object to access info for the product...
-                        durables.Add(new DurableAddOn(product.StoreId)
-                        {
-                            Title = product.Title,
-                            Description = product.Description,
-                            Price = product.Price.FormattedPrice,
-                            CustomData = product.Skus[0].CustomDeveloperData,
-                            // TODO: Read lifetime from ExtendedJsonData
-                        });
+                        durable.Title = product.Title;
+                        durable.Description = product.Description;
+                        durable.Price = product.Price.FormattedPrice;
+                        durable.CustomData = product.Skus[0].CustomDeveloperData;
+                        durable.IsActive = license.AddOnLicenses.TryGetValue(product.StoreId, out var l) ? l.IsActive : false;
                     }
-
-                    
                 }
             }
 
@@ -145,45 +128,39 @@ namespace NittyGritty.Services
             var subscriptions = new Collection<SubscriptionAddOn>();
 
             // Specify the kinds of add-ons to retrieve.
-            var storeIds = new Collection<string>();
             if (keys.Length == 0)
             {
-                foreach (var item in _addOnsByKey.Values.OfType<SubscriptionAddOn>())
-                {
-                    storeIds.Add(item.Id);
-                }
+                subscriptions.AddRange(_addOnsByKey.Values.OfType<SubscriptionAddOn>());
             }
             else
             {
                 foreach (var key in keys)
                 {
-                    storeIds.Add(_addOnsByKey[key].Id);
+                    if(_addOnsByKey[key] is SubscriptionAddOn sao)
+                    {
+                        subscriptions.Add(sao);
+                    }
                 }
             }
 
-            var queryResult = await context.GetStoreProductsAsync(new List<string>() { "Durable" }, storeIds);
+            var queryResult = await context.GetStoreProductsAsync(new List<string>() { "Durable" }, subscriptions.Select(s => s.Id));
             if (queryResult.ExtendedError == null)
             {
-                var products = queryResult.Products.OrderBy(p => p.Value.Title);
-                foreach (var item in products)
+                var license = await context.GetAppLicenseAsync();
+                foreach (var subscription in subscriptions)
                 {
-                    // Access the Store info for the product.
-                    StoreProduct product = item.Value;
-
-                    if (product.Skus[0].IsSubscription)
+                    var product = queryResult.Products[subscription.Id];
+                    if(product.Skus[0].IsSubscription)
                     {
-                        // Use members of the product object to access info for the product...
-                        subscriptions.Add(new SubscriptionAddOn(product.StoreId)
-                        {
-                            Title = product.Title,
-                            Description = product.Description,
-                            Price = product.Price.FormattedPrice,
-                            CustomData = product.Skus[0].CustomDeveloperData,
-                            BillingPeriod = product.Skus[0].SubscriptionInfo.BillingPeriod,
-                            BillingPeriodUnit = (DurationUnit)product.Skus[0].SubscriptionInfo.BillingPeriodUnit,
-                            TrialPeriod = product.Skus[0].SubscriptionInfo.TrialPeriod,
-                            TrialPeriodUnit = (DurationUnit)product.Skus[0].SubscriptionInfo.TrialPeriodUnit
-                        });
+                        subscription.Title = product.Title;
+                        subscription.Description = product.Description;
+                        subscription.Price = product.Price.FormattedPrice;
+                        subscription.CustomData = product.Skus[0].CustomDeveloperData;
+                        subscription.BillingPeriod = product.Skus[0].SubscriptionInfo.BillingPeriod;
+                        subscription.BillingPeriodUnit = (DurationUnit)product.Skus[0].SubscriptionInfo.BillingPeriodUnit;
+                        subscription.TrialPeriod = product.Skus[0].SubscriptionInfo.TrialPeriod;
+                        subscription.TrialPeriodUnit = (DurationUnit)product.Skus[0].SubscriptionInfo.TrialPeriodUnit;
+                        subscription.IsActive = license.AddOnLicenses.TryGetValue(product.StoreId, out var l) ? l.IsActive : false;
                     }
                 }
             }
@@ -206,41 +183,33 @@ namespace NittyGritty.Services
             var consumables = new Collection<UnmanagedConsumableAddOn>();
 
             // Specify the kinds of add-ons to retrieve.
-            var storeIds = new Collection<string>();
             if (keys.Length == 0)
             {
-                foreach (var item in _addOnsByKey.Values.OfType<UnmanagedConsumableAddOn>())
-                {
-                    storeIds.Add(item.Id);
-                }
+                consumables.AddRange(_addOnsByKey.Values.OfType<UnmanagedConsumableAddOn>());
             }
             else
             {
                 foreach (var key in keys)
                 {
-                    storeIds.Add(_addOnsByKey[key].Id);
+                    if(_addOnsByKey[key] is UnmanagedConsumableAddOn ucao)
+                    {
+                        consumables.Add(ucao);
+                    }
                 }
             }
 
-            var queryResult = await context.GetStoreProductsAsync(new List<string>() { "UnmanagedConsumable" }, storeIds);
+            var queryResult = await context.GetStoreProductsAsync(new List<string>() { "UnmanagedConsumable" }, consumables.Select(u => u.Id));
             if (queryResult.ExtendedError == null)
             {
-                var products = queryResult.Products.OrderBy(p => p.Value.Title);
-                foreach (var item in products)
+                foreach (var consumable in consumables)
                 {
-                    // Access the Store info for the product.
-                    StoreProduct product = item.Value;
-
-                    // Use members of the product object to access info for the product...
+                    var product = queryResult.Products[consumable.Id];
                     var balanceResult = await context.GetConsumableBalanceRemainingAsync(product.StoreId);
-                    consumables.Add(new UnmanagedConsumableAddOn(product.StoreId)
-                    {
-                        Title = product.Title,
-                        Description = product.Description,
-                        Price = product.Price.FormattedPrice,
-                        CustomData = product.Skus[0].CustomDeveloperData,
-                        Balance = balanceResult.Status == StoreConsumableStatus.Succeeded ? balanceResult.BalanceRemaining : 0
-                    });
+                    consumable.Title = product.Title;
+                    consumable.Description = product.Description;
+                    consumable.Price = product.Price.FormattedPrice;
+                    consumable.CustomData = product.Skus[0].CustomDeveloperData;
+                    consumable.Balance = balanceResult.Status == StoreConsumableStatus.Succeeded ? balanceResult.BalanceRemaining : 0;
                 }
             }
 
@@ -256,7 +225,7 @@ namespace NittyGritty.Services
 
             // Specify the kinds of add-ons to retrieve.
             var license = await context.GetAppLicenseAsync();
-            return license.AddOnLicenses.TryGetValue(_addOnsByKey[key].Id, out var l);
+            return license.AddOnLicenses.TryGetValue(_addOnsByKey[key].Id, out var l) ? l.IsActive : false;
         }
 
         async Task<bool> PlatformIsSubscriptionActive(string key)
@@ -268,7 +237,7 @@ namespace NittyGritty.Services
 
             // Specify the kinds of add-ons to retrieve.
             var license = await context.GetAppLicenseAsync();
-            return license.AddOnLicenses.TryGetValue(_addOnsByKey[key].Id, out var l);
+            return license.AddOnLicenses.TryGetValue(_addOnsByKey[key].Id, out var l) ? l.IsActive : false;
         }
 
         async Task PlatformPurchase(string key)
@@ -300,26 +269,27 @@ namespace NittyGritty.Services
                 case StorePurchaseStatus.NetworkError:
                 case StorePurchaseStatus.ServerError:
                     throw new Exception($"The purchase was unsuccessful due to a server or network error.", purchaseResult.ExtendedError);
+                default:
+                    throw new Exception("The purchase was unsuccessful due to an unknown error", purchaseResult.ExtendedError);
             }
         }
 
-        async Task<string> PlatformReportUnmanagedConsumableFulfillment(string key)
+        async Task PlatformReportUnmanagedConsumableFulfillment(string key, string trackingId)
         {
-            return await PlatformUpdateConsumableBalance(key, 1);
+            await PlatformUpdateConsumableBalance(key, 1, trackingId);
         }
 
-        async Task<string> PlatformUpdateConsumableBalance(string key, uint quantity)
+        async Task PlatformUpdateConsumableBalance(string key, uint quantity, string trackingId)
         {
             if (context == null)
             {
                 context = StoreContext.GetDefault();
             }
-            var trackingId = Guid.NewGuid();
-            var result = await context.ReportConsumableFulfillmentAsync(_addOnsByKey[key].Id, quantity, trackingId);
+            var result = await context.ReportConsumableFulfillmentAsync(_addOnsByKey[key].Id, quantity, Guid.Parse(trackingId));
             switch (result.Status)
             {
                 case StoreConsumableStatus.Succeeded:
-                    return result.TrackingId.ToString();
+                    break;
                 case StoreConsumableStatus.InsufficentQuantity:
                     throw new Exception($"The fulfillment was unsuccessful because the remaining " +
                         $"balance is insufficient. Remaining balance: {result.BalanceRemaining}", result.ExtendedError);

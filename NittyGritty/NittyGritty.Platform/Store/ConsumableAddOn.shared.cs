@@ -6,9 +6,9 @@ namespace NittyGritty.Platform.Store
 {
     public class ConsumableAddOn : AddOn
     {
-        public ConsumableAddOn(string id) : base(id, AddOnType.Consumable)
+        public ConsumableAddOn(string id, uint quantity = 1) : base(id, AddOnType.Consumable)
         {
-
+            Quantity = quantity;
         }
 
         private uint _quantity;

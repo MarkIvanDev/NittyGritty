@@ -69,12 +69,12 @@ namespace NittyGritty.Services
             throw new NotImplementedException();
         }
 
-        Task<string> PlatformReportUnmanagedConsumableFulfillment(string key)
+        Task PlatformReportUnmanagedConsumableFulfillment(string key, string trackingId)
         {
             throw new NotImplementedException();
         }
 
-        Task<string> PlatformUpdateConsumableBalance(string key, uint quantity)
+        Task PlatformUpdateConsumableBalance(string key, uint quantity, string trackingId)
         {
             throw new NotImplementedException();
         }

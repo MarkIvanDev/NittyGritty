@@ -111,14 +111,14 @@ namespace NittyGritty.Services
             await PlatformPurchase(addOn);
         }
 
-        public async Task<string> ReportUnmanagedConsumableFulfillment(string key)
+        public async Task ReportUnmanagedConsumableFulfillment(string key, string trackingId)
         {
-            return await PlatformReportUnmanagedConsumableFulfillment(key);
+            await PlatformReportUnmanagedConsumableFulfillment(key, trackingId);
         }
 
-        public async Task<string> UpdateConsumableBalance(string key, uint quantity)
+        public async Task UpdateConsumableBalance(string key, uint quantity, string trackingId)
         {
-            return await PlatformUpdateConsumableBalance(key, quantity);
+            await PlatformUpdateConsumableBalance(key, quantity, trackingId);
         }
     }
 }

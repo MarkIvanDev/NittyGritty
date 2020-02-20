@@ -21,12 +21,12 @@ namespace NittyGritty.Services
         // Consumable
         Task<ConsumableAddOn> GetConsumableAddOn(string key);
         Task<ReadOnlyCollection<ConsumableAddOn>> GetConsumableAddOns(params string[] keys);
-        Task<string> UpdateConsumableBalance(string key, uint quantity);
+        Task UpdateConsumableBalance(string key, uint quantity, string trackingId);
 
         // UnmanagedConsumable
         Task<UnmanagedConsumableAddOn> GetUnmanagedConsumableAddOn(string key);
         Task<ReadOnlyCollection<UnmanagedConsumableAddOn>> GetUnmanagedConsumableAddOns(params string[] keys);
-        Task<string> ReportUnmanagedConsumableFulfillment(string key);
+        Task ReportUnmanagedConsumableFulfillment(string key, string trackingId);
 
         // Subscription
         Task<SubscriptionAddOn> GetSubscriptionAddOn(string key);
