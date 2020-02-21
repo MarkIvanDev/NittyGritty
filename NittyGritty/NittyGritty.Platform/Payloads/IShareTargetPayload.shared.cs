@@ -1,4 +1,5 @@
 ﻿using NittyGritty.Platform.Contacts;
+using NittyGritty.Platform.Data;
 using NittyGritty.Platform.Storage;
 using System;
 using System.Collections.Generic;
@@ -6,7 +7,7 @@ using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NittyGritty.Platform.Data
+namespace NittyGritty.Platform.Payloads
 {
     public interface IShareTargetPayload
     {

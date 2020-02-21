@@ -11,7 +11,7 @@
 
   <PropertyGroup>
     <PackageId>NittyGritty.UI.Interactivity</PackageId>
-    <PackageVersion>1.2.7-beta1</PackageVersion>
+    <PackageVersion>1.3.0</PackageVersion>
     <Title>NittyGritty.UI.Interactivity</Title>
     <Authors>markivan.basto</Authors>
     <Description>Boilerplate code that can speed up your development</Description>

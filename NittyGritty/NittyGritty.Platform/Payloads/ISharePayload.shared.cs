@@ -6,7 +6,7 @@ using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NittyGritty.Platform.Data
+namespace NittyGritty.Platform.Payloads
 {
     public interface ISharePayload
     {

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 using NittyGritty.Platform.Data;
 
 namespace NittyGritty.Services
@@ -27,7 +28,7 @@ namespace NittyGritty.Services
             throw new NotImplementedException();
         }
 
-        DataPayload PlatformGetData()
+        Task<DataPayload> PlatformGetData()
         {
             throw new NotImplementedException();
         }

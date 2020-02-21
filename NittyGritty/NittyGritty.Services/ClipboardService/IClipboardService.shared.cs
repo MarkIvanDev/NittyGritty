@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 using NittyGritty.Platform.Data;
 
 namespace NittyGritty.Services
@@ -15,7 +16,7 @@ namespace NittyGritty.Services
 
         void Cut(DataPayload data);
 
-        DataPayload GetData();
+        Task<DataPayload> GetData();
 
         void Clear();
 

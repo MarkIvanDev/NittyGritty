@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NittyGritty.Platform.Data
+namespace NittyGritty.Platform.Payloads
 {
     public class ShowAppointmentDetailsPayload
     {
