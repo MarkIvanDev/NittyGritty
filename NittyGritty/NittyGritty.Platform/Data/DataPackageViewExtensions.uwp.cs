@@ -1,22 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using NittyGritty.Platform.Data;
 using Windows.ApplicationModel.DataTransfer;
-using WinStorage = Windows.Storage;
-using System.Runtime.InteropServices.WindowsRuntime;
-using System.Collections.ObjectModel;
-using NittyGritty.Platform.Payloads;
-using NGStorage = NittyGritty.Platform.Storage;
 using Windows.Storage.Streams;
+using NGStorage = NittyGritty.Platform.Storage;
+using WinStorage = Windows.Storage;
 
-namespace NittyGritty.Uwp.Extensions
+namespace NittyGritty.Platform.Data
 {
     public static class DataPackageViewExtensions
     {
-
         public static async Task<string> GetText(this DataPackageView data)
         {
             return await GetData<string>(data, StandardDataFormats.Text);
@@ -55,7 +53,7 @@ namespace NittyGritty.Uwp.Extensions
             var storageItems = await GetData<IReadOnlyList<WinStorage.IStorageItem>>(data, StandardDataFormats.StorageItems) ?? new List<WinStorage.IStorageItem>().AsReadOnly();
             foreach (var item in storageItems)
             {
-                if(item is WinStorage.IStorageFile storageFile)
+                if (item is WinStorage.IStorageFile storageFile)
                 {
                     items.Add(new NGStorage.NGFile(storageFile));
                 }
@@ -80,56 +78,9 @@ namespace NittyGritty.Uwp.Extensions
             }
         }
 
-        //public static async Task<SharePayload> GetPayload(this DataPackageView data, params string[] dataFormats)
-        //{
-        //    var payload = new SharePayload(data.Properties.Title);
-        //    var formats = new List<string>();
-        //    if(dataFormats.Length == 0)
-        //    {
-        //        formats.AddRange(data.AvailableFormats);
-        //    }
-        //    else
-        //    {
-        //        formats.AddRange(dataFormats);
-        //    }
-        //    foreach (var format in formats)
-        //    {
-        //        if (format == StandardDataFormats.ApplicationLink)
-        //        {
-        //            payload.SetAppLink(await data.GetAppLink());
-        //        }
-        //        else if (format == StandardDataFormats.Bitmap)
-        //        {
-        //            payload.SetBitmap(await data.GetBitmap());
-        //        }
-        //        else if (format == StandardDataFormats.Html)
-        //        {
-        //            payload.SetHtml(await data.GetHtml());
-        //        }
-        //        else if (format == StandardDataFormats.Rtf)
-        //        {
-        //            payload.SetRtf(await data.GetRtf());
-        //        }
-        //        else if (format == StandardDataFormats.Text)
-        //        {
-        //            payload.SetText(await data.GetText());
-        //        }
-        //        else if (format == StandardDataFormats.WebLink)
-        //        {
-        //            payload.SetWebLink(await data.GetWebLink());
-        //        }
-        //        else if (format == StandardDataFormats.StorageItems)
-        //        {
-        //            payload.SetFiles(await data.GetFiles());
-        //        }
-
-        //    }
-        //    return payload;
-        //}
-
-        public static async Task<ShareData> GetData(this DataPackageView data)
+        public static async Task<DataPayload> GetData(this DataPackageView data)
         {
-            var shareData = new ShareData();
+            var shareData = new DataPayload();
             var formats = data.AvailableFormats.ToList();
 
             shareData.AppLink = await data.GetAppLink();
@@ -164,5 +115,6 @@ namespace NittyGritty.Uwp.Extensions
 
             return shareData;
         }
+
     }
 }

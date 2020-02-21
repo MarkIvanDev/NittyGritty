@@ -1,34 +1,38 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using System.Threading.Tasks;
-using NittyGritty.Platform.Storage;
+using NittyGritty.Platform.Data;
 
 namespace NittyGritty.Services
 {
-    public partial class FileService
+    public partial class ClipboardService
     {
-        Task PlatformRequestAccess()
+        void PlatformStart()
         {
             throw new NotImplementedException();
         }
 
-        Task<bool> PlatformLaunch(IFile file)
+        void PlatformStop()
         {
             throw new NotImplementedException();
         }
 
-        Task<bool> PlatformLaunch(IFolder folder)
+        void PlatformCopy(DataPayload data)
         {
             throw new NotImplementedException();
         }
 
-        Task<IFile> PlatformGetFileFromPath(string path)
+        void PlatformCut(DataPayload data)
         {
             throw new NotImplementedException();
         }
 
-        Task<IFolder> PlatformGetFolderFromPath(string path)
+        DataPayload PlatformGetData()
+        {
+            throw new NotImplementedException();
+        }
+
+        void PlatformClear()
         {
             throw new NotImplementedException();
         }

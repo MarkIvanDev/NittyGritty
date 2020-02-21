@@ -1,13 +1,34 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using NittyGritty.Platform.Storage;
+#if UWP
+using Windows.ApplicationModel.DataTransfer;
+using Windows.Storage.Streams;
+#endif
 
-namespace NittyGritty.Platform.Payloads
+namespace NittyGritty.Platform.Data
 {
-    public class ShareData : ObservableObject
+    public class DataPayload : ObservableObject
     {
+
+        private string _title;
+
+        public string Title
+        {
+            get { return _title; }
+            set { Set(ref _title, value); }
+        }
+
+        private string _description;
+
+        public string Description
+        {
+            get { return _description; }
+            set { Set(ref _description, value); }
+        }
 
         private string _text;
 
@@ -73,5 +94,26 @@ namespace NittyGritty.Platform.Payloads
             set { Set(ref _storageItems, value); }
         }
 
+#if UWP
+        public DataPackage AsDataPackage()
+        {
+            var dataPackage = new DataPackage();
+            dataPackage.Properties.Title = Title;
+            dataPackage.Properties.Description = Description;
+
+            if (Text != null) dataPackage.SetText(Text);
+            if (Html != null) dataPackage.SetHtmlFormat(Html);
+            if (Rtf != null) dataPackage.SetRtf(Rtf);
+            if (AppLink != null) dataPackage.SetApplicationLink(AppLink);
+            if (WebLink != null) dataPackage.SetWebLink(WebLink);
+            if (Bitmap != null) dataPackage.SetBitmap(RandomAccessStreamReference.CreateFromStream(Bitmap.AsRandomAccessStream()));
+            if (StorageItems != null) dataPackage.SetStorageItems(StorageItems.Select(f => f.Context as Windows.Storage.IStorageItem));
+            foreach (var data in CustomData)
+            {
+                dataPackage.SetData(data.Key, data.Value);
+            }
+            return dataPackage;
+        }
+#endif
     }
 }

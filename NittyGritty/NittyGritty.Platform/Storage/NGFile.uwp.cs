@@ -11,8 +11,10 @@ namespace NittyGritty.Platform.Storage
     {
         public NGFile(IStorageFile file)
         {
-            this.Context = file;
+            Context = file;
         }
+
+        object IStorageItem.Context { get { return Context; } }
 
         public IStorageFile Context { get; }
 

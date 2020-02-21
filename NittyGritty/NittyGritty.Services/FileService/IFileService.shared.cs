@@ -13,5 +13,9 @@ namespace NittyGritty.Services
         Task<bool> Launch(IFile file);
 
         Task<bool> Launch(IFolder folder);
+
+        Task<IFile> GetFileFromPath(string path);
+
+        Task<IFolder> GetFolderFromPath(string path);
     }
 }

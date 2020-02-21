@@ -6,7 +6,7 @@ using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NittyGritty.Platform.Payloads
+namespace NittyGritty.Platform.Data
 {
     public interface IShareTargetPayload
     {
@@ -22,7 +22,7 @@ namespace NittyGritty.Platform.Payloads
 
         #region Data Methods
 
-        Task<ShareData> GetData();
+        Task<DataPayload> GetData();
 
         Task<T> GetData<T>(string dataFormat) where T : class;
 

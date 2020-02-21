@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using NittyGritty.Platform.Storage;
+using Windows.Storage;
 using Windows.System;
 
 namespace NittyGritty.Services
@@ -30,6 +31,18 @@ namespace NittyGritty.Services
                 return await Launcher.LaunchFolderAsync(ngFolder.Context);
             }
             return false;
+        }
+
+        async Task<IFile> PlatformGetFileFromPath(string path)
+        {
+            var file = await StorageFile.GetFileFromPathAsync(path);
+            return new NGFile(file);
+        }
+
+        async Task<IFolder> PlatformGetFolderFromPath(string path)
+        {
+            var folder = await StorageFolder.GetFolderFromPathAsync(path);
+            return new NGFolder(folder);
         }
     }
 }

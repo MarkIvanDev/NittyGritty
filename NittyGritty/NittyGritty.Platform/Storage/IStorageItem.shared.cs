@@ -6,6 +6,8 @@ namespace NittyGritty.Platform.Storage
 {
     public interface IStorageItem
     {
+        object Context { get; }
+
         string Name { get; }
 
         string DisplayName { get; }

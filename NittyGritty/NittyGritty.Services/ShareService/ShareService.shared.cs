@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using NittyGritty.Platform.Payloads;
+using NittyGritty.Platform.Data;
 
 namespace NittyGritty.Services
 {
@@ -17,7 +17,7 @@ namespace NittyGritty.Services
             PlatformStop();
         }
 
-        public void Share(ShareData data)
+        public void Share(DataPayload data)
         {
             PlatformShare(data);
         }

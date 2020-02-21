@@ -23,5 +23,15 @@ namespace NittyGritty.Services
             return await PlatformLaunch(folder);
         }
 
+        public async Task<IFile> GetFileFromPath(string path)
+        {
+            return await PlatformGetFileFromPath(path);
+        }
+
+        public async Task<IFolder> GetFolderFromPath(string path)
+        {
+            return await PlatformGetFolderFromPath(path);
+        }
+
     }
 }

@@ -11,6 +11,21 @@ namespace NittyGritty.Uwp.Extensions
 {
     public static class DependencyObjectExtensions
     {
+
+        public static object GetTag(DependencyObject obj)
+        {
+            return (object)obj.GetValue(TagProperty);
+        }
+
+        public static void SetTag(DependencyObject obj, object value)
+        {
+            obj.SetValue(TagProperty, value);
+        }
+
+        // Using a DependencyProperty as the backing store for Tag.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty TagProperty =
+            DependencyProperty.RegisterAttached("Tag", typeof(object), typeof(DependencyObjectExtensions), new PropertyMetadata(null));
+
         public static IList<T> FindChildren<T>(this DependencyObject startNode) where T : DependencyObject
         {
             var results = new List<T>();

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace NittyGritty.Platform.Payloads
+namespace NittyGritty.Platform.Data
 {
     public interface IFileSavePayload
     {

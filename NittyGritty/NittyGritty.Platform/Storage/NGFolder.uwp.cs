@@ -11,8 +11,10 @@ namespace NittyGritty.Platform.Storage
     {
         public NGFolder(IStorageFolder folder)
         {
-            this.Context = folder;
+            Context = folder;
         }
+
+        object IStorageItem.Context { get { return Context; } }
 
         public IStorageFolder Context { get; }
 

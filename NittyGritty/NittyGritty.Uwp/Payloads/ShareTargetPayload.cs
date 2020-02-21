@@ -47,7 +47,7 @@ namespace NittyGritty.Uwp.Payloads
 
         #region Data Methods
 
-        public async Task<ShareData> GetData()
+        public async Task<DataPayload> GetData()
         {
             var data = await operation.Data.GetData();
             return data;
