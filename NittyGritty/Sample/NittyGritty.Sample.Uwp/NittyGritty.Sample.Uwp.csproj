@@ -171,6 +171,10 @@
       <Project>{9f764d3a-893f-4b2d-a560-2e03419763dd}</Project>
       <Name>NittyGritty.Platform</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\NittyGritty.Services\NittyGritty.Services.csproj">
+      <Project>{870C6CCC-63D5-480E-A725-9C1BB2533B39}</Project>
+      <Name>NittyGritty.Services</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\NittyGritty.Uwp\NittyGritty.Uwp.csproj">
       <Project>{f7f26639-ddc1-420f-9b1f-f1a3545857a0}</Project>
       <Name>NittyGritty.Uwp</Name>

@@ -43,8 +43,12 @@ namespace NittyGritty.Platform.Data
         public static async Task<Stream> GetBitmap(this DataPackageView data)
         {
             var bitmap = await GetData<RandomAccessStreamReference>(data, StandardDataFormats.Bitmap);
-            var stream = await bitmap?.OpenReadAsync();
-            return stream?.AsStream();
+            if(bitmap != null)
+            {
+                var stream = await bitmap.OpenReadAsync();
+                return stream?.AsStream();
+            }
+            return default(Stream);
         }
 
         public static async Task<IReadOnlyCollection<NGStorage.IStorageItem>> GetStorageItems(this DataPackageView data)
@@ -70,7 +74,11 @@ namespace NittyGritty.Platform.Data
         {
             try
             {
-                return await data.GetDataAsync(dataFormat) as T;
+                if(data.Contains(dataFormat))
+                {
+                    return await data.GetDataAsync(dataFormat) as T;
+                }
+                return default(T);
             }
             catch (Exception)
             {
@@ -80,7 +88,12 @@ namespace NittyGritty.Platform.Data
 
         public static async Task<DataPayload> GetData(this DataPackageView data)
         {
-            var shareData = new DataPayload();
+            var shareData = new DataPayload
+            {
+                Title = data.Properties.Title,
+                Description = data.Properties.Description
+            };
+
             var formats = data.AvailableFormats.ToList();
 
             shareData.AppLink = await data.GetAppLink();

@@ -87,7 +87,7 @@ namespace NittyGritty.UI.Converters
         public T Output
         {
             get { return (T)GetValue(OutputProperty); }
-            set { SetValue(OutputProperty, value); }
+            protected set { SetValue(OutputProperty, value); }
         }
 
         // Using a DependencyProperty as the backing store for Output.  This enables animation, styling, binding, etc...

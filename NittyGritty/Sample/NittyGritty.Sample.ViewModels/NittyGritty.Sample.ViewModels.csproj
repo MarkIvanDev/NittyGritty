@@ -6,10 +6,12 @@
 
   <ItemGroup>
     <PackageReference Include="MvvmLightLibsStd10" Version="5.4.1.1" />
+    <PackageReference Include="Xamarin.Essentials" Version="1.5.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\NittyGritty.Platform\NittyGritty.Platform.csproj" />
+    <ProjectReference Include="..\..\NittyGritty.Services\NittyGritty.Services.csproj" />
     <ProjectReference Include="..\..\NittyGritty\NittyGritty.csproj" />
   </ItemGroup>
 

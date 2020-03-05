@@ -62,7 +62,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="nupkg\" />
+    <Folder Include="packages\" />
   </ItemGroup>
 
 </Project>
