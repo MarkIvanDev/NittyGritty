@@ -98,8 +98,8 @@ namespace NittyGritty.Platform.Data
         public DataPackage AsDataPackage()
         {
             var dataPackage = new DataPackage();
-            dataPackage.Properties.Title = Title;
-            dataPackage.Properties.Description = Description;
+            if (Title != null) dataPackage.Properties.Title = Title;
+            if (Description != null) dataPackage.Properties.Description = Description;
 
             if (Text != null) dataPackage.SetText(Text);
             if (Html != null) dataPackage.SetHtmlFormat(Html);
@@ -107,11 +107,15 @@ namespace NittyGritty.Platform.Data
             if (AppLink != null) dataPackage.SetApplicationLink(AppLink);
             if (WebLink != null) dataPackage.SetWebLink(WebLink);
             if (Bitmap != null) dataPackage.SetBitmap(RandomAccessStreamReference.CreateFromStream(Bitmap.AsRandomAccessStream()));
-            if (StorageItems != null) dataPackage.SetStorageItems(StorageItems.Select(f => f.Context as Windows.Storage.IStorageItem));
-            foreach (var data in CustomData)
+            if (StorageItems != null && StorageItems.Count > 0) dataPackage.SetStorageItems(StorageItems.Select(f => f.Context as Windows.Storage.IStorageItem));
+            if (CustomData != null && CustomData.Count > 0)
             {
-                dataPackage.SetData(data.Key, data.Value);
+                foreach (var data in CustomData)
+                {
+                    dataPackage.SetData(data.Key, data.Value);
+                }
             }
+            
             return dataPackage;
         }
 #endif
