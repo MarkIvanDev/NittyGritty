@@ -8,6 +8,10 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
     DataContext="{Binding Source={StaticResource Locator}, Path=Main}">
+    <uwp:NGPage.Resources>
+        <XamlUICommand x:Key="AddCommand" 
+                       Command="{x:Bind ViewModel.AddCommand}" />
+    </uwp:NGPage.Resources>
 
     <Grid>
         <Grid.RowDefinitions>
@@ -28,10 +32,10 @@
             <AutoSuggestBox Text="{x:Bind ViewModel.Text, Mode=TwoWay}" />
             <StackPanel Orientation="Horizontal"
                         Grid.Column="1">
-                <TextBox Text="{x:Bind ViewModel.AddText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                <TextBox Text="{Binding AddText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                 <Button Margin="8,0,0,0"
                         Content="Add"
-                        Command="{x:Bind ViewModel.AddCommand, Mode=OneWay}"/>
+                        Command="{x:Bind ViewModel.AddCommand}"/>
             </StackPanel>
         </Grid>
 

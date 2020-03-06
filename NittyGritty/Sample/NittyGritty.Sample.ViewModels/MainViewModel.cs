@@ -26,6 +26,7 @@ namespace NittyGritty.Sample.ViewModels
             set
             {
                 Set(ref _addText, value);
+                AddCommand.RaiseCanExecuteChanged();
             }
         }
 
@@ -52,15 +53,24 @@ namespace NittyGritty.Sample.ViewModels
             set { Set(ref _clipboardHasFiles, value); }
         }
 
+        private RelayCommand _addCommand;
+
         /// <summary>
         /// Gets the AddCommand.
         /// </summary>
-        public RelayCommand AddCommand => new RelayCommand(
-            () =>
+        public RelayCommand AddCommand
+        {
+            get
             {
-                if(!string.IsNullOrWhiteSpace(AddText))
-                    DynamicCollection.Add(AddText);
-            });
+                return _addCommand
+                    ?? (_addCommand = new RelayCommand(
+                    () =>
+                    {
+                        DynamicCollection.Add(AddText);
+                    },
+                    () => !string.IsNullOrWhiteSpace(AddText)));
+            }
+        }
 
         private DynamicCollection<string> _dynamicCollection;
 
