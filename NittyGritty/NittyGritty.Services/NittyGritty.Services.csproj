@@ -11,7 +11,7 @@
 
   <PropertyGroup>
     <PackageId>NittyGritty.Services</PackageId>
-    <PackageVersion>1.3.3</PackageVersion>
+    <PackageVersion>1.4.0</PackageVersion>
     <Title>NittyGritty.Services</Title>
     <Authors>markivan.basto</Authors>
     <Description>Boilerplate code that can speed up your development</Description>
@@ -25,17 +25,20 @@
     <PackageOutputPath>$(MSBuildProjectDirectory)\packages</PackageOutputPath>
   </PropertyGroup>
 
-  <PropertyGroup Condition=" '$(Configuration)'=='Debug' ">
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <DebugType>full</DebugType>
     <DebugSymbols>true</DebugSymbols>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <DebugType>pdbonly</DebugType>
   </PropertyGroup>
   
   <PropertyGroup Condition=" $(TargetFramework.StartsWith('netstandard')) ">
     <DefineConstants>$(DefineConstants);NETSTANDARD</DefineConstants>
   </PropertyGroup>
 
-  <PropertyGroup Condition=" '$(TargetFramework)' == 'uap10.0.16299' ">
-    <TargetPlatformVersion>10.0.17763.0</TargetPlatformVersion>
-    <TargetPlatformMinVersion>10.0.16299.0</TargetPlatformMinVersion>
+  <PropertyGroup Condition=" $(TargetFramework.StartsWith('uap10.0')) ">
     <DefineConstants>$(DefineConstants);UWP</DefineConstants>
   </PropertyGroup>
 
