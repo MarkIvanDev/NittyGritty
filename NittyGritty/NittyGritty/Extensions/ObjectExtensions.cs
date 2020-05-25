@@ -63,5 +63,9 @@ namespace NittyGritty.Extensions
             return defaultValue;
         }
 
+        public static bool IsDefault<T>(this T value)
+        {
+            return value.Equals(default(T));
+        }
     }
 }
