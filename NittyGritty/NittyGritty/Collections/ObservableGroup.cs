@@ -20,7 +20,9 @@ namespace NittyGritty.Collections
             }
 
             Key = key;
-            Items = new ObservableCollection<TItem>(items);
+            Items = items is ObservableCollection<TItem> observableCollection ?
+                observableCollection :
+                new ObservableCollection<TItem>(items);
         }
 
         public TKey Key { get; }

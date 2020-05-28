@@ -236,7 +236,7 @@ namespace NittyGritty.Collections
             }
         }
 
-        public void Reset(IEnumerable<TItem> list)
+        public void Reset(IList<TItem> list)
         {
             if (list == null)
                 throw new ArgumentNullException(nameof(list));

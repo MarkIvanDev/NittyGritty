@@ -19,12 +19,12 @@ namespace NittyGritty.Collections
         }
 
         public DynamicCollection(IEnumerable<TItem> items)
-            : this(items, null, null, true, false)
+            : this(items, null, (Func<TItem, object>)null, true, false)
         {
         }
 
         public DynamicCollection(IEnumerable<TItem> items, Func<TItem, bool> filter)
-            : this(items, filter, null, true, false)
+            : this(items, filter, (Func<TItem, object>)null, true, false)
         {
         }
 
@@ -33,8 +33,18 @@ namespace NittyGritty.Collections
         {
         }
 
+        public DynamicCollection(IEnumerable<TItem> items, Func<TItem, bool> filter, IComparer<TItem> comparer)
+            : this(items, filter, comparer, true, false)
+        {
+        }
+
         public DynamicCollection(IEnumerable<TItem> items, Func<TItem, bool> filter, Func<TItem, object> order, bool ascending)
             : this(items, filter, order, ascending, false)
+        {
+        }
+
+        public DynamicCollection(IEnumerable<TItem> items, Func<TItem, bool> filter, IComparer<TItem> comparer, bool ascending)
+            : this(items, filter, comparer, ascending, false)
         {
         }
 
@@ -43,6 +53,14 @@ namespace NittyGritty.Collections
         {
             Filter = filter;
             Order = order;
+            Ascending = ascending;
+        }
+
+        public DynamicCollection(IEnumerable<TItem> items, Func<TItem, bool> filter, IComparer<TItem> comparer, bool ascending, bool trackItemChanges)
+            : base(items, trackItemChanges)
+        {
+            Filter = filter;
+            Comparer = comparer;
             Ascending = ascending;
         }
 
@@ -108,29 +126,51 @@ namespace NittyGritty.Collections
             }
         }
 
+        private IComparer<TItem> _comparer;
+
+        public IComparer<TItem> Comparer
+        {
+            get { return _comparer; }
+            set
+            {
+                _comparer = value;
+                Refresh();
+            }
+        }
+
         public override IList<TItem> GetItems()
         {
-            List<TItem> list;
+            var list = (IEnumerable<TItem>)InternalCollection;
 
-            if (Filter != null && Order != null && Ascending)
-                list = InternalCollection.Where(Filter).OrderBy(Order).ToList();
-            else if (Filter != null && Order != null && !Ascending)
-                list = InternalCollection.Where(Filter).OrderByDescending(Order).ToList();
-            else if (Filter == null && Order != null && Ascending)
-                list = InternalCollection.OrderBy(Order).ToList();
-            else if (Filter == null && Order != null && !Ascending)
-                list = InternalCollection.OrderByDescending(Order).ToList();
-            else if (Filter != null && Order == null)
-                list = InternalCollection.Where(Filter).ToList();
-            else if (Filter == null && Order == null)
-                list = InternalCollection.ToList();
-            else
-                throw new Exception();
+            if (!(Filter is null))
+            {
+                list = list.Where(Filter);
+            }
 
-            if (Limit > 0 || Offset > 0)
-                list = list.Skip(Offset).Take(Limit).ToList();
+            if (!(Comparer is null))
+            {
+                list = Ascending ?
+                    list.OrderBy(i => i, Comparer) :
+                    list.OrderByDescending(i => i, Comparer);
+            }
+            else if (!(Order is null))
+            {
+                list = Ascending ?
+                    list.OrderBy(Order) :
+                    list.OrderByDescending(Order);
+            }
 
-            return list;
+            if (Offset > 0)
+            {
+                list = list.Skip(Offset);
+            }
+
+            if (Limit > 0)
+            {
+                list = list.Take(Limit);
+            }
+
+            return list.ToList();
         }
 
         #endregion
