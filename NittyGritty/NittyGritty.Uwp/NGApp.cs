@@ -178,6 +178,9 @@ namespace NittyGritty.Uwp
                 case ActivationKind.AppointmentsProvider when args is AppointmentsProviderReplaceAppointmentActivatedEventArgs replaceAppointmentArgs:
                     await HandleActivation(replaceAppointmentArgs);
                     break;
+                case ActivationKind.CachedFileUpdater:
+                    await HandleActivation((CachedFileUpdaterActivatedEventArgs)args);
+                    break;
                 case ActivationKind.ContactPanel:
                     await HandleActivation((ContactPanelActivatedEventArgs)args);
                     break;
@@ -187,22 +190,17 @@ namespace NittyGritty.Uwp
                 case ActivationKind.FileSavePicker:
                     await HandleActivation((FileSavePickerActivatedEventArgs)args);
                     break;
-                case ActivationKind.ProtocolForResults:
-                    await HandleActivation((ProtocolForResultsActivatedEventArgs)args);
-                    break;
-                case ActivationKind.ShareTarget:
-                    await HandleActivation((ShareTargetActivatedEventArgs)args);
-                    break;
-
-                // Special Activations
-                case ActivationKind.CachedFileUpdater:
-                    await HandleActivation((CachedFileUpdaterActivatedEventArgs)args);
-                    break;
                 case ActivationKind.LockScreen:
                     await HandleActivation((LockScreenActivatedEventArgs)args);
                     break;
                 case ActivationKind.PrintWorkflowForegroundTask:
                     await HandleActivation((PrintWorkflowUIActivatedEventArgs)args);
+                    break;
+                case ActivationKind.ProtocolForResults:
+                    await HandleActivation((ProtocolForResultsActivatedEventArgs)args);
+                    break;
+                case ActivationKind.ShareTarget:
+                    await HandleActivation((ShareTargetActivatedEventArgs)args);
                     break;
                 case ActivationKind.WebAccountProvider:
                     await HandleActivation((WebAccountProviderActivatedEventArgs)args);
@@ -329,6 +327,11 @@ namespace NittyGritty.Uwp
             return Task.CompletedTask;
         }
 
+        protected virtual Task HandleActivation(CachedFileUpdaterActivatedEventArgs args)
+        {
+            return Task.CompletedTask;
+        }
+
         public virtual Task HandleActivation(ContactPanelActivatedEventArgs args)
         {
             return Task.CompletedTask;
@@ -344,30 +347,22 @@ namespace NittyGritty.Uwp
             return Task.CompletedTask;
         }
 
-        public virtual Task HandleActivation(ProtocolForResultsActivatedEventArgs args)
-        {
-            return Task.CompletedTask;
-        }
-
-        public virtual Task HandleActivation(ShareTargetActivatedEventArgs args)
-        {
-            return Task.CompletedTask;
-        }
-        #endregion
-
-        #region Handle Special Activations
-
-        protected virtual Task HandleActivation(CachedFileUpdaterActivatedEventArgs args)
-        {
-            return Task.CompletedTask;
-        }
-
         protected virtual Task HandleActivation(LockScreenActivatedEventArgs args)
         {
             return Task.CompletedTask;
         }
 
         protected virtual Task HandleActivation(PrintWorkflowUIActivatedEventArgs args)
+        {
+            return Task.CompletedTask;
+        }
+
+        public virtual Task HandleActivation(ProtocolForResultsActivatedEventArgs args)
+        {
+            return Task.CompletedTask;
+        }
+
+        public virtual Task HandleActivation(ShareTargetActivatedEventArgs args)
         {
             return Task.CompletedTask;
         }
@@ -418,6 +413,7 @@ namespace NittyGritty.Uwp
         }
 
         /// <summary>
+        /// Handle activations available only in Phones
         /// Only override if you want to handle the following activation kinds:
         /// <list type="bullet">
         /// <item>
@@ -448,6 +444,7 @@ namespace NittyGritty.Uwp
         }
 
         /// <summary>
+        /// Handle activations reserved for system use
         /// Only override if you want to handle the following activation kinds:
         /// <list type="bullet">
         /// <item>
