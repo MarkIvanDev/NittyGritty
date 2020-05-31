@@ -11,6 +11,7 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.ApplicationModel.Appointments.AppointmentsProvider;
 using Windows.Graphics.Printing.Workflow;
+using Windows.ApplicationModel.Core;
 
 namespace NittyGritty.Uwp
 {
@@ -85,7 +86,7 @@ namespace NittyGritty.Uwp
             await ProcessActivation(args);
         }
 
-        protected override async void OnBackgroundActivated(BackgroundActivatedEventArgs args)
+        protected override void OnBackgroundActivated(BackgroundActivatedEventArgs args)
         {
             
         }
@@ -130,6 +131,12 @@ namespace NittyGritty.Uwp
                 case ActivationKind.Launch:
                     await HandleActivation((LaunchActivatedEventArgs)args);
                     break;
+                case ActivationKind.AppointmentsProvider when args is AppointmentsProviderShowAppointmentDetailsActivatedEventArgs appointmentDetailsArgs:
+                    await HandleActivation(appointmentDetailsArgs);
+                    break;
+                case ActivationKind.AppointmentsProvider when args is AppointmentsProviderShowTimeFrameActivatedEventArgs appointmentTimeFrameArgs:
+                    await HandleActivation(appointmentTimeFrameArgs);
+                    break;
                 case ActivationKind.CommandLineLaunch:
                     await HandleActivation((CommandLineActivatedEventArgs)args);
                     break;
@@ -148,6 +155,9 @@ namespace NittyGritty.Uwp
                 case ActivationKind.Protocol:
                     await HandleActivation((ProtocolActivatedEventArgs)args);
                     break;
+                case ActivationKind.RestrictedLaunch:
+                    await HandleActivation((RestrictedLaunchActivatedEventArgs)args);
+                    break;
                 case ActivationKind.Search:
                     await HandleActivation((SearchActivatedEventArgs)args);
                     break;
@@ -159,6 +169,15 @@ namespace NittyGritty.Uwp
                     break;
 
                 // Hosted Activations
+                case ActivationKind.AppointmentsProvider when args is AppointmentsProviderAddAppointmentActivatedEventArgs addAppointmenArgs:
+                    await HandleActivation(addAppointmenArgs);
+                    break;
+                case ActivationKind.AppointmentsProvider when args is AppointmentsProviderRemoveAppointmentActivatedEventArgs removeAppointmentArgs:
+                    await HandleActivation(removeAppointmentArgs);
+                    break;
+                case ActivationKind.AppointmentsProvider when args is AppointmentsProviderReplaceAppointmentActivatedEventArgs replaceAppointmentArgs:
+                    await HandleActivation(replaceAppointmentArgs);
+                    break;
                 case ActivationKind.ContactPanel:
                     await HandleActivation((ContactPanelActivatedEventArgs)args);
                     break;
@@ -176,28 +195,6 @@ namespace NittyGritty.Uwp
                     break;
 
                 // Special Activations
-                case ActivationKind.AppointmentsProvider when args is IAppointmentsProviderActivatedEventArgs appointmentArgs:
-                    if (appointmentArgs.Verb == AppointmentsProviderLaunchActionVerbs.AddAppointment)
-                    {
-                        await HandleActivation((AppointmentsProviderAddAppointmentActivatedEventArgs)args);
-                    }
-                    else if (appointmentArgs.Verb == AppointmentsProviderLaunchActionVerbs.RemoveAppointment)
-                    {
-                        await HandleActivation((AppointmentsProviderRemoveAppointmentActivatedEventArgs)args);
-                    }
-                    else if (appointmentArgs.Verb == AppointmentsProviderLaunchActionVerbs.ReplaceAppointment)
-                    {
-                        await HandleActivation((AppointmentsProviderReplaceAppointmentActivatedEventArgs)args);
-                    }
-                    else if (appointmentArgs.Verb == AppointmentsProviderLaunchActionVerbs.ShowAppointmentDetails)
-                    {
-                        await HandleActivation((AppointmentsProviderShowAppointmentDetailsActivatedEventArgs)args);
-                    }
-                    else if (appointmentArgs.Verb == AppointmentsProviderLaunchActionVerbs.ShowTimeFrame)
-                    {
-                        await HandleActivation((AppointmentsProviderShowTimeFrameActivatedEventArgs)args);
-                    }
-                    break;
                 case ActivationKind.CachedFileUpdater:
                     await HandleActivation((CachedFileUpdaterActivatedEventArgs)args);
                     break;
@@ -213,50 +210,39 @@ namespace NittyGritty.Uwp
 
                 // Desktop only
                 case ActivationKind.CameraSettings:
+                case ActivationKind.Contact:
                 case ActivationKind.ContactPicker:
+                case ActivationKind.GameUIProvider:
+                case ActivationKind.LockScreenCall:
                 case ActivationKind.PrintTaskSettings:
                 case ActivationKind.Print3DWorkflow:
                 case ActivationKind.StartupTask:
                     await HandleDesktopActivation(args);
                     break;
 
-                // Windows Store only
-                case ActivationKind.Contact:
-                    break;
-                case ActivationKind.LockScreenCall:
-                    break;
-                case ActivationKind.RestrictedLaunch:
-                    break;
-
                 // Windows Phone only
                 case ActivationKind.PickerReturned:
-                    break;
                 case ActivationKind.PickFileContinuation:
-                    break;
                 case ActivationKind.PickSaveFileContinuation:
-                    break;
                 case ActivationKind.PickFolderContinuation:
-                    break;
                 case ActivationKind.WalletAction:
-                    break;
                 case ActivationKind.WebAuthenticationBrokerContinuation:
+                    await HandlePhoneActivation(args);
                     break;
 
                 // Reserved for system use
                 case ActivationKind.ComponentUI:
-                    break;
                 case ActivationKind.FilePickerExperience:
-                    break;
-                case ActivationKind.GameUIProvider:
-                    break;
                 case ActivationKind.LockScreenComponent:
-                    break;
                 case ActivationKind.UserDataAccountsProvider:
+                    await HandleReservedActivation(args);
                     break;
 
                 default:
                     break;
             }
+
+            Window.Current.Activate();
 
             await Startup();
         }
@@ -264,6 +250,16 @@ namespace NittyGritty.Uwp
 
         #region Handle Normal Activation
         protected abstract Task HandleActivation(LaunchActivatedEventArgs args);
+
+        protected virtual Task HandleActivation(AppointmentsProviderShowAppointmentDetailsActivatedEventArgs args)
+        {
+            return Task.CompletedTask;
+        }
+
+        protected virtual Task HandleActivation(AppointmentsProviderShowTimeFrameActivatedEventArgs args)
+        {
+            return Task.CompletedTask;
+        }
 
         protected virtual Task HandleActivation(CommandLineActivatedEventArgs args)
         {
@@ -295,6 +291,11 @@ namespace NittyGritty.Uwp
             return Task.CompletedTask;
         }
 
+        protected virtual Task HandleActivation(RestrictedLaunchActivatedEventArgs args)
+        {
+            return Task.CompletedTask;
+        }
+
         protected virtual Task HandleActivation(SearchActivatedEventArgs args)
         {
             return Task.CompletedTask;
@@ -312,6 +313,22 @@ namespace NittyGritty.Uwp
         #endregion
 
         #region Handle Hosted Activations
+
+        protected virtual Task HandleActivation(AppointmentsProviderAddAppointmentActivatedEventArgs args)
+        {
+            return Task.CompletedTask;
+        }
+
+        protected virtual Task HandleActivation(AppointmentsProviderRemoveAppointmentActivatedEventArgs args)
+        {
+            return Task.CompletedTask;
+        }
+
+        protected virtual Task HandleActivation(AppointmentsProviderReplaceAppointmentActivatedEventArgs args)
+        {
+            return Task.CompletedTask;
+        }
+
         public virtual Task HandleActivation(ContactPanelActivatedEventArgs args)
         {
             return Task.CompletedTask;
@@ -340,31 +357,6 @@ namespace NittyGritty.Uwp
 
         #region Handle Special Activations
 
-        protected virtual Task HandleActivation(AppointmentsProviderAddAppointmentActivatedEventArgs args)
-        {
-            return Task.CompletedTask;
-        }
-
-        protected virtual Task HandleActivation(AppointmentsProviderRemoveAppointmentActivatedEventArgs args)
-        {
-            return Task.CompletedTask;
-        }
-
-        protected virtual Task HandleActivation(AppointmentsProviderReplaceAppointmentActivatedEventArgs args)
-        {
-            return Task.CompletedTask;
-        }
-
-        protected virtual Task HandleActivation(AppointmentsProviderShowAppointmentDetailsActivatedEventArgs args)
-        {
-            return Task.CompletedTask;
-        }
-
-        protected virtual Task HandleActivation(AppointmentsProviderShowTimeFrameActivatedEventArgs args)
-        {
-            return Task.CompletedTask;
-        }
-
         protected virtual Task HandleActivation(CachedFileUpdaterActivatedEventArgs args)
         {
             return Task.CompletedTask;
@@ -387,8 +379,94 @@ namespace NittyGritty.Uwp
 
         #endregion
 
-        #region Handle Desktop Activations
+        #region Handle Special Activations
+        /// <summary>
+        /// Handle activations available only in the Desktop
+        /// Only override if you want to handle the following activation kinds:
+        /// <list type="bullet">
+        /// <item>
+        ///     <term>CameraSettings</term>
+        /// </item>
+        /// <item>
+        ///     <term>Contact</term>
+        /// </item>
+        /// <item>
+        ///     <term>ContactPicker</term>
+        /// </item>
+        /// <item>
+        ///     <term>GameUIProvider</term>
+        /// </item>
+        /// <item>
+        ///     <term>LockScreenCall</term>
+        /// </item>
+        /// <item>
+        ///     <term>PrintTaskSettings</term>
+        /// </item>
+        /// <item>
+        ///     <term>Print3DWorkflow</term>
+        /// </item>
+        /// <item>
+        ///     <term>StartupTask</term>
+        /// </item>
+        /// </list>
+        /// </summary>
+        /// <param name="args"></param>
+        /// <returns></returns>
         protected virtual Task HandleDesktopActivation(IActivatedEventArgs args)
+        {
+            return Task.CompletedTask;
+        }
+
+        /// <summary>
+        /// Only override if you want to handle the following activation kinds:
+        /// <list type="bullet">
+        /// <item>
+        ///     <term>PickerReturned</term>
+        /// </item>
+        /// <item>
+        ///     <term>PickFileContinuation</term>
+        /// </item>
+        /// <item>
+        ///     <term>PickSaveFileContinuation</term>
+        /// </item>
+        /// <item>
+        ///     <term>PickFolderContinuation</term>
+        /// </item>
+        /// <item>
+        ///     <term>WalletAction</term>
+        /// </item>
+        /// <item>
+        ///     <term>WebAuthenticationBrokerContinuation</term>
+        /// </item>
+        /// </list>
+        /// </summary>
+        /// <param name="args"></param>
+        /// <returns></returns>
+        protected virtual Task HandlePhoneActivation(IActivatedEventArgs args)
+        {
+            return Task.CompletedTask;
+        }
+
+        /// <summary>
+        /// Only override if you want to handle the following activation kinds:
+        /// <list type="bullet">
+        /// <item>
+        ///     <term>ComponentUI</term>
+        /// </item>
+        /// <item>
+        ///     <term>FilePickerExperience</term>
+        /// </item>
+        /// <item>
+        ///     <term>LockScreenComponent</term>
+        /// </item>
+        /// <item>
+        ///     <term>UserDataAccountsProvider</term>
+        /// </item>
+        /// </list>
+        /// </summary>
+        /// <param name="args"></param>
+        /// <returns></returns>
+        protected virtual Task HandleReservedActivation(IActivatedEventArgs args)
         {
             return Task.CompletedTask;
         }
