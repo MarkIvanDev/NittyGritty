@@ -19,14 +19,10 @@ namespace NittyGritty.Uwp
     {
         public NGApp()
         {
-            Current = this;
-
             Suspending += App_Suspending;
-
-            _activationService = new Lazy<ActivationService>(CreateActivationService);
         }
 
-        public static new NGApp Current { get; private set; }
+        public static NGApp Instance { get { return Current as NGApp; } }
 
         private async void App_Suspending(object sender, SuspendingEventArgs e)
         {
@@ -37,37 +33,20 @@ namespace NittyGritty.Uwp
 
         #region ActivationService Initialization Requirements
 
-        private readonly Lazy<ActivationService> _activationService;
+        public virtual Type Shell { get; }
 
-        protected ActivationService ActivationService
-        {
-            get { return _activationService.Value; }
-        }
-
-        private ActivationService CreateActivationService()
-        {
-            return new ActivationService(this);
-        }
-
-        public virtual async Task Initialization()
-        {
-            await Task.CompletedTask;
-        }
-
-        public Type Shell { get; protected set; }
+        public virtual Type DefaultView { get; }
 
         public abstract Frame GetNavigationContext();
 
-        public virtual IEnumerable<IActivationHandler> GetActivationHandlers()
+        public virtual Task Initialization(IActivatedEventArgs args)
         {
-            return Enumerable.Empty<IActivationHandler>();
+            return Task.CompletedTask;
         }
 
-        public Type DefaultView { get; protected set; }
-
-        public virtual async Task Startup()
+        public virtual Task Startup(IActivatedEventArgs args)
         {
-            await Task.CompletedTask;
+            return Task.CompletedTask;
         }
 
         #endregion
@@ -123,7 +102,18 @@ namespace NittyGritty.Uwp
 
         private async Task ProcessActivation(IActivatedEventArgs args)
         {
-            await Initialization();
+            await Initialization(args);
+
+            var rootFrame = Window.Current.Content as Frame;
+            if (rootFrame is null)
+            {
+                rootFrame = new Frame();
+                Window.Current.Content = rootFrame;
+                if (!(Shell is null))
+                {
+                    rootFrame.Navigate(Shell);
+                }
+            }
 
             switch (args.Kind)
             {
@@ -237,12 +227,18 @@ namespace NittyGritty.Uwp
                     break;
 
                 default:
+                    await HandleOtherActivation(args);
                     break;
+            }
+
+            if (rootFrame.Content is null)
+            {
+                rootFrame.Navigate(DefaultView);
             }
 
             Window.Current.Activate();
 
-            await Startup();
+            await Startup(args);
         }
         #endregion
 
@@ -464,6 +460,16 @@ namespace NittyGritty.Uwp
         /// <param name="args"></param>
         /// <returns></returns>
         protected virtual Task HandleReservedActivation(IActivatedEventArgs args)
+        {
+            return Task.CompletedTask;
+        }
+
+        /// <summary>
+        /// Handle activations that are not handled anywhere else
+        /// </summary>
+        /// <param name="args"></param>
+        /// <returns></returns>
+        protected virtual Task HandleOtherActivation(IActivatedEventArgs args)
         {
             return Task.CompletedTask;
         }

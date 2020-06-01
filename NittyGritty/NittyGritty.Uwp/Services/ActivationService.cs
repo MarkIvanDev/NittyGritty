@@ -38,16 +38,6 @@ namespace NittyGritty.Uwp.Services
             this.startup = startup;
         }
 
-        public ActivationService(INGApp app) : this(
-            app.Initialization,
-            app.Shell,
-            new Lazy<Frame>(app.GetNavigationContext),
-            app.GetActivationHandlers(),
-            app.DefaultView,
-            app.Startup)
-        {
-        }
-
         public static ActivationService Current { get; private set; }
 
         public async Task ActivateAsync(object args)

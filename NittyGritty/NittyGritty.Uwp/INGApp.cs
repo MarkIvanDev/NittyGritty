@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.ApplicationModel.Activation;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
@@ -13,14 +14,12 @@ namespace NittyGritty.Uwp
     {
         Type Shell { get; }
 
-        Frame GetNavigationContext();
-
-        IEnumerable<IActivationHandler> GetActivationHandlers();
-
         Type DefaultView { get; }
 
-        Task Initialization();
+        Frame GetNavigationContext();
 
-        Task Startup();
+        Task Initialization(IActivatedEventArgs args);
+
+        Task Startup(IActivatedEventArgs args);
     }
 }
