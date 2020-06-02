@@ -65,9 +65,9 @@ namespace NittyGritty.Uwp
             await ProcessActivation(args);
         }
 
-        protected override void OnBackgroundActivated(BackgroundActivatedEventArgs args)
+        protected sealed override async void OnBackgroundActivated(BackgroundActivatedEventArgs args)
         {
-            
+            await HandleBackgroundActivation(args);
         }
 
         protected sealed override async void OnCachedFileUpdaterActivated(CachedFileUpdaterActivatedEventArgs args)
@@ -470,6 +470,11 @@ namespace NittyGritty.Uwp
         /// <param name="args"></param>
         /// <returns></returns>
         protected virtual Task HandleOtherActivation(IActivatedEventArgs args)
+        {
+            return Task.CompletedTask;
+        }
+
+        protected virtual Task HandleBackgroundActivation(BackgroundActivatedEventArgs args)
         {
             return Task.CompletedTask;
         }
