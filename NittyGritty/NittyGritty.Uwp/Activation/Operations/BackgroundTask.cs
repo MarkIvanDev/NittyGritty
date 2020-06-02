@@ -16,7 +16,10 @@ namespace NittyGritty.Uwp.Activation.Operations
 
         public string Name { get; }
 
-        public abstract void Register();
+        public virtual void Register(BackgroundTaskBuilder builder)
+        {
+            builder.Register();
+        }
 
         public abstract Task Run(IBackgroundTaskInstance taskInstance);
     }
