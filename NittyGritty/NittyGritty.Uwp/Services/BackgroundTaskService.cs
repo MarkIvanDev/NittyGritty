@@ -32,11 +32,10 @@ namespace NittyGritty.Uwp.Services
             {
                 return;
             }
-
-            var taskNames = BackgroundTaskRegistration.AllTasks.Select(t => t.Value.Name).ToList();
+            
             foreach (var task in backgroundTasks)
             {
-                if (!taskNames.Contains(task.Value.Name))
+                if (!BackgroundTaskRegistration.AllTasks.Any(t => t.Value.Name == task.Value.Name))
                 {
                     task.Value.Register(
                         new BackgroundTaskBuilder()
