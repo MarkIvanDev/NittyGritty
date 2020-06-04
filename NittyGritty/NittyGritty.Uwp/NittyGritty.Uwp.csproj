@@ -6,6 +6,7 @@
     <AssemblyName>NittyGritty.Uwp</AssemblyName>
     <RootNamespace>NittyGritty.Uwp</RootNamespace>
     <Owners>markivan.basto</Owners>
+    <LangVersion>7.3</LangVersion>
   </PropertyGroup>
 
   <PropertyGroup>
