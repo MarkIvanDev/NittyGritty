@@ -56,38 +56,6 @@ namespace NittyGritty.Uwp.Extensions.Activation
             }
         }
 
-        public static void Process(this LaunchActivatedEventArgs args, LaunchActivationOptions options)
-        {
-            var source = args.GetLaunchSource();
-            switch (source)
-            {
-                case LaunchSource.Primary:
-                default:
-                    options.Frame.Navigate(options.PrimaryView);
-                    break;
-                case LaunchSource.Secondary:
-                    options.Frame.Navigate(
-                        options.ArgumentService.GetValue(
-                            args.Arguments, options.ActionKey)
-                            ?? options.PrimaryView,
-                        args.Arguments);
-                    break;
-                case LaunchSource.Jumplist:
-                    options.Frame.Navigate(
-                        options.ArgumentService.GetValue(
-                            args.Arguments, options.ActionKey)
-                            ?? options.PrimaryView,
-                        args.Arguments);
-                    break;
-                case LaunchSource.Chaseable:
-                    options.Frame.Navigate(
-                        options.ArgumentService.GetValue(
-                            args.TileActivatedInfo.RecentlyShownNotifications[0].Arguments, options.ActionKey)
-                            ?? options.PrimaryView,
-                        args.Arguments);
-                    break;
-            }
-        }
     }
 
     public enum LaunchSource
@@ -96,16 +64,5 @@ namespace NittyGritty.Uwp.Extensions.Activation
         Secondary = 1,
         Jumplist = 2,
         Chaseable = 3
-    }
-
-    public class LaunchActivationOptions
-    {
-        public Frame Frame { get; set; }
-
-        public Type PrimaryView { get; set; }
-
-        public string ActionKey { get; set; }
-
-        public ArgumentService ArgumentService { get; set; }
     }
 }

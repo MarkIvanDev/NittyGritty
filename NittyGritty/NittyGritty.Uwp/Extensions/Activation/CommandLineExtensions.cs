@@ -17,4 +17,5 @@ namespace NittyGritty.Uwp.Extensions.Activation
             return new CommandLinePayload(args.Operation, currentDirectory);
         }
     }
+
 }
