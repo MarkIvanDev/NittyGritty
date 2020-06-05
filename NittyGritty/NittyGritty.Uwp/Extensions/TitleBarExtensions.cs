@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.ApplicationModel.Core;
 using Windows.Foundation.Metadata;
 using Windows.UI;
 using Windows.UI.ViewManagement;
@@ -259,6 +260,31 @@ namespace NittyGritty.Uwp.Extensions
         // Using a DependencyProperty as the backing store for InactiveForegroundColor.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty InactiveForegroundColorProperty =
             DependencyProperty.RegisterAttached("InactiveForegroundColor", typeof(Color?), typeof(TitleBarExtensions), new PropertyMetadata(null));
+
+
+
+        private static CoreApplicationViewTitleBar GetCoreTitleBar()
+        {
+            return ApiInformation.IsTypePresent("Windows.ApplicationModel.Core.CoreApplicationViewTitleBar") ?
+                CoreApplication.GetCurrentView().TitleBar :
+                null;
+        }
+
+
+
+        public static bool GetExtendViewIntoTitleBar(Page obj)
+        {
+            return (bool)obj.GetValue(ExtendViewIntoTitleBarProperty);
+        }
+
+        public static void SetExtendViewIntoTitleBar(Page obj, bool value)
+        {
+            obj.SetValue(ExtendViewIntoTitleBarProperty, value);
+        }
+
+        // Using a DependencyProperty as the backing store for ExtendViewIntoTitleBar.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty ExtendViewIntoTitleBarProperty =
+            DependencyProperty.RegisterAttached("ExtendViewIntoTitleBar", typeof(bool), typeof(TitleBarExtensions), new PropertyMetadata(default(bool)));
 
 
 
