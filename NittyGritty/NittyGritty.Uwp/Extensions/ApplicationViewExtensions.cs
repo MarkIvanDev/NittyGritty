@@ -62,12 +62,12 @@ namespace NittyGritty.Uwp.Extensions
 
 
 
-        public static Size GetPreferredLaunchViewSize(DependencyObject obj)
+        public static Size GetPreferredLaunchViewSize(Page obj)
         {
             return ApplicationView.PreferredLaunchViewSize;
         }
 
-        public static void SetPreferredLaunchViewSize(DependencyObject obj, Size value)
+        public static void SetPreferredLaunchViewSize(Page obj, Size value)
         {
             ApplicationView.PreferredLaunchViewSize = value;
         }
@@ -78,12 +78,12 @@ namespace NittyGritty.Uwp.Extensions
 
 
 
-        public static ApplicationViewWindowingMode GetPreferredLaunchWindowingMode(DependencyObject obj)
+        public static ApplicationViewWindowingMode GetPreferredLaunchWindowingMode(Page obj)
         {
             return ApplicationView.PreferredLaunchWindowingMode;
         }
 
-        public static void SetPreferredLaunchWindowingMode(DependencyObject obj, ApplicationViewWindowingMode  value)
+        public static void SetPreferredLaunchWindowingMode(Page obj, ApplicationViewWindowingMode  value)
         {
             ApplicationView.PreferredLaunchWindowingMode = value;
         }
@@ -94,12 +94,12 @@ namespace NittyGritty.Uwp.Extensions
 
 
 
-        public static bool GetTerminateAppOnFinalViewClose(DependencyObject obj)
+        public static bool GetTerminateAppOnFinalViewClose(Page obj)
         {
             return ApplicationView.TerminateAppOnFinalViewClose;
         }
 
-        public static void SetTerminateAppOnFinalViewClose(DependencyObject obj, bool value)
+        public static void SetTerminateAppOnFinalViewClose(Page obj, bool value)
         {
             ApplicationView.TerminateAppOnFinalViewClose = value;
         }
@@ -110,12 +110,12 @@ namespace NittyGritty.Uwp.Extensions
 
 
 
-        public static string GetTitle(DependencyObject obj)
+        public static string GetTitle(Page obj)
         {
             return GetApplicationView()?.Title ?? string.Empty;
         }
 
-        public static void SetTitle(DependencyObject obj, string value)
+        public static void SetTitle(Page obj, string value)
         {
             var applicationView = GetApplicationView();
             if (!(applicationView is null))
