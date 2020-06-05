@@ -123,12 +123,12 @@ namespace NittyGritty.Uwp.Extensions
 
 
 
-        public static Color? GetButtonInactiveBackgroundColor(DependencyObject obj)
+        public static Color? GetButtonInactiveBackgroundColor(Page obj)
         {
             return GetTitleBar()?.ButtonInactiveBackgroundColor;
         }
 
-        public static void SetButtonInactiveBackgroundColor(DependencyObject obj, Color? value)
+        public static void SetButtonInactiveBackgroundColor(Page obj, Color? value)
         {
             var titleBar = GetTitleBar();
             if (!(titleBar is null))
