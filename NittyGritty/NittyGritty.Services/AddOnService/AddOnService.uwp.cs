@@ -344,5 +344,37 @@ namespace NittyGritty.Services
                     throw new Exception($"The fulfillment was unsuccessful due to an unknown error.", result.ExtendedError);
             }
         }
+
+        async Task<bool> PlatformAccessFeature(IActiveAddOn addOn, Func<bool, Task> feature, bool conditionWhenFree)
+        {
+            if (addOn == null)
+            {
+                throw new ArgumentNullException(nameof(addOn));
+            }
+
+            var isActive = await PlatformIsActive(addOn);
+            if (isActive || conditionWhenFree)
+            {
+                await feature.Invoke(isActive);
+                return true;
+            }
+            return false;
+        }
+
+        async Task<bool> PlatformAccessFeature(IActiveAddOn addOn, Action<bool> feature, bool conditionWhenFree)
+        {
+            if (addOn == null)
+            {
+                throw new ArgumentNullException(nameof(addOn));
+            }
+
+            var isActive = await PlatformIsActive(addOn);
+            if (isActive || conditionWhenFree)
+            {
+                feature.Invoke(isActive);
+                return true;
+            }
+            return false;
+        }
     }
 }

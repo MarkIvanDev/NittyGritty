@@ -145,5 +145,25 @@ namespace NittyGritty.Services
         {
             await PlatformUpdateConsumableBalance(key, quantity, trackingId);
         }
+
+        public async Task<bool> AccessFeature(string key, Func<bool, Task> feature, bool conditionWhenFree)
+        {
+            return await PlatformAccessFeature(_addOnsByKey[key] as IActiveAddOn, feature, conditionWhenFree);
+        }
+
+        public async Task<bool> AccessFeature(IActiveAddOn addOn, Func<bool, Task> feature, bool conditionWhenFree)
+        {
+            return await PlatformAccessFeature(addOn, feature, conditionWhenFree);
+        }
+
+        public async Task<bool> AccessFeature(string key, Action<bool> feature, bool conditionWhenFree)
+        {
+            return await PlatformAccessFeature(_addOnsByKey[key] as IActiveAddOn, feature, conditionWhenFree);
+        }
+
+        public async Task<bool> AccessFeature(IActiveAddOn addOn, Action<bool> feature, bool conditionWhenFree)
+        {
+            return await PlatformAccessFeature(addOn, feature, conditionWhenFree);
+        }
     }
 }

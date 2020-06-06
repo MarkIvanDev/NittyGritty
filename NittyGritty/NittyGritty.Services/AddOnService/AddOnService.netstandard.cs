@@ -103,5 +103,25 @@ namespace NittyGritty.Services
         {
             throw new NotImplementedException();
         }
+
+        Task<bool> PlatformAccessFeature(string key, Func<bool, Task> feature, bool conditionWhenFree)
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<bool> PlatformAccessFeature(IActiveAddOn addOn, Func<bool, Task> feature, bool conditionWhenFree)
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<bool> PlatformAccessFeature(string key, Action<bool> feature, bool conditionWhenFree)
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<bool> PlatformAccessFeature(IActiveAddOn addOn, Action<bool> feature, bool conditionWhenFree)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

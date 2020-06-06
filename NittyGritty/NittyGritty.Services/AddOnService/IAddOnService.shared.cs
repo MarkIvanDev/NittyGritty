@@ -37,5 +37,11 @@ namespace NittyGritty.Services
         Task<ReadOnlyCollection<SubscriptionAddOn>> GetSubscriptionAddOns(params string[] keys);
         Task<bool> IsSubscriptionActive(string key);
         Task<bool> IsSubscriptionActive(SubscriptionAddOn addOn);
+
+        // Helpers
+        Task<bool> AccessFeature(string key, Func<bool, Task> feature, bool conditionWhenFree);
+        Task<bool> AccessFeature(IActiveAddOn addOn, Func<bool, Task> feature, bool conditionWhenFree);
+        Task<bool> AccessFeature(string key, Action<bool> feature, bool conditionWhenFree);
+        Task<bool> AccessFeature(IActiveAddOn addOn, Action<bool> feature, bool conditionWhenFree);
     }
 }
