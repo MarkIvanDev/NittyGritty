@@ -96,9 +96,24 @@ namespace NittyGritty.Services
             return await PlatformIsDurableActive(key);
         }
 
+        public async Task<bool> IsDurableActive(DurableAddOn addOn)
+        {
+            return await PlatformIsDurableActive(addOn);
+        }
+
         public async Task<bool> IsSubscriptionActive(string key)
         {
             return await PlatformIsSubscriptionActive(key);
+        }
+
+        public async Task<bool> IsSubscriptionActive(SubscriptionAddOn addOn)
+        {
+            return await PlatformIsSubscriptionActive(addOn);
+        }
+
+        public async Task<bool> IsActive(IActiveAddOn addOn)
+        {
+            return await PlatformIsActive(addOn);
         }
 
         public async Task Purchase(string key)

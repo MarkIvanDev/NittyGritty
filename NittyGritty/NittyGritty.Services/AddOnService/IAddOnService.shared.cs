@@ -14,11 +14,13 @@ namespace NittyGritty.Services
         Task Purchase(AddOn addOn);
         Task<bool> TryPurchase(string key);
         Task<bool> TryPurchase(AddOn addOn);
+        Task<bool> IsActive(IActiveAddOn addOn);
 
         // Durable
         Task<DurableAddOn> GetDurableAddOn(string key);
         Task<ReadOnlyCollection<DurableAddOn>> GetDurableAddOns(params string[] keys);
         Task<bool> IsDurableActive(string key);
+        Task<bool> IsDurableActive(DurableAddOn addOn);
 
         // Consumable
         Task<ConsumableAddOn> GetConsumableAddOn(string key);
@@ -34,6 +36,6 @@ namespace NittyGritty.Services
         Task<SubscriptionAddOn> GetSubscriptionAddOn(string key);
         Task<ReadOnlyCollection<SubscriptionAddOn>> GetSubscriptionAddOns(params string[] keys);
         Task<bool> IsSubscriptionActive(string key);
-
+        Task<bool> IsSubscriptionActive(SubscriptionAddOn addOn);
     }
 }

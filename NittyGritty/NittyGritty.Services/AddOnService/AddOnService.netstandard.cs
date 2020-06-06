@@ -54,7 +54,22 @@ namespace NittyGritty.Services
             throw new NotImplementedException();
         }
 
+        Task<bool> PlatformIsDurableActive(DurableAddOn addOn)
+        {
+            throw new NotImplementedException();
+        }
+
         Task<bool> PlatformIsSubscriptionActive(string key)
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<bool> PlatformIsSubscriptionActive(SubscriptionAddOn addOn)
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<bool> PlatformIsActive(IActiveAddOn addOn)
         {
             throw new NotImplementedException();
         }
