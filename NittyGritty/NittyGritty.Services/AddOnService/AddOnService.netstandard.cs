@@ -69,6 +69,16 @@ namespace NittyGritty.Services
             throw new NotImplementedException();
         }
 
+        Task<bool> PlatformTryPurchase(string key)
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<bool> PlatformTryPurchase(AddOn addOn)
+        {
+            throw new NotImplementedException();
+        }
+
         Task PlatformReportUnmanagedConsumableFulfillment(string key, string trackingId)
         {
             throw new NotImplementedException();

@@ -12,6 +12,8 @@ namespace NittyGritty.Services
         // Common
         Task Purchase(string key);
         Task Purchase(AddOn addOn);
+        Task<bool> TryPurchase(string key);
+        Task<bool> TryPurchase(AddOn addOn);
 
         // Durable
         Task<DurableAddOn> GetDurableAddOn(string key);

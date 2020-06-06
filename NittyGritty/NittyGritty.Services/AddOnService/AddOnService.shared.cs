@@ -111,6 +111,16 @@ namespace NittyGritty.Services
             await PlatformPurchase(addOn);
         }
 
+        public async Task<bool> TryPurchase(string key)
+        {
+            return await PlatformTryPurchase(key);
+        }
+
+        public async Task<bool> TryPurchase(AddOn addOn)
+        {
+            return await PlatformTryPurchase(addOn);
+        }
+
         public async Task ReportUnmanagedConsumableFulfillment(string key, string trackingId)
         {
             await PlatformReportUnmanagedConsumableFulfillment(key, trackingId);

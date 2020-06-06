@@ -274,6 +274,37 @@ namespace NittyGritty.Services
             }
         }
 
+        async Task<bool> PlatformTryPurchase(string key)
+        {
+            return await PlatformTryPurchaseById(_addOnsByKey[key].Id);
+        }
+
+        async Task<bool> PlatformTryPurchase(AddOn addOn)
+        {
+            return await PlatformTryPurchaseById(addOn.Id);
+        }
+
+        async Task<bool> PlatformTryPurchaseById(string storeId)
+        {
+            if (context == null)
+            {
+                context = StoreContext.GetDefault();
+            }
+
+            var purchaseResult = await context.RequestPurchaseAsync(storeId);
+            switch (purchaseResult.Status)
+            {
+                case StorePurchaseStatus.Succeeded:
+                    return true;
+                case StorePurchaseStatus.AlreadyPurchased:
+                case StorePurchaseStatus.NotPurchased:
+                case StorePurchaseStatus.NetworkError:
+                case StorePurchaseStatus.ServerError:
+                default:
+                    return false;
+            }
+        }
+
         async Task PlatformReportUnmanagedConsumableFulfillment(string key, string trackingId)
         {
             await PlatformUpdateConsumableBalance(key, 1, trackingId);
