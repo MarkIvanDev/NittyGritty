@@ -4,7 +4,7 @@ using System.Text;
 
 namespace NittyGritty.Platform.Store
 {
-    public class DurableAddOn : AddOn
+    public class DurableAddOn : AddOn, IActiveAddOn
     {
         public DurableAddOn(string id, uint? durationPeriod = null, DurationUnit? durationUnit = null) : base(id, AddOnType.Durable)
         {
