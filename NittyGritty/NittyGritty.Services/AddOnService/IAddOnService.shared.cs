@@ -43,5 +43,6 @@ namespace NittyGritty.Services
         Task<bool> AccessFeature(IActiveAddOn addOn, Func<bool, Task> feature, bool conditionWhenFree);
         Task<bool> AccessFeature(string key, Action<bool> feature, bool conditionWhenFree);
         Task<bool> AccessFeature(IActiveAddOn addOn, Action<bool> feature, bool conditionWhenFree);
+        Task ManageSubscriptions();
     }
 }

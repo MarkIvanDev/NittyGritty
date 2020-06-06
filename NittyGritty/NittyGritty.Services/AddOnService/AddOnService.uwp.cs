@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using NittyGritty.Extensions;
 using NittyGritty.Platform.Store;
 using Windows.Services.Store;
+using Windows.System;
 
 namespace NittyGritty.Services
 {
@@ -375,6 +376,11 @@ namespace NittyGritty.Services
                 return true;
             }
             return false;
+        }
+
+        async Task PlatformManageSubscriptions()
+        {
+            await Launcher.LaunchUriAsync(new Uri("https://account.microsoft.com/services"));
         }
     }
 }

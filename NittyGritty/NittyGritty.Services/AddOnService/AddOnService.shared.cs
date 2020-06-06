@@ -165,5 +165,10 @@ namespace NittyGritty.Services
         {
             return await PlatformAccessFeature(addOn, feature, conditionWhenFree);
         }
+
+        public async Task ManageSubscriptions()
+        {
+            await PlatformManageSubscriptions();
+        }
     }
 }

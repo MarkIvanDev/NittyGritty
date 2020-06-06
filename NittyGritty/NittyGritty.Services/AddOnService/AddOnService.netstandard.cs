@@ -123,5 +123,10 @@ namespace NittyGritty.Services
         {
             throw new NotImplementedException();
         }
+
+        Task PlatformManageSubscriptions()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
