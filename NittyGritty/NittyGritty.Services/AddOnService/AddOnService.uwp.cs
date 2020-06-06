@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using NittyGritty.Extensions;
 using NittyGritty.Platform.Store;
 using Windows.Services.Store;
+using Windows.System;
 
 namespace NittyGritty.Services
 {
@@ -218,18 +219,31 @@ namespace NittyGritty.Services
 
         async Task<bool> PlatformIsDurableActive(string key)
         {
-            if (context == null)
-            {
-                context = StoreContext.GetDefault();
-            }
+            return await PlatformIsActive(_addOnsByKey[key] as DurableAddOn);
+        }
 
-            // Specify the kinds of add-ons to retrieve.
-            var license = await context.GetAppLicenseAsync();
-            return license.AddOnLicenses.TryGetValue(_addOnsByKey[key].Id, out var l) ? l.IsActive : false;
+        async Task<bool> PlatformIsDurableActive(DurableAddOn addOn)
+        {
+            return await PlatformIsActive(addOn);
         }
 
         async Task<bool> PlatformIsSubscriptionActive(string key)
         {
+            return await PlatformIsActive(_addOnsByKey[key] as SubscriptionAddOn);
+        }
+
+        async Task<bool> PlatformIsSubscriptionActive(SubscriptionAddOn addOn)
+        {
+            return await PlatformIsActive(addOn);
+        }
+
+        async Task<bool> PlatformIsActive(IActiveAddOn addOn)
+        {
+            if (!(addOn is AddOn storeAddOn))
+            {
+                throw new ArgumentNullException(nameof(addOn));
+            }
+
             if (context == null)
             {
                 context = StoreContext.GetDefault();
@@ -237,7 +251,7 @@ namespace NittyGritty.Services
 
             // Specify the kinds of add-ons to retrieve.
             var license = await context.GetAppLicenseAsync();
-            return license.AddOnLicenses.TryGetValue(_addOnsByKey[key].Id, out var l) ? l.IsActive : false;
+            return license.AddOnLicenses.TryGetValue(storeAddOn.Id, out var l) ? l.IsActive : false;
         }
 
         async Task PlatformPurchase(string key)
@@ -274,6 +288,37 @@ namespace NittyGritty.Services
             }
         }
 
+        async Task<bool> PlatformTryPurchase(string key)
+        {
+            return await PlatformTryPurchaseById(_addOnsByKey[key].Id);
+        }
+
+        async Task<bool> PlatformTryPurchase(AddOn addOn)
+        {
+            return await PlatformTryPurchaseById(addOn.Id);
+        }
+
+        async Task<bool> PlatformTryPurchaseById(string storeId)
+        {
+            if (context == null)
+            {
+                context = StoreContext.GetDefault();
+            }
+
+            var purchaseResult = await context.RequestPurchaseAsync(storeId);
+            switch (purchaseResult.Status)
+            {
+                case StorePurchaseStatus.Succeeded:
+                    return true;
+                case StorePurchaseStatus.AlreadyPurchased:
+                case StorePurchaseStatus.NotPurchased:
+                case StorePurchaseStatus.NetworkError:
+                case StorePurchaseStatus.ServerError:
+                default:
+                    return false;
+            }
+        }
+
         async Task PlatformReportUnmanagedConsumableFulfillment(string key, string trackingId)
         {
             await PlatformUpdateConsumableBalance(key, 1, trackingId);
@@ -299,6 +344,43 @@ namespace NittyGritty.Services
                 default:
                     throw new Exception($"The fulfillment was unsuccessful due to an unknown error.", result.ExtendedError);
             }
+        }
+
+        async Task<bool> PlatformAccessFeature(IActiveAddOn addOn, Func<bool, Task> feature, bool conditionWhenFree)
+        {
+            if (addOn == null)
+            {
+                throw new ArgumentNullException(nameof(addOn));
+            }
+
+            var isActive = await PlatformIsActive(addOn);
+            if (isActive || conditionWhenFree)
+            {
+                await feature.Invoke(isActive);
+                return true;
+            }
+            return false;
+        }
+
+        async Task<bool> PlatformAccessFeature(IActiveAddOn addOn, Action<bool> feature, bool conditionWhenFree)
+        {
+            if (addOn == null)
+            {
+                throw new ArgumentNullException(nameof(addOn));
+            }
+
+            var isActive = await PlatformIsActive(addOn);
+            if (isActive || conditionWhenFree)
+            {
+                feature.Invoke(isActive);
+                return true;
+            }
+            return false;
+        }
+
+        async Task PlatformManageSubscriptions()
+        {
+            await Launcher.LaunchUriAsync(new Uri("https://account.microsoft.com/services"));
         }
     }
 }

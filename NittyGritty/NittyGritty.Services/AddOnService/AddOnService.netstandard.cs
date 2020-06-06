@@ -54,7 +54,22 @@ namespace NittyGritty.Services
             throw new NotImplementedException();
         }
 
+        Task<bool> PlatformIsDurableActive(DurableAddOn addOn)
+        {
+            throw new NotImplementedException();
+        }
+
         Task<bool> PlatformIsSubscriptionActive(string key)
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<bool> PlatformIsSubscriptionActive(SubscriptionAddOn addOn)
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<bool> PlatformIsActive(IActiveAddOn addOn)
         {
             throw new NotImplementedException();
         }
@@ -69,12 +84,47 @@ namespace NittyGritty.Services
             throw new NotImplementedException();
         }
 
+        Task<bool> PlatformTryPurchase(string key)
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<bool> PlatformTryPurchase(AddOn addOn)
+        {
+            throw new NotImplementedException();
+        }
+
         Task PlatformReportUnmanagedConsumableFulfillment(string key, string trackingId)
         {
             throw new NotImplementedException();
         }
 
         Task PlatformUpdateConsumableBalance(string key, uint quantity, string trackingId)
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<bool> PlatformAccessFeature(string key, Func<bool, Task> feature, bool conditionWhenFree)
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<bool> PlatformAccessFeature(IActiveAddOn addOn, Func<bool, Task> feature, bool conditionWhenFree)
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<bool> PlatformAccessFeature(string key, Action<bool> feature, bool conditionWhenFree)
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<bool> PlatformAccessFeature(IActiveAddOn addOn, Action<bool> feature, bool conditionWhenFree)
+        {
+            throw new NotImplementedException();
+        }
+
+        Task PlatformManageSubscriptions()
         {
             throw new NotImplementedException();
         }
