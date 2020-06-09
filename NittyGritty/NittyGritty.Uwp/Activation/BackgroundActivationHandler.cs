@@ -63,7 +63,11 @@ namespace NittyGritty.Uwp.Activation
 
             foreach (var task in backgroundTasks)
             {
-                task.Value.Register();
+                task.Value.Register(
+                    new BackgroundTaskBuilder()
+                    {
+                        Name = task.Value.Name
+                    });
             }
         }
 
