@@ -19,6 +19,7 @@ namespace NittyGritty.Services
         {
             transferManager = DataTransferManager.GetForCurrentView();
             transferManager.DataRequested += OnDataRequested;
+            transferManager.ShareProvidersRequested += OnShareProvidersRequested;
         }
 
         void PlatformStop()
@@ -26,6 +27,7 @@ namespace NittyGritty.Services
             if (transferManager != null)
             {
                 transferManager.DataRequested -= OnDataRequested;
+                transferManager.ShareProvidersRequested -= OnShareProvidersRequested;
                 transferManager = null;
             }
         }
@@ -34,6 +36,16 @@ namespace NittyGritty.Services
         {
             this.data = data;
             DataTransferManager.ShowShareUI();
+        }
+
+        private readonly Dictionary<string, ShareProviderBase> shareProviders = new Dictionary<string, ShareProviderBase>();
+
+        public void AddProvider(ShareProviderBase shareProvider)
+        {
+            if (!shareProviders.TryAdd(shareProvider.Title, shareProvider))
+            {
+                throw new ArgumentException("You have already registered a ShareProvider with that title");
+            }
         }
 
         private void OnDataRequested(DataTransferManager sender, DataRequestedEventArgs args)
@@ -55,6 +67,19 @@ namespace NittyGritty.Services
                     args.Request.Data.SetData(data.Key, data.Value);
                 }
             }
+        }
+
+        private void OnShareProvidersRequested(DataTransferManager sender, ShareProvidersRequestedEventArgs args)
+        {
+            var deferral = args.GetDeferral();
+            foreach (var provider in shareProviders)
+            {
+                if (args.Data.AvailableFormats.Intersect(provider.Value.SupportedFormats).Any())
+                {
+                    args.Providers.Add(provider.Value.GetShareProvider());
+                }
+            }
+            deferral.Complete();
         }
     }
 }
