@@ -8,11 +8,14 @@ namespace NittyGritty.Platform.Payloads
 {
     public class ShowAppointmentDetailsPayload
     {
-        public ShowAppointmentDetailsPayload(string localId, DateTimeOffset? startDate)
+        public ShowAppointmentDetailsPayload(string roamingId, string localId, DateTimeOffset? startDate)
         {
+            RoamingId = roamingId;
             LocalId = localId;
             StartDate = startDate;
         }
+
+        public string RoamingId { get; }
 
         public string LocalId { get; }
 

@@ -9,27 +9,18 @@ namespace NittyGritty.Uwp.Activation.Operations
 {
     public abstract class BackgroundTask
     {
-        public abstract void Register();
-
-        public virtual string GetName()
+        public BackgroundTask(string name = null)
         {
-            return GetType().FullName;
+            Name = name ?? GetType().FullName;
         }
 
-        public Task Run(IBackgroundTaskInstance taskInstance)
-        {
-            Attach(taskInstance);
+        public string Name { get; }
 
-            return Process(taskInstance);
+        public virtual void Register(BackgroundTaskBuilder builder)
+        {
+            builder.Register();
         }
 
-        private void Attach(IBackgroundTaskInstance taskInstance)
-        {
-            taskInstance.Canceled += new BackgroundTaskCanceledEventHandler(OnCanceled);
-        }
-
-        protected abstract Task Process(IBackgroundTaskInstance taskInstance);
-
-        protected abstract void OnCanceled(IBackgroundTaskInstance sender, BackgroundTaskCancellationReason reason);
+        public abstract Task Run(IBackgroundTaskInstance taskInstance);
     }
 }

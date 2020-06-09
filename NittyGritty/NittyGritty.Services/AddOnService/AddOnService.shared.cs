@@ -96,9 +96,24 @@ namespace NittyGritty.Services
             return await PlatformIsDurableActive(key);
         }
 
+        public async Task<bool> IsDurableActive(DurableAddOn addOn)
+        {
+            return await PlatformIsDurableActive(addOn);
+        }
+
         public async Task<bool> IsSubscriptionActive(string key)
         {
             return await PlatformIsSubscriptionActive(key);
+        }
+
+        public async Task<bool> IsSubscriptionActive(SubscriptionAddOn addOn)
+        {
+            return await PlatformIsSubscriptionActive(addOn);
+        }
+
+        public async Task<bool> IsActive(IActiveAddOn addOn)
+        {
+            return await PlatformIsActive(addOn);
         }
 
         public async Task Purchase(string key)
@@ -111,6 +126,16 @@ namespace NittyGritty.Services
             await PlatformPurchase(addOn);
         }
 
+        public async Task<bool> TryPurchase(string key)
+        {
+            return await PlatformTryPurchase(key);
+        }
+
+        public async Task<bool> TryPurchase(AddOn addOn)
+        {
+            return await PlatformTryPurchase(addOn);
+        }
+
         public async Task ReportUnmanagedConsumableFulfillment(string key, string trackingId)
         {
             await PlatformReportUnmanagedConsumableFulfillment(key, trackingId);
@@ -119,6 +144,31 @@ namespace NittyGritty.Services
         public async Task UpdateConsumableBalance(string key, uint quantity, string trackingId)
         {
             await PlatformUpdateConsumableBalance(key, quantity, trackingId);
+        }
+
+        public async Task<bool> AccessFeature(string key, Func<bool, Task> feature, bool conditionWhenFree)
+        {
+            return await PlatformAccessFeature(_addOnsByKey[key] as IActiveAddOn, feature, conditionWhenFree);
+        }
+
+        public async Task<bool> AccessFeature(IActiveAddOn addOn, Func<bool, Task> feature, bool conditionWhenFree)
+        {
+            return await PlatformAccessFeature(addOn, feature, conditionWhenFree);
+        }
+
+        public async Task<bool> AccessFeature(string key, Action<bool> feature, bool conditionWhenFree)
+        {
+            return await PlatformAccessFeature(_addOnsByKey[key] as IActiveAddOn, feature, conditionWhenFree);
+        }
+
+        public async Task<bool> AccessFeature(IActiveAddOn addOn, Action<bool> feature, bool conditionWhenFree)
+        {
+            return await PlatformAccessFeature(addOn, feature, conditionWhenFree);
+        }
+
+        public async Task ManageSubscriptions()
+        {
+            await PlatformManageSubscriptions();
         }
     }
 }

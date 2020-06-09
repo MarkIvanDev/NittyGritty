@@ -4,7 +4,7 @@ using System.Text;
 
 namespace NittyGritty.Platform.Store
 {
-    public class SubscriptionAddOn : AddOn
+    public class SubscriptionAddOn : AddOn, IActiveAddOn
     {
         public SubscriptionAddOn(string id) : base(id, AddOnType.Subscription)
         {

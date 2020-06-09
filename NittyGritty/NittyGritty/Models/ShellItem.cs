@@ -13,6 +13,7 @@ namespace NittyGritty.Models
             Key = key;
             Parameter = parameter;
             Tag = tag;
+            Children = new List<ShellItem>();
         }
 
         public ShellItemType Type { get; }
@@ -25,5 +26,6 @@ namespace NittyGritty.Models
 
         public object Tag { get; }
 
+        public IList<ShellItem> Children { get; }
     }
 }

@@ -13,11 +13,11 @@ namespace NittyGritty.Uwp.Activation
 {
     public class BackgroundActivationHandler : ActivationHandler<BackgroundActivatedEventArgs>
     {
-        private static Dictionary<string, BackgroundTask> _backgroundTasks;
+        private static Dictionary<string, BackgroundTask> backgroundTasks;
 
         static BackgroundActivationHandler()
         {
-            _backgroundTasks = new Dictionary<string, BackgroundTask>();
+            backgroundTasks = new Dictionary<string, BackgroundTask>();
         }
 
         public BackgroundActivationHandler() : base(ActivationStrategy.Background)
@@ -27,7 +27,7 @@ namespace NittyGritty.Uwp.Activation
 
         public static ReadOnlyDictionary<string, BackgroundTask> BackgroundTasks
         {
-            get { return new ReadOnlyDictionary<string, BackgroundTask>(_backgroundTasks); }
+            get { return new ReadOnlyDictionary<string, BackgroundTask>(backgroundTasks); }
         }
 
         public static BackgroundTaskRegistration GetBackgroundTaskRegistration(string taskName)
@@ -44,11 +44,7 @@ namespace NittyGritty.Uwp.Activation
 
         public static void AddTask(BackgroundTask task)
         {
-            if(!_backgroundTasks.ContainsKey(task.GetName()))
-            {
-                _backgroundTasks.Add(task.GetName(), task);
-            }
-            else
+            if(!backgroundTasks.TryAdd(task.Name, task))
             {
                 throw new ArgumentException("You only have to register for a background task once");
             }
@@ -65,9 +61,13 @@ namespace NittyGritty.Uwp.Activation
                 return;
             }
 
-            foreach (var task in _backgroundTasks)
+            foreach (var task in backgroundTasks)
             {
-                task.Value.Register();
+                task.Value.Register(
+                    new BackgroundTaskBuilder()
+                    {
+                        Name = task.Value.Name
+                    });
             }
         }
 
@@ -79,7 +79,7 @@ namespace NittyGritty.Uwp.Activation
 
         private void Start(IBackgroundTaskInstance taskInstance)
         {
-            if(_backgroundTasks.TryGetValue(taskInstance?.Task?.Name ?? string.Empty, out var task))
+            if(backgroundTasks.TryGetValue(taskInstance?.Task?.Name ?? string.Empty, out var task))
             {
                 task.Run(taskInstance).FireAndForget();
             }

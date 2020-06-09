@@ -19,7 +19,7 @@ namespace NittyGritty.Uwp.Activation.Operations
 
         public async Task Run(AppointmentsProviderShowAppointmentDetailsActivatedEventArgs args, Frame frame)
         {
-            var payload = new ShowAppointmentDetailsPayload(args.LocalId, args.InstanceStartDate);
+            var payload = new ShowAppointmentDetailsPayload(args.RoamingId, args.LocalId, args.InstanceStartDate);
             int currentApplicationViewId = ApplicationView.GetApplicationViewIdForWindow(CoreApplication.GetCurrentView().CoreWindow);
             var viewConfig = new MultiViewConfiguration<ShowAppointmentDetailsPayload>(View, (p) => true);
             await viewConfig.Show(payload, currentApplicationViewId, frame);

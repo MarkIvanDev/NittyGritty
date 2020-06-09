@@ -29,7 +29,7 @@ namespace NittyGritty.Collections
         /// <summary>Adds multiple items to the collection. </summary>
         /// <param name="collection">The items to add. </param>
         /// <exception cref="ArgumentNullException">The value of 'collection' cannot be null. </exception>
-        public void AddRange(IEnumerable<T> collection)
+        public void AddRange(IList<T> collection)
         {
             if (collection == null)
                 throw new ArgumentNullException(nameof(collection));
@@ -46,7 +46,7 @@ namespace NittyGritty.Collections
         /// <summary>Removes multiple items from the collection. </summary>
         /// <param name="collection">The items to remove. </param>
         /// <exception cref="ArgumentNullException">The value of 'collection' cannot be null. </exception>
-        public void RemoveRange(IEnumerable<T> collection)
+        public void RemoveRange(IList<T> collection)
         {
             if (collection == null)
                 throw new ArgumentNullException(nameof(collection));
@@ -63,7 +63,7 @@ namespace NittyGritty.Collections
         /// <summary>Resets the whole collection with a given list. </summary>
         /// <param name="collection">The collection. </param>
         /// <exception cref="ArgumentNullException">The value of 'collection' cannot be null. </exception>
-        public void Reset(IEnumerable<T> collection)
+        public void Reset(IList<T> collection)
         {
             if (collection == null)
                 throw new ArgumentNullException(nameof(collection));

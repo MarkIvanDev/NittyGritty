@@ -1,4 +1,4 @@
-﻿<Project Sdk="MSBuild.Sdk.Extras">
+﻿<Project Sdk="MSBuild.Sdk.Extras/1.6.68">
 
   <PropertyGroup>
     <TargetFrameworks>uap10.0.16299;Xamarin.iOS10;MonoAndroid81;MonoAndroid90</TargetFrameworks>
@@ -11,7 +11,7 @@
 
   <PropertyGroup>
     <PackageId>NittyGritty.UI</PackageId>
-    <PackageVersion>1.4.0</PackageVersion>
+    <PackageVersion>1.5.0</PackageVersion>
     <Title>NittyGritty.UI</Title>
     <Authors>markivan.basto</Authors>
     <Description>Boilerplate code that can speed up your development</Description>
