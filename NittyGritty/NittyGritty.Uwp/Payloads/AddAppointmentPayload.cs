@@ -12,29 +12,29 @@ namespace NittyGritty.Uwp.Payloads
 {
     public class AddAppointmentPayload : IAddAppointmentPayload
     {
-        readonly AddAppointmentOperation operation;
-
         public AddAppointmentPayload(AddAppointmentOperation operation)
         {
-            this.operation = operation;
+            Operation = operation;
             Appointment = operation.AppointmentInformation.ToNGAppointment();
         }
+
+        public AddAppointmentOperation Operation { get; }
 
         public NGAppointment Appointment { get; }
 
         public void Canceled()
         {
-            operation.ReportCanceled();
+            Operation.ReportCanceled();
         }
 
         public void Completed(string appointmentId)
         {
-            operation.ReportCompleted(appointmentId);
+            Operation.ReportCompleted(appointmentId);
         }
 
         public void Failed(string error)
         {
-            operation.ReportError(error);
+            Operation.ReportError(error);
         }
     }
 }
