@@ -109,6 +109,10 @@ namespace NittyGritty.Uwp
             {
                 rootFrame = new Frame();
                 Window.Current.Content = rootFrame;
+            }
+
+            if (rootFrame.Content is null)
+            {
                 if (!(Shell is null))
                 {
                     rootFrame.Navigate(Shell);
