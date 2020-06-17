@@ -16,17 +16,17 @@ namespace NittyGritty.Uwp.Payloads
 {
     public class CommandLinePayload : ICommandLinePayload
     {
-        private readonly CommandLineActivationOperation operation;
-
         public CommandLinePayload(CommandLineActivationOperation operation, IStorageFolder folder)
         {
-            this.operation = operation;
+            Operation = operation;
             OriginalArguments = operation.Arguments;
             CurrentDirectory = new NGFolder(folder);
             var parsedCommand = CommandLineUtilities.Parse(operation.Arguments);
             Command = parsedCommand.Command;
             Parameters = parsedCommand.Parameters;
         }
+
+        public CommandLineActivationOperation Operation { get; }
 
         public string OriginalArguments { get; }
 

@@ -16,16 +16,16 @@ namespace NittyGritty.Uwp.Payloads
 {
     public class ShareTargetPayload : IShareTargetPayload
     {
-        private readonly ShareOperation operation;
-
         public ShareTargetPayload(ShareOperation operation)
         {
-            this.operation = operation;
+            Operation = operation;
             Title = operation.Data.Properties.Title;
             Description = operation.Data.Properties.Description;
             Id = operation.QuickLinkId;
             HasContacts = operation.Contacts.Count > 0;
         }
+
+        public ShareOperation Operation { get; }
 
         public string Title { get; }
 
@@ -38,7 +38,7 @@ namespace NittyGritty.Uwp.Payloads
         public async Task<IReadOnlyCollection<NGContact>> GetContacts()
         {
             var contacts = new List<NGContact>();
-            foreach (var item in operation.Contacts)
+            foreach (var item in Operation.Contacts)
             {
                 var contact = await item.ToNGContact();
                 contacts.Add(contact);
@@ -50,55 +50,55 @@ namespace NittyGritty.Uwp.Payloads
 
         public async Task<DataPayload> GetData()
         {
-            var data = await operation.Data.GetData();
+            var data = await Operation.Data.GetData();
             return data;
         }
 
         public async Task<T> GetData<T>(string dataFormat) where T : class
         {
-            var data = await operation.Data.GetData<T>(dataFormat);
+            var data = await Operation.Data.GetData<T>(dataFormat);
             return data;
         }
 
         public async Task<string> GetText()
         {
-            var data = await operation.Data.GetText();
+            var data = await Operation.Data.GetText();
             return data;
         }
 
         public async Task<string> GetHtml()
         {
-            var data = await operation.Data.GetHtml();
+            var data = await Operation.Data.GetHtml();
             return data;
         }
 
         public async Task<string> GetRtf()
         {
-            var data = await operation.Data.GetRtf();
+            var data = await Operation.Data.GetRtf();
             return data;
         }
 
         public async Task<Uri> GetAppLink()
         {
-            var data = await operation.Data.GetAppLink();
+            var data = await Operation.Data.GetAppLink();
             return data;
         }
 
         public async Task<Uri> GetWebLink()
         {
-            var data = await operation.Data.GetWebLink();
+            var data = await Operation.Data.GetWebLink();
             return data;
         }
 
         public async Task<Stream> GetBitmap()
         {
-            var data = await operation.Data.GetBitmap();
+            var data = await Operation.Data.GetBitmap();
             return data;
         }
 
         public async Task<IReadOnlyCollection<IStorageItem>> GetStorageItems()
         {
-            var data = await operation.Data.GetStorageItems();
+            var data = await Operation.Data.GetStorageItems();
             return data;
         }
 
@@ -106,17 +106,17 @@ namespace NittyGritty.Uwp.Payloads
 
         public void Started()
         {
-            operation.ReportStarted();
+            Operation.ReportStarted();
         }
 
         public void Failed(string error)
         {
-            operation.ReportError(error);
+            Operation.ReportError(error);
         }
 
         public void Completed()
         {
-            operation.ReportCompleted();
+            Operation.ReportCompleted();
         }
 
     }
