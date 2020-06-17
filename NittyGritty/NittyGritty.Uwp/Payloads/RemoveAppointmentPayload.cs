@@ -10,14 +10,14 @@ namespace NittyGritty.Uwp.Payloads
 {
     public class RemoveAppointmentPayload : IRemoveAppointmentPayload
     {
-        private readonly RemoveAppointmentOperation operation;
-
         public RemoveAppointmentPayload(RemoveAppointmentOperation operation)
         {
-            this.operation = operation;
+            Operation = operation;
             AppointmentId = operation.AppointmentId;
             StartDate = operation.InstanceStartDate;
         }
+
+        public RemoveAppointmentOperation Operation { get; }
 
         public string AppointmentId { get; }
 
@@ -25,17 +25,17 @@ namespace NittyGritty.Uwp.Payloads
 
         public void Canceled()
         {
-            operation.ReportCanceled();
+            Operation.ReportCanceled();
         }
 
         public void Completed()
         {
-            operation.ReportCompleted();
+            Operation.ReportCompleted();
         }
 
         public void Failed(string error)
         {
-            operation.ReportError(error);
+            Operation.ReportError(error);
         }
     }
 }
