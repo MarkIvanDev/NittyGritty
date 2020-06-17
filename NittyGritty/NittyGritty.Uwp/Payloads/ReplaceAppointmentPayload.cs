@@ -12,15 +12,15 @@ namespace NittyGritty.Uwp.Payloads
 {
     public class ReplaceAppointmentPayload : IReplaceAppointmentPayload
     {
-        private readonly ReplaceAppointmentOperation operation;
-
         public ReplaceAppointmentPayload(ReplaceAppointmentOperation operation)
         {
-            this.operation = operation;
+            Operation = operation;
             AppointmentId = operation.AppointmentId;
             Appointment = operation.AppointmentInformation.ToNGAppointment();
             StartDate = operation.InstanceStartDate;
         }
+
+        public ReplaceAppointmentOperation Operation { get; }
 
         public string AppointmentId { get; }
 
@@ -30,17 +30,17 @@ namespace NittyGritty.Uwp.Payloads
 
         public void Canceled()
         {
-            operation.ReportCanceled();
+            Operation.ReportCanceled();
         }
 
         public void Completed(string id)
         {
-            operation.ReportCompleted(id);
+            Operation.ReportCompleted(id);
         }
 
         public void Failed(string error)
         {
-            operation.ReportError(error);
+            Operation.ReportError(error);
         }
     }
 }
