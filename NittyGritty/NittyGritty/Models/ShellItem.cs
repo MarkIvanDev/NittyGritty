@@ -1,31 +1,59 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Text;
 
 namespace NittyGritty.Models
 {
     public class ShellItem : ObservableObject
     {
-        public ShellItem(ShellItemType type, object content, string key, object parameter, object tag)
+        private ShellItemType _type;
+
+        public ShellItemType Type
         {
-            Type = type;
-            Content = content;
-            Key = key;
-            Parameter = parameter;
-            Tag = tag;
-            Children = new List<ShellItem>();
+            get { return _type; }
+            set { Set(ref _type, value); }
         }
 
-        public ShellItemType Type { get; }
+        private object _content;
 
-        public object Content { get; }
+        public object Content
+        {
+            get { return _content; }
+            set { Set(ref _content, value); }
+        }
 
-        public string Key { get; }
+        private string _key;
 
-        public object Parameter { get; }
+        public string Key
+        {
+            get { return _key; }
+            set { Set(ref _key, value); }
+        }
 
-        public object Tag { get; }
+        private object _parameter;
 
-        public IList<ShellItem> Children { get; }
+        public object Parameter
+        {
+            get { return _parameter; }
+            set { Set(ref _parameter, value); }
+        }
+
+        private object _tag;
+
+        public object Tag
+        {
+            get { return _tag; }
+            set { Set(ref _tag, value); }
+        }
+
+        private IList<ShellItem> _children;
+
+        public IList<ShellItem> Children
+        {
+            get { return _children ?? (_children = new Collection<ShellItem>()); }
+            set { Set(ref _children, value); }
+        }
+
     }
 }
