@@ -11,7 +11,6 @@ using System.Text;
 namespace NittyGritty.Collections
 {
     public class TrackableCollection<TItem> : Collection<TItem>, ITrackable<TItem>, INotifyCollectionChanged, IDisposable
-        // where TItem : INotifyPropertyChanged
     {
         private NotifyCollectionChangedEventHandler _itemsChangedHandler;
         private readonly Dictionary<TItem, PropertyChangedEventHandler> _events =
@@ -72,6 +71,16 @@ namespace NittyGritty.Collections
             }
         }
 
+        private void OnCollectionItemPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            lock (syncRoot)
+            {
+                Refresh();
+
+                OnItemPropertyChanged(sender, e);
+            }
+        }
+
         private void RegisterEvent(TItem item)
         {
             if (_events.ContainsKey(item))
@@ -84,7 +93,7 @@ namespace NittyGritty.Collections
                 h => i.PropertyChanged += h,
                 h => i.PropertyChanged -= h,
                 h => (o, e) => h(o, e),
-                (subscriber, s, e) => subscriber.Refresh());
+                (subscriber, s, e) => subscriber.OnCollectionItemPropertyChanged(s, e));
 
                 _events.Add(item, handler);
             }
@@ -158,10 +167,11 @@ namespace NittyGritty.Collections
             get { return _isTracking; }
             set
             {
-                _isTracking = value;
-                if (value)
+                if (value != _isTracking)
                 {
-                    Refresh();
+                    _isTracking = value;
+                    OnPropertyChanged(this, new PropertyChangedEventArgs(nameof(IsTracking)));
+                    Refresh(); 
                 }
             }
         }
@@ -178,6 +188,7 @@ namespace NittyGritty.Collections
                 if (value != _trackCollectionChanges)
                 {
                     _trackCollectionChanges = value;
+                    OnPropertyChanged(this, new PropertyChangedEventArgs(nameof(TrackCollectionChanges)));
                     if (_trackCollectionChanges)
                     {
                         TrackCollection();
@@ -202,6 +213,7 @@ namespace NittyGritty.Collections
                 if (value != _trackItemChanges)
                 {
                     _trackItemChanges = value;
+                    OnPropertyChanged(this, new PropertyChangedEventArgs(nameof(TrackItemChanges)));
                     if (_trackItemChanges)
                     {
                         TrackItems();
@@ -322,9 +334,16 @@ namespace NittyGritty.Collections
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        private void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
+        protected void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             PropertyChanged?.Invoke(this, e);
+        }
+
+        public event PropertyChangedEventHandler ItemPropertyChanged;
+
+        private void OnItemPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            ItemPropertyChanged?.Invoke(this, e);
         }
 
         #endregion
