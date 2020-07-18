@@ -1,15 +1,12 @@
-﻿using NittyGritty.Models;
-using NittyGritty.Platform.Payloads;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using NittyGritty.Models;
 using Windows.Foundation.Collections;
 using Windows.System;
 
-namespace NittyGritty.Uwp.Payloads
+namespace NittyGritty.Platform.Payloads
 {
     public class ProtocolForResultsPayload : IProtocolForResultsPayload
     {

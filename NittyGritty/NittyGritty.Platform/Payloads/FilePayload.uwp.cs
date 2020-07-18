@@ -1,15 +1,14 @@
-﻿using NittyGritty.Platform.Storage;
-using NittyGritty.Platform.Payloads;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using NittyGritty.Platform.Storage;
 using Windows.Storage;
 
-namespace NittyGritty.Uwp.Payloads
+namespace NittyGritty.Platform.Payloads
 {
     public class FilePayload : IFilePayload
     {

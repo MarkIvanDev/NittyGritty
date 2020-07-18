@@ -1,18 +1,12 @@
-﻿using NittyGritty.Models;
-using NittyGritty.Platform.Storage;
-using NittyGritty.Platform.Payloads;
-using NittyGritty.Utilities;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.IO;
-using System.Linq;
+﻿using System;
 using System.Text;
-using System.Threading.Tasks;
+using NittyGritty.Models;
+using NittyGritty.Platform.Storage;
+using NittyGritty.Utilities;
 using Windows.ApplicationModel.Activation;
 using Windows.Storage;
 
-namespace NittyGritty.Uwp.Payloads
+namespace NittyGritty.Platform.Payloads
 {
     public class CommandLinePayload : ICommandLinePayload
     {

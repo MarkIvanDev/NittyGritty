@@ -1,10 +1,7 @@
-﻿using NittyGritty.Uwp.Payloads;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.IO;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using NittyGritty.Platform.Payloads;
 
 namespace NittyGritty.Uwp.Activation.Operations.Jobs
 {
