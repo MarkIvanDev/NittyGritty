@@ -1,14 +1,9 @@
-﻿using NittyGritty.Platform.Appointments;
-using NittyGritty.Platform.Payloads;
-using NittyGritty.Uwp.Extensions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System;
 using System.Text;
-using System.Threading.Tasks;
+using NittyGritty.Platform.Appointments;
 using Windows.ApplicationModel.Appointments.AppointmentsProvider;
 
-namespace NittyGritty.Uwp.Payloads
+namespace NittyGritty.Platform.Payloads
 {
     public class ReplaceAppointmentPayload : IReplaceAppointmentPayload
     {

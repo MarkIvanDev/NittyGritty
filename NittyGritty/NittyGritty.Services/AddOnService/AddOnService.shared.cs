@@ -151,9 +151,24 @@ namespace NittyGritty.Services
             return await PlatformAccessFeature(_addOnsByKey[key] as IActiveAddOn, feature, conditionWhenFree);
         }
 
+        public async Task<bool> AccessFeature(IEnumerable<string> keys, Func<bool, Task> feature, bool conditionWhenFree)
+        {
+            var addOns = new List<IActiveAddOn>();
+            foreach (var key in keys)
+            {
+                addOns.Add(_addOnsByKey[key] as IActiveAddOn);
+            }
+            return await PlatformAccessFeature(addOns, feature, conditionWhenFree);
+        }
+
         public async Task<bool> AccessFeature(IActiveAddOn addOn, Func<bool, Task> feature, bool conditionWhenFree)
         {
             return await PlatformAccessFeature(addOn, feature, conditionWhenFree);
+        }
+
+        public async Task<bool> AccessFeature(IEnumerable<IActiveAddOn> addOns, Func<bool, Task> feature, bool conditionWhenFree)
+        {
+            return await PlatformAccessFeature(addOns, feature, conditionWhenFree);
         }
 
         public async Task<bool> AccessFeature(string key, Action<bool> feature, bool conditionWhenFree)
@@ -161,9 +176,24 @@ namespace NittyGritty.Services
             return await PlatformAccessFeature(_addOnsByKey[key] as IActiveAddOn, feature, conditionWhenFree);
         }
 
+        public async Task<bool> AccessFeature(IEnumerable<string> keys, Action<bool> feature, bool conditionWhenFree)
+        {
+            var addOns = new List<IActiveAddOn>();
+            foreach (var key in keys)
+            {
+                addOns.Add(_addOnsByKey[key] as IActiveAddOn);
+            }
+            return await PlatformAccessFeature(addOns, feature, conditionWhenFree);
+        }
+
         public async Task<bool> AccessFeature(IActiveAddOn addOn, Action<bool> feature, bool conditionWhenFree)
         {
             return await PlatformAccessFeature(addOn, feature, conditionWhenFree);
+        }
+
+        public async Task<bool> AccessFeature(IEnumerable<IActiveAddOn> addOns, Action<bool> feature, bool conditionWhenFree)
+        {
+            return await PlatformAccessFeature(addOns, feature, conditionWhenFree);
         }
 
         public async Task ManageSubscriptions()

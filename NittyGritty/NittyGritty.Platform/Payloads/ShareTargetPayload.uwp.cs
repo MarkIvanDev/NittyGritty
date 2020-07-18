@@ -1,18 +1,15 @@
-﻿using NittyGritty.Platform.Contacts;
-using NittyGritty.Platform.Data;
-using NittyGritty.Platform.Payloads;
-using NittyGritty.Platform.Storage;
-using NittyGritty.Uwp.Extensions;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
-using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using NittyGritty.Platform.Contacts;
+using NittyGritty.Platform.Data;
+using NittyGritty.Platform.Storage;
 using Windows.ApplicationModel.DataTransfer.ShareTarget;
 
-namespace NittyGritty.Uwp.Payloads
+namespace NittyGritty.Platform.Payloads
 {
     public class ShareTargetPayload : IShareTargetPayload
     {

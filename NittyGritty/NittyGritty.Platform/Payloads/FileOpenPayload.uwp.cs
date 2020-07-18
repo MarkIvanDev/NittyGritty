@@ -1,16 +1,14 @@
-﻿using NittyGritty.Models;
-using NittyGritty.Platform.Payloads;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using NittyGritty.Models;
 using Windows.Storage;
 using Windows.Storage.Pickers.Provider;
 using Windows.Storage.Streams;
 
-namespace NittyGritty.Uwp.Payloads
+namespace NittyGritty.Platform.Payloads
 {
     public class FileOpenPayload : IFileOpenPayload
     {

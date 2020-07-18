@@ -1,9 +1,7 @@
-﻿using NittyGritty.Uwp.Payloads;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System;
 using System.Text;
 using System.Threading.Tasks;
+using NittyGritty.Platform.Payloads;
 using Windows.ApplicationModel.Activation;
 using Windows.Storage;
 

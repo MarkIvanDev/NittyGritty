@@ -1,12 +1,10 @@
-﻿using NittyGritty.Uwp.Activation.Operations.Jobs;
-using NittyGritty.Uwp.Payloads;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using NittyGritty.Platform.Payloads;
+using NittyGritty.Uwp.Activation.Operations.Jobs;
 using Windows.ApplicationModel.Activation;
 using Windows.Storage;
 using Windows.UI.Xaml.Controls;

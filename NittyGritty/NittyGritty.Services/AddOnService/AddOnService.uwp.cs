@@ -362,6 +362,26 @@ namespace NittyGritty.Services
             return false;
         }
 
+        async Task<bool> PlatformAccessFeature(IEnumerable<IActiveAddOn> addOns, Func<bool, Task> feature, bool conditionWhenFree)
+        {
+            var isActive = false;
+            foreach (var addOn in addOns)
+            {
+                isActive = await PlatformIsActive(addOn);
+                if (isActive)
+                {
+                    break;
+                }
+            }
+
+            if (isActive || conditionWhenFree)
+            {
+                await feature.Invoke(isActive);
+                return true;
+            }
+            return false;
+        }
+
         async Task<bool> PlatformAccessFeature(IActiveAddOn addOn, Action<bool> feature, bool conditionWhenFree)
         {
             if (addOn == null)
@@ -370,6 +390,26 @@ namespace NittyGritty.Services
             }
 
             var isActive = await PlatformIsActive(addOn);
+            if (isActive || conditionWhenFree)
+            {
+                feature.Invoke(isActive);
+                return true;
+            }
+            return false;
+        }
+
+        async Task<bool> PlatformAccessFeature(IEnumerable<IActiveAddOn> addOns, Action<bool> feature, bool conditionWhenFree)
+        {
+            var isActive = false;
+            foreach (var addOn in addOns)
+            {
+                isActive = await PlatformIsActive(addOn);
+                if (isActive)
+                {
+                    break;
+                }
+            }
+
             if (isActive || conditionWhenFree)
             {
                 feature.Invoke(isActive);
