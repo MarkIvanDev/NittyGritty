@@ -10,17 +10,17 @@ namespace NittyGritty.Platform.Launcher
 {
     public class NGAppInfo : IAppInfo
     {
-        private readonly AppInfo appInfo;
-
         public NGAppInfo(AppInfo appInfo)
         {
-            this.appInfo = appInfo;
+            AppInfo = appInfo;
             Id = appInfo.Id;
             DisplayName = appInfo.DisplayInfo.DisplayName;
             PackageFamilyName = appInfo.PackageFamilyName;
             Description = appInfo.DisplayInfo.Description;
             AppUserModelId = appInfo.AppUserModelId;
         }
+
+        public AppInfo AppInfo { get; }
 
         public string Id { get; }
 
@@ -34,7 +34,7 @@ namespace NittyGritty.Platform.Launcher
 
         public async Task<Stream> GetLogo(Size size)
         {
-            var logo = await appInfo.DisplayInfo.GetLogo(
+            var logo = await AppInfo.DisplayInfo.GetLogo(
                 new Windows.Foundation.Size(size.Width, size.Height)).OpenReadAsync();
             return logo.AsStream();
         }

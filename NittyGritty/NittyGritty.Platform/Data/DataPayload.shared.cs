@@ -108,14 +108,11 @@ namespace NittyGritty.Platform.Data
             if (WebLink != null) dataPackage.SetWebLink(WebLink);
             if (Bitmap != null) dataPackage.SetBitmap(RandomAccessStreamReference.CreateFromStream(Bitmap.AsRandomAccessStream()));
             if (StorageItems != null && StorageItems.Count > 0) dataPackage.SetStorageItems(StorageItems.Select(f => f.Context as Windows.Storage.IStorageItem));
-            if (CustomData != null && CustomData.Count > 0)
+            foreach (var data in CustomData ?? new Dictionary<string, object>())
             {
-                foreach (var data in CustomData)
-                {
-                    dataPackage.SetData(data.Key, data.Value);
-                }
+                dataPackage.SetData(data.Key, data.Value);
             }
-            
+
             return dataPackage;
         }
 #endif

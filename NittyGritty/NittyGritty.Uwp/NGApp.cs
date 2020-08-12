@@ -237,7 +237,10 @@ namespace NittyGritty.Uwp
 
             if (rootFrame.Content is null)
             {
-                rootFrame.Navigate(DefaultView);
+                if (!(DefaultView is null))
+                {
+                    rootFrame.Navigate(DefaultView);
+                }
             }
 
             Window.Current.Activate();
