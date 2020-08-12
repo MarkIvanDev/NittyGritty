@@ -61,8 +61,8 @@ namespace NittyGritty.Services
                 if (data.AppLink != null) args.Request.Data.SetApplicationLink(data.AppLink);
                 if (data.WebLink != null) args.Request.Data.SetWebLink(data.WebLink);
                 if (data.Bitmap != null) args.Request.Data.SetBitmap(RandomAccessStreamReference.CreateFromStream(data.Bitmap.AsRandomAccessStream()));
-                if (data.StorageItems != null) args.Request.Data.SetStorageItems(data.StorageItems.Select(f => f.Context as IStorageItem));
-                foreach (var data in data.CustomData)
+                if (data.StorageItems != null && data.StorageItems.Count > 0) args.Request.Data.SetStorageItems(data.StorageItems.Select(f => f.Context as IStorageItem));
+                foreach (var data in data.CustomData ?? new Dictionary<string, object>())
                 {
                     args.Request.Data.SetData(data.Key, data.Value);
                 }

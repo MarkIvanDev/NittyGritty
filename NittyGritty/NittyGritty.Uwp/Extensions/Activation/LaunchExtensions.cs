@@ -14,17 +14,17 @@ namespace NittyGritty.Uwp.Extensions.Activation
     {
         public static bool IsPrimary(this LaunchActivatedEventArgs args)
         {
-            return args.TileId == "App" && string.IsNullOrEmpty(args.Arguments);
+            return args.TileId.Equals("App", StringComparison.OrdinalIgnoreCase) && string.IsNullOrEmpty(args.Arguments);
         }
 
         public static bool IsSecondary(this LaunchActivatedEventArgs args)
         {
-            return !string.IsNullOrEmpty(args.TileId) && args.TileId != "App";
+            return !string.IsNullOrEmpty(args.TileId) && !args.TileId.Equals("App", StringComparison.OrdinalIgnoreCase);
         }
 
         public static bool IsJumplist(this LaunchActivatedEventArgs args)
         {
-            return args.TileId == "App" && !string.IsNullOrEmpty(args.Arguments);
+            return args.TileId.Equals("App", StringComparison.OrdinalIgnoreCase) && !string.IsNullOrEmpty(args.Arguments);
         }
 
         public static bool IsChaseable(this LaunchActivatedEventArgs args)
