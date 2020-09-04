@@ -274,12 +274,16 @@ namespace NittyGritty.Uwp.Extensions
 
         public static bool GetExtendViewIntoTitleBar(Page obj)
         {
-            return (bool)obj.GetValue(ExtendViewIntoTitleBarProperty);
+            return GetCoreTitleBar()?.ExtendViewIntoTitleBar ?? default;
         }
 
         public static void SetExtendViewIntoTitleBar(Page obj, bool value)
         {
-            obj.SetValue(ExtendViewIntoTitleBarProperty, value);
+            var titleBar = GetCoreTitleBar();
+            if (!(titleBar is null))
+            {
+                titleBar.ExtendViewIntoTitleBar = value;
+            }
         }
 
         // Using a DependencyProperty as the backing store for ExtendViewIntoTitleBar.  This enables animation, styling, binding, etc...
