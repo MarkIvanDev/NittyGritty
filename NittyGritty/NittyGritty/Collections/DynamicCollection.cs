@@ -72,12 +72,9 @@ namespace NittyGritty.Collections
             get { return _limit; }
             set
             {
-                if (value != _limit)
-                {
-                    _limit = value;
-                    OnPropertyChanged(this, new PropertyChangedEventArgs(nameof(Limit)));
-                    Refresh(); 
-                }
+                _limit = value;
+                OnPropertyChanged(this, new PropertyChangedEventArgs(nameof(Limit)));
+                Refresh();
             }
         }
 
@@ -88,12 +85,9 @@ namespace NittyGritty.Collections
             get { return _offset; }
             set
             {
-                if (value != _offset)
-                {
-                    _offset = value;
-                    OnPropertyChanged(this, new PropertyChangedEventArgs(nameof(Offset)));
-                    Refresh(); 
-                }
+                _offset = value;
+                OnPropertyChanged(this, new PropertyChangedEventArgs(nameof(Offset)));
+                Refresh();
             }
         }
 
@@ -104,12 +98,9 @@ namespace NittyGritty.Collections
             get { return _ascending; }
             set
             {
-                if (value != _ascending)
-                {
-                    _ascending = value;
-                    OnPropertyChanged(this, new PropertyChangedEventArgs(nameof(Ascending)));
-                    Refresh(); 
-                }
+                _ascending = value;
+                OnPropertyChanged(this, new PropertyChangedEventArgs(nameof(Ascending)));
+                Refresh();
             }
         }
 
@@ -120,12 +111,9 @@ namespace NittyGritty.Collections
             get { return _filter; }
             set
             {
-                if (value != _filter)
-                {
-                    _filter = value;
-                    OnPropertyChanged(this, new PropertyChangedEventArgs(nameof(Filter)));
-                    Refresh(); 
-                }
+                _filter = value;
+                OnPropertyChanged(this, new PropertyChangedEventArgs(nameof(Filter)));
+                Refresh();
             }
         }
 
@@ -136,12 +124,9 @@ namespace NittyGritty.Collections
             get { return _order; }
             set
             {
-                if (value != _order)
-                {
-                    _order = value;
-                    OnPropertyChanged(this, new PropertyChangedEventArgs(nameof(Order)));
-                    Refresh(); 
-                }
+                _order = value;
+                OnPropertyChanged(this, new PropertyChangedEventArgs(nameof(Order)));
+                Refresh();
             }
         }
 
@@ -152,12 +137,9 @@ namespace NittyGritty.Collections
             get { return _comparer; }
             set
             {
-                if (value != _comparer)
-                {
-                    _comparer = value;
-                    OnPropertyChanged(this, new PropertyChangedEventArgs(nameof(Comparer)));
-                    Refresh(); 
-                }
+                _comparer = value;
+                OnPropertyChanged(this, new PropertyChangedEventArgs(nameof(Comparer)));
+                Refresh();
             }
         }
 

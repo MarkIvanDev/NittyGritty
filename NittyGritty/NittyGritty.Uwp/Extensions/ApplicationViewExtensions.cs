@@ -36,10 +36,6 @@ namespace NittyGritty.Uwp.Extensions
             }
         }
 
-        // Using a DependencyProperty as the backing store for FullScreenSystemOverlayMode.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty FullScreenSystemOverlayModeProperty =
-            DependencyProperty.RegisterAttached("FullScreenSystemOverlayMode", typeof(FullScreenSystemOverlayMode), typeof(ApplicationViewExtensions), new PropertyMetadata(default(FullScreenSystemOverlayMode)));
-
 
 
         public static bool GetIsScreenCaptureEnabled(Page obj)
@@ -56,10 +52,6 @@ namespace NittyGritty.Uwp.Extensions
             }
         }
 
-        // Using a DependencyProperty as the backing store for IsScreenCaptureEnabled.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty IsScreenCaptureEnabledProperty =
-            DependencyProperty.RegisterAttached("IsScreenCaptureEnabled", typeof(bool), typeof(ApplicationViewExtensions), new PropertyMetadata(default(bool)));
-
 
 
         public static Size GetPreferredLaunchViewSize(Page obj)
@@ -71,10 +63,6 @@ namespace NittyGritty.Uwp.Extensions
         {
             ApplicationView.PreferredLaunchViewSize = value;
         }
-
-        // Using a DependencyProperty as the backing store for PreferredLaunchViewSize.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty PreferredLaunchViewSizeProperty =
-            DependencyProperty.RegisterAttached("PreferredLaunchViewSize", typeof(Size), typeof(ApplicationViewExtensions), new PropertyMetadata(default(Size)));
 
 
 
@@ -88,10 +76,6 @@ namespace NittyGritty.Uwp.Extensions
             ApplicationView.PreferredLaunchWindowingMode = value;
         }
 
-        // Using a DependencyProperty as the backing store for PreferredLaunchWindowingMode.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty PreferredLaunchWindowingModeProperty =
-            DependencyProperty.RegisterAttached("PreferredLaunchWindowingMode", typeof(ApplicationViewWindowingMode ), typeof(ApplicationViewExtensions), new PropertyMetadata(default(ApplicationViewWindowingMode)));
-
 
 
         public static bool GetTerminateAppOnFinalViewClose(Page obj)
@@ -103,10 +87,6 @@ namespace NittyGritty.Uwp.Extensions
         {
             ApplicationView.TerminateAppOnFinalViewClose = value;
         }
-
-        // Using a DependencyProperty as the backing store for TerminateAppOnFinalViewClose.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty TerminateAppOnFinalViewCloseProperty =
-            DependencyProperty.RegisterAttached("TerminateAppOnFinalViewClose", typeof(bool), typeof(ApplicationViewExtensions), new PropertyMetadata(default(bool)));
 
 
 
@@ -123,10 +103,6 @@ namespace NittyGritty.Uwp.Extensions
                 applicationView.Title = value ?? string.Empty;
             }
         }
-
-        // Using a DependencyProperty as the backing store for Title.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty TitleProperty =
-            DependencyProperty.RegisterAttached("Title", typeof(string), typeof(ApplicationViewExtensions), new PropertyMetadata(string.Empty));
 
 
     }
