@@ -20,7 +20,7 @@ namespace NittyGritty.Utilities
             Action<TDelegate> deregister,
             Func<EventHandler<TArgs>, TDelegate> converter,
             Action<TSubscriber, object, TArgs> handler)
-            where TArgs : EventArgs
+            where TArgs : class
             where TDelegate : class
             where TSubscriber : class
         {

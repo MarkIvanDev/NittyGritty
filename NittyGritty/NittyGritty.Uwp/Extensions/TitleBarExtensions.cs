@@ -23,12 +23,12 @@ namespace NittyGritty.Uwp.Extensions
 
 
 
-        public static Color? GetBackgroundColor(Page obj)
+        public static Color GetBackgroundColor(Page obj)
         {
-            return GetTitleBar()?.BackgroundColor;
+            return GetTitleBar()?.BackgroundColor ?? default;
         }
 
-        public static void SetBackgroundColor(Page obj, Color? value)
+        public static void SetBackgroundColor(Page obj, Color value)
         {
             var titleBar = GetTitleBar();
             if (!(titleBar is null))
@@ -37,18 +37,14 @@ namespace NittyGritty.Uwp.Extensions
             }
         }
 
-        // Using a DependencyProperty as the backing store for BackgroundColor.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty BackgroundColorProperty =
-            DependencyProperty.RegisterAttached("BackgroundColor", typeof(Color?), typeof(TitleBarExtensions), new PropertyMetadata(null));
 
 
-
-        public static Color? GetButtonBackgroundColor(Page obj)
+        public static Color GetButtonBackgroundColor(Page obj)
         {
-            return GetTitleBar()?.ButtonBackgroundColor;
+            return GetTitleBar()?.ButtonBackgroundColor ?? default;
         }
 
-        public static void SetButtonBackgroundColor(Page obj, Color? value)
+        public static void SetButtonBackgroundColor(Page obj, Color value)
         {
             var titleBar = GetTitleBar();
             if (!(titleBar is null))
@@ -57,18 +53,14 @@ namespace NittyGritty.Uwp.Extensions
             }
         }
 
-        // Using a DependencyProperty as the backing store for ButtonBackgroundColor.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty ButtonBackgroundColorProperty =
-            DependencyProperty.RegisterAttached("ButtonBackgroundColor", typeof(Color?), typeof(TitleBarExtensions), new PropertyMetadata(null));
 
 
-
-        public static Color? GetButtonForegroundColor(Page obj)
+        public static Color GetButtonForegroundColor(Page obj)
         {
-            return GetTitleBar()?.ButtonForegroundColor;
+            return GetTitleBar()?.ButtonForegroundColor ?? default;
         }
 
-        public static void SetButtonForegroundColor(Page obj, Color? value)
+        public static void SetButtonForegroundColor(Page obj, Color value)
         {
             var titleBar = GetTitleBar();
             if (!(titleBar is null))
@@ -77,18 +69,14 @@ namespace NittyGritty.Uwp.Extensions
             }
         }
 
-        // Using a DependencyProperty as the backing store for ButtonForegroundColor.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty ButtonForegroundColorProperty =
-            DependencyProperty.RegisterAttached("ButtonForegroundColor", typeof(Color?), typeof(TitleBarExtensions), new PropertyMetadata(null));
 
 
-
-        public static Color? GetButtonHoverBackgroundColor(Page obj)
+        public static Color GetButtonHoverBackgroundColor(Page obj)
         {
-            return GetTitleBar()?.ButtonHoverBackgroundColor;
+            return GetTitleBar()?.ButtonHoverBackgroundColor ?? default;
         }
 
-        public static void SetButtonHoverBackgroundColor(Page obj, Color? value)
+        public static void SetButtonHoverBackgroundColor(Page obj, Color value)
         {
             var titleBar = GetTitleBar();
             if (!(titleBar is null))
@@ -97,18 +85,14 @@ namespace NittyGritty.Uwp.Extensions
             }
         }
 
-        // Using a DependencyProperty as the backing store for ButtonHoverBackgroundColor.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty ButtonHoverBackgroundColorProperty =
-            DependencyProperty.RegisterAttached("ButtonHoverBackgroundColor", typeof(Color?), typeof(TitleBarExtensions), new PropertyMetadata(null));
 
 
-
-        public static Color? GetButtonHoverForegroundColor(Page obj)
+        public static Color GetButtonHoverForegroundColor(Page obj)
         {
-            return GetTitleBar()?.ButtonHoverForegroundColor;
+            return GetTitleBar()?.ButtonHoverForegroundColor ?? default;
         }
 
-        public static void SetButtonHoverForegroundColor(Page obj, Color? value)
+        public static void SetButtonHoverForegroundColor(Page obj, Color value)
         {
             var titleBar = GetTitleBar();
             if (!(titleBar is null))
@@ -117,18 +101,14 @@ namespace NittyGritty.Uwp.Extensions
             }
         }
 
-        // Using a DependencyProperty as the backing store for ButtonHoverForegroundColor.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty ButtonHoverForegroundColorProperty =
-            DependencyProperty.RegisterAttached("ButtonHoverForegroundColor", typeof(Color?), typeof(TitleBarExtensions), new PropertyMetadata(null));
 
 
-
-        public static Color? GetButtonInactiveBackgroundColor(Page obj)
+        public static Color GetButtonInactiveBackgroundColor(Page obj)
         {
-            return GetTitleBar()?.ButtonInactiveBackgroundColor;
+            return GetTitleBar()?.ButtonInactiveBackgroundColor ?? default;
         }
 
-        public static void SetButtonInactiveBackgroundColor(Page obj, Color? value)
+        public static void SetButtonInactiveBackgroundColor(Page obj, Color value)
         {
             var titleBar = GetTitleBar();
             if (!(titleBar is null))
@@ -137,18 +117,14 @@ namespace NittyGritty.Uwp.Extensions
             }
         }
 
-        // Using a DependencyProperty as the backing store for ButtonInactiveBackgroundColor.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty ButtonInactiveBackgroundColorProperty =
-            DependencyProperty.RegisterAttached("ButtonInactiveBackgroundColor", typeof(Color?), typeof(TitleBarExtensions), new PropertyMetadata(null));
 
 
-
-        public static Color? GetButtonInactiveForegroundColor(Page obj)
+        public static Color GetButtonInactiveForegroundColor(Page obj)
         {
-            return GetTitleBar()?.ButtonInactiveForegroundColor;
+            return GetTitleBar()?.ButtonInactiveForegroundColor ?? default;
         }
 
-        public static void SetButtonInactiveForegroundColor(Page obj, Color? value)
+        public static void SetButtonInactiveForegroundColor(Page obj, Color value)
         {
             var titleBar = GetTitleBar();
             if (!(titleBar is null))
@@ -157,18 +133,14 @@ namespace NittyGritty.Uwp.Extensions
             }
         }
 
-        // Using a DependencyProperty as the backing store for ButtonInactiveForegroundColor.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty ButtonInactiveForegroundColorProperty =
-            DependencyProperty.RegisterAttached("ButtonInactiveForegroundColor", typeof(Color?), typeof(TitleBarExtensions), new PropertyMetadata(null));
 
 
-
-        public static Color? GetButtonPressedBackgroundColor(Page obj)
+        public static Color GetButtonPressedBackgroundColor(Page obj)
         {
-            return GetTitleBar()?.ButtonPressedBackgroundColor;
+            return GetTitleBar()?.ButtonPressedBackgroundColor ?? default;
         }
 
-        public static void SetButtonPressedBackgroundColor(Page obj, Color? value)
+        public static void SetButtonPressedBackgroundColor(Page obj, Color value)
         {
             var titleBar = GetTitleBar();
             if (!(titleBar is null))
@@ -177,18 +149,14 @@ namespace NittyGritty.Uwp.Extensions
             }
         }
 
-        // Using a DependencyProperty as the backing store for ButtonPressedBackgroundColor.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty ButtonPressedBackgroundColorProperty =
-            DependencyProperty.RegisterAttached("ButtonPressedBackgroundColor", typeof(Color?), typeof(TitleBarExtensions), new PropertyMetadata(null));
 
 
-
-        public static Color? GetButtonPressedForegroundColor(Page obj)
+        public static Color GetButtonPressedForegroundColor(Page obj)
         {
-            return GetTitleBar()?.ButtonPressedForegroundColor;
+            return GetTitleBar()?.ButtonPressedForegroundColor ?? default;
         }
 
-        public static void SetButtonPressedForegroundColor(Page obj, Color? value)
+        public static void SetButtonPressedForegroundColor(Page obj, Color value)
         {
             var titleBar = GetTitleBar();
             if (!(titleBar is null))
@@ -197,18 +165,14 @@ namespace NittyGritty.Uwp.Extensions
             }
         }
 
-        // Using a DependencyProperty as the backing store for ButtonPressedForegroundColor.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty ButtonPressedForegroundColorProperty =
-            DependencyProperty.RegisterAttached("ButtonPressedForegroundColor", typeof(Color?), typeof(TitleBarExtensions), new PropertyMetadata(null));
 
 
-
-        public static Color? GetForegroundColor(Page obj)
+        public static Color GetForegroundColor(Page obj)
         {
-            return GetTitleBar()?.ForegroundColor;
+            return GetTitleBar()?.ForegroundColor ?? default;
         }
 
-        public static void SetForegroundColor(Page obj, Color? value)
+        public static void SetForegroundColor(Page obj, Color value)
         {
             var titleBar = GetTitleBar();
             if (!(titleBar is null))
@@ -217,18 +181,14 @@ namespace NittyGritty.Uwp.Extensions
             }
         }
 
-        // Using a DependencyProperty as the backing store for ForegroundColor.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty ForegroundColorProperty =
-            DependencyProperty.RegisterAttached("ForegroundColor", typeof(Color?), typeof(TitleBarExtensions), new PropertyMetadata(null));
 
 
-
-        public static Color? GetInactiveBackgroundColor(Page obj)
+        public static Color GetInactiveBackgroundColor(Page obj)
         {
-            return GetTitleBar()?.InactiveBackgroundColor;
+            return GetTitleBar()?.InactiveBackgroundColor ?? default;
         }
 
-        public static void SetInactiveBackgroundColor(Page obj, Color? value)
+        public static void SetInactiveBackgroundColor(Page obj, Color value)
         {
             var titleBar = GetTitleBar();
             if (!(titleBar is null))
@@ -237,18 +197,14 @@ namespace NittyGritty.Uwp.Extensions
             }
         }
 
-        // Using a DependencyProperty as the backing store for InactiveBackgroundColor.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty InactiveBackgroundColorProperty =
-            DependencyProperty.RegisterAttached("InactiveBackgroundColor", typeof(Color?), typeof(TitleBarExtensions), new PropertyMetadata(null));
 
 
-
-        public static Color? GetInactiveForegroundColor(Page obj)
+        public static Color GetInactiveForegroundColor(Page obj)
         {
-            return GetTitleBar()?.InactiveForegroundColor;
+            return GetTitleBar()?.InactiveForegroundColor ?? default;
         }
 
-        public static void SetInactiveForegroundColor(Page obj, Color? value)
+        public static void SetInactiveForegroundColor(Page obj, Color value)
         {
             var titleBar = GetTitleBar();
             if (!(titleBar is null))
@@ -256,10 +212,6 @@ namespace NittyGritty.Uwp.Extensions
                 titleBar.InactiveForegroundColor = value;
             }
         }
-
-        // Using a DependencyProperty as the backing store for InactiveForegroundColor.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty InactiveForegroundColorProperty =
-            DependencyProperty.RegisterAttached("InactiveForegroundColor", typeof(Color?), typeof(TitleBarExtensions), new PropertyMetadata(null));
 
 
 
@@ -274,17 +226,17 @@ namespace NittyGritty.Uwp.Extensions
 
         public static bool GetExtendViewIntoTitleBar(Page obj)
         {
-            return (bool)obj.GetValue(ExtendViewIntoTitleBarProperty);
+            return GetCoreTitleBar()?.ExtendViewIntoTitleBar ?? default;
         }
 
         public static void SetExtendViewIntoTitleBar(Page obj, bool value)
         {
-            obj.SetValue(ExtendViewIntoTitleBarProperty, value);
+            var titleBar = GetCoreTitleBar();
+            if (!(titleBar is null))
+            {
+                titleBar.ExtendViewIntoTitleBar = value;
+            }
         }
-
-        // Using a DependencyProperty as the backing store for ExtendViewIntoTitleBar.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty ExtendViewIntoTitleBarProperty =
-            DependencyProperty.RegisterAttached("ExtendViewIntoTitleBar", typeof(bool), typeof(TitleBarExtensions), new PropertyMetadata(default(bool)));
 
 
 
