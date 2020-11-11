@@ -65,7 +65,7 @@ namespace NittyGritty.Services
                 var parts = new List<BackgroundTransferContentPart>();
                 for (int i = 0; i < files.Count; i++)
                 {
-                    var part = new BackgroundTransferContentPart("File" + i, files[i].Name);
+                    var part = new BackgroundTransferContentPart($"File {i}", files[i].Name);
                     part.SetFile(files[i].Context as IStorageFile);
                     parts.Add(part);
                 }

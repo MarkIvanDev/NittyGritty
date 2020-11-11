@@ -7,6 +7,8 @@ namespace NittyGritty.Services
 {
     public partial class StoreService
     {
+        Task PlatformRequestRating()
+            => throw new NotImplementedException();
 
         Task<bool> PlatformCheckForUpdates()
             => throw new NotImplementedException();
