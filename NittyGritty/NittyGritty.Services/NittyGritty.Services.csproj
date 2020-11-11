@@ -60,4 +60,8 @@
     <ProjectReference Include="..\NittyGritty.Platform\NittyGritty.Platform.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="UploadService\" />
+  </ItemGroup>
+
 </Project>
