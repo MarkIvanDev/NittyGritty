@@ -11,134 +11,153 @@ using Windows.UI.Xaml.Controls;
 
 namespace NittyGritty.UI.Interactivity.Behaviors
 {
-    public class MultiSelectBehavior<T> : Behavior<ListViewBase>
+    public class MultiSelectBehavior<TCollection, TItem> : Behavior<ListViewBase> where TCollection : class, IList<TItem>, INotifyCollectionChanged
     {
-        public MultiSelectBehavior()
-        {
-            SelectedItems = new ObservableCollection<T>();
-        }
-
-        public ObservableCollection<T> SelectedItems
-        {
-            get { return (ObservableCollection<T>)GetValue(SelectedItemsProperty); }
-            set { SetValue(SelectedItemsProperty, value); }
-        }
-
-        // Using a DependencyProperty as the backing store for SelectedItems.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty SelectedItemsProperty =
-            DependencyProperty.Register("SelectedItems",
-                typeof(ObservableCollection<T>),
-                typeof(MultiSelectBehavior<T>),
-                new PropertyMetadata(null, SelectedItemsChanged));
-
-        private bool _selectionChangedInProgress;
+        private bool selectionChangeInProgress;
 
         protected override void OnAttached()
         {
-            base.OnAttached();
-            AssociatedObject.SelectionChanged += AssociatedObject_SelectionChanged;
-        }
-
-        protected override void OnDetaching()
-        {
-            base.OnDetaching();
-            AssociatedObject.SelectionChanged -= AssociatedObject_SelectionChanged;
-            if (SelectedItems != null) SelectedItems.CollectionChanged -= SelectedItemsChanged;
-        }
-
-        private static void SelectedItemsChanged(DependencyObject sender, DependencyPropertyChangedEventArgs args)
-        {
-            MultiSelectBehavior<T> msbSender = sender as MultiSelectBehavior<T>;
-            msbSender.WireNewSelectedItems(args.OldValue as ObservableCollection<T>, args.NewValue as ObservableCollection<T>);
-        }
-
-        private void WireNewSelectedItems(ObservableCollection<T> oldValue, ObservableCollection<T> newValue)
-        {
-            if (oldValue != null)
+            if (AssociatedObject != null)
             {
-                oldValue.CollectionChanged -= SelectedItemsChanged;
-            }
-
-            if (newValue != null)
-            {
-                var listViewBase = AssociatedObject;
-                if (listViewBase != null)
-                {
-                    var listSelectedItems = listViewBase.SelectedItems;
-                    bool bOldInProgress = _selectionChangedInProgress;
-                    _selectionChangedInProgress = true;   // don't notify, as we're in control
-
-                    listSelectedItems.Clear();
-                    foreach (var v in newValue)
-                    {
-                        listSelectedItems.Add(v);
-                    }
-
-                    _selectionChangedInProgress = bOldInProgress;
-                }
-                // wire up notifications on the new collection
-                newValue.CollectionChanged += SelectedItemsChanged;
-            }
-
-        }
-
-        private void SelectedItemsChanged(object sender, NotifyCollectionChangedEventArgs e)
-        {
-            var listViewBase = AssociatedObject;
-
-            var listSelectedItems = listViewBase.SelectedItems;
-            if (e.Action == NotifyCollectionChangedAction.Reset)
-            {
-                listSelectedItems.Clear();
-            }
-            else
-            {
-                if (e.OldItems != null)
-                {
-                    foreach (var item in e.OldItems)
-                    {
-                        if (listSelectedItems.Contains(item))
-                        {
-                            listSelectedItems.Remove(item);
-                        }
-                    }
-                }
-
-                if (e.NewItems != null)
-                {
-                    foreach (var item in e.NewItems)
-                    {
-                        if (!listSelectedItems.Contains(item))
-                        {
-                            listSelectedItems.Add(item);
-                        }
-                    }
-                }
+                AssociatedObject.SelectionChanged += AssociatedObject_SelectionChanged;
             }
         }
 
         private void AssociatedObject_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (_selectionChangedInProgress) return;
-            _selectionChangedInProgress = true;
+            if (selectionChangeInProgress) return;
+            selectionChangeInProgress = true;
 
-            foreach (T item in e.RemovedItems)
+            foreach (TItem item in e.RemovedItems)
             {
-                if (SelectedItems.Contains(item))
+                if (SelectedItems != null && SelectedItems.Contains(item))
                 {
                     SelectedItems.Remove(item);
                 }
             }
 
-            foreach (T item in e.AddedItems)
+            foreach (TItem item in e.AddedItems)
             {
-                if (!SelectedItems.Contains(item))
+                if (SelectedItems != null && !SelectedItems.Contains(item))
                 {
                     SelectedItems.Add(item);
                 }
             }
-            _selectionChangedInProgress = false;
 
+            selectionChangeInProgress = false;
         }
+
+        protected override void OnDetaching()
+        {
+            if (AssociatedObject != null)
+            {
+                AssociatedObject.SelectionChanged -= AssociatedObject_SelectionChanged;
+            }
+        }
+
+
+        public TCollection SelectedItems
+        {
+            get { return (TCollection)GetValue(SelectedItemsProperty); }
+            set { SetValue(SelectedItemsProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for SelectedItems.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty SelectedItemsProperty =
+            DependencyProperty.Register("SelectedItems", typeof(TCollection), typeof(MultiSelectBehavior<TCollection, TItem>), new PropertyMetadata(null, OnSelectedItemsChanged));
+
+        private static void OnSelectedItemsChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is MultiSelectBehavior<TCollection, TItem> behavior)
+            {
+                behavior.UpdateSelectedItems(e.OldValue as TCollection, e.NewValue as TCollection);
+            }
+        }
+
+        private void UpdateSelectedItems(TCollection oldCollection, TCollection newCollection)
+        {
+            if (oldCollection != null)
+            {
+                oldCollection.CollectionChanged -= SelectedItems_CollectionChanged;
+            }
+
+            if (newCollection != null)
+            {
+                bool oldSelectionChangeInProgress = selectionChangeInProgress;
+                selectionChangeInProgress = true;   // don't notify, as we're in control
+
+                switch (AssociatedObject.SelectionMode)
+                {
+                    case ListViewSelectionMode.Single:
+                        AssociatedObject.SelectedItem = newCollection.FirstOrDefault();
+                        break;
+
+                    case ListViewSelectionMode.Multiple:
+                    case ListViewSelectionMode.Extended:
+                        AssociatedObject.SelectedItems.Clear();
+                        foreach (var item in newCollection)
+                        {
+                            AssociatedObject.SelectedItems.Add(item);
+                        }
+                        break;
+
+                    case ListViewSelectionMode.None:
+                    default:
+                        break;
+                }
+                selectionChangeInProgress = oldSelectionChangeInProgress;
+
+                newCollection.CollectionChanged += SelectedItems_CollectionChanged;
+            }
+        }
+
+        private void SelectedItems_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            switch (AssociatedObject.SelectionMode)
+            {
+                case ListViewSelectionMode.Single:
+                    if (e.Action == NotifyCollectionChangedAction.Reset)
+                    {
+                        AssociatedObject.SelectedItem = null;
+                    }
+                    else
+                    {
+                        AssociatedObject.SelectedItem = e.NewItems != null && e.NewItems.Count > 0 ? e.NewItems[0] : null;
+                    }
+                    break;
+
+                case ListViewSelectionMode.Multiple:
+                case ListViewSelectionMode.Extended:
+                    var listSelectedItems = AssociatedObject.SelectedItems;
+                    if (e.Action == NotifyCollectionChangedAction.Reset)
+                    {
+                        listSelectedItems.Clear();
+                    }
+                    else
+                    {
+                        foreach (var item in e.OldItems ?? Enumerable.Empty<TItem>().ToList())
+                        {
+                            if (listSelectedItems.Contains(item))
+                            {
+                                listSelectedItems.Remove(item);
+                            }
+                        }
+
+                        foreach (var item in e.NewItems ?? Enumerable.Empty<TItem>().ToList())
+                        {
+                            if (!listSelectedItems.Contains(item))
+                            {
+                                listSelectedItems.Add(item);
+                            }
+                        }
+                    }
+                    break;
+
+                case ListViewSelectionMode.None:
+                default:
+                    break;
+            }
+        }
+        
     }
 }
