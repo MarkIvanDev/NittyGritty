@@ -2,24 +2,23 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using NittyGritty.Platform.Storage;
 
 namespace NittyGritty.Services
 {
-    public partial class StoreService
+    public partial class UploadService
     {
-        Task PlatformRequestRating()
+
+        Task PlatformInitialize()
             => throw new NotImplementedException();
 
-        Task<bool> PlatformCheckForUpdates()
+        Task PlatformUpload(Uri uri, IFile file)
             => throw new NotImplementedException();
 
-        Task<bool> PlatformCheckForMandatoryUpdates()
+        Task PlatformUpload(Uri uri, IList<IFile> files)
             => throw new NotImplementedException();
 
-        Task PlatformDownloadUpdates()
-            => throw new NotImplementedException();
-
-        Task PlatformDownloadAndInstallUpdates()
+        void PlatformCancel(Uri uri)
             => throw new NotImplementedException();
 
     }

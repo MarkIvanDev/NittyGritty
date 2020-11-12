@@ -4,12 +4,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.Services.Store;
+using Windows.System;
 
 namespace NittyGritty.Services
 {
     public partial class StoreService
     {
         private StoreContext context = null;
+
+        async Task PlatformRequestRating()
+        {
+            await Launcher.LaunchUriAsync(new Uri($"ms-windows-store://review/?ProductId={AppId}"));
+        }
 
         async Task<bool> PlatformCheckForUpdates()
         {

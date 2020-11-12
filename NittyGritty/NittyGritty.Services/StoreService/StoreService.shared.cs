@@ -7,6 +7,15 @@ namespace NittyGritty.Services
 {
     public partial class StoreService : IStoreService
     {
+        public StoreService(string appId)
+        {
+            AppId = appId;
+        }
+
+        public string AppId { get; }
+
+        public Task RequestRating()
+            => PlatformRequestRating();
 
         public Task<bool> CheckForUpdates()
             => PlatformCheckForUpdates();
