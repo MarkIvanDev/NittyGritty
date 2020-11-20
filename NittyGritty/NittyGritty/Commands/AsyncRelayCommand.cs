@@ -28,23 +28,22 @@ namespace NittyGritty.Commands
         /// <summary>Defines the method to be called when the command is invoked. </summary>
         protected override async void Execute()
         {
-            var task = _execute();
-            if (task != null)
-            {
-                SetRunning(true);
-                await task;
-                SetRunning(false);
-            }
+            await TryExecute();
         }
 
         public async Task<bool> TryExecute()
         {
-            var task = _execute();
-            if (task != null && CanExecute)
+            if (CanExecute)
             {
-                SetRunning(true);
-                await task;
-                SetRunning(false);
+                try
+                {
+                    SetRunning(true);
+                    await _execute();
+                }
+                finally
+                {
+                    SetRunning(false);
+                }
                 return true;
             }
             return false;
@@ -86,23 +85,22 @@ namespace NittyGritty.Commands
         /// <summary>Defines the method to be called when the command is invoked. </summary>
         protected override async void Execute(T parameter)
         {
-            var task = _execute(parameter);
-            if (task != null)
-            {
-                SetRunning(true);
-                await task;
-                SetRunning(false);
-            }
+            await TryExecute(parameter);
         }
 
         public async Task<bool> TryExecute(T parameter)
         {
-            var task = _execute(parameter);
-            if (task != null && CanExecute(parameter))
+            if (CanExecute(parameter))
             {
-                SetRunning(true);
-                await task;
-                SetRunning(false);
+                try
+                {
+                    SetRunning(true);
+                    await _execute(parameter);
+                }
+                finally
+                {
+                    SetRunning(false);
+                }
                 return true;
             }
             return false;
