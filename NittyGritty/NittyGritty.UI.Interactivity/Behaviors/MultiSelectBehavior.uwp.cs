@@ -113,6 +113,7 @@ namespace NittyGritty.UI.Interactivity.Behaviors
 
         private void SelectedItems_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
+            if (AssociatedObject is null) return;
             switch (AssociatedObject.SelectionMode)
             {
                 case ListViewSelectionMode.Single:
