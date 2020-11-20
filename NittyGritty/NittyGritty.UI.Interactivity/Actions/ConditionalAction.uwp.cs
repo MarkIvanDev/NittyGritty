@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xaml.Interactivity;
+using NittyGritty.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -73,11 +74,11 @@ namespace NittyGritty.UI.Interactivity.Actions
             {
                 case Operators.EqualTo:
                 default:
-                    if (Compare(LeftValue, rightValue) == 0)
+                    if (LeftValue.EqualTo(RightValue))
                         Interaction.ExecuteActions(sender, Actions, parameter);
                     break;
                 case Operators.NotEqualTo:
-                    if (Compare(LeftValue, rightValue) != 0)
+                    if (!LeftValue.EqualTo(RightValue))
                         Interaction.ExecuteActions(sender, Actions, parameter);
                     break;
                 case Operators.LessThan:
