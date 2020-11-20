@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using NittyGritty.Extensions;
 #if UWP
 using Windows.UI.Xaml.Data;
 #else
@@ -22,8 +23,11 @@ namespace NittyGritty.UI.Converters
         {
             try
             {
-                if (object.Equals(value, parameter ?? When))
+                if (value.EqualTo(parameter ?? When))
+                {
                     return Value;
+                }
+
                 return Otherwise;
             }
             catch
@@ -43,8 +47,11 @@ namespace NittyGritty.UI.Converters
 
             try
             {
-                if (object.Equals(value, Value))
+                if (value.EqualTo(Value))
+                {
                     return When;
+                }
+
                 return OtherwiseValueBack;
             }
             catch
