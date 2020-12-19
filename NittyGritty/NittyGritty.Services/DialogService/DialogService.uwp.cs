@@ -111,49 +111,33 @@ namespace NittyGritty.Services
 
         async Task<bool> PlatformShowMessage(string message, string title, string buttonConfirmText, string buttonCancelText)
         {
-            var result = false;
-
             var dialog = CreateDialog(
                 message,
                 title,
                 buttonConfirmText,
-                buttonCancelText,
-                r => result = r);
+                buttonCancelText);
 
-            await dialog.ShowAsync();
-            return result;
+            var result = await dialog.ShowAsync();
+            return result == ContentDialogResult.Primary;
         }
 
-        private MessageDialog CreateDialog(
+        private ContentDialog CreateDialog(
             string message,
             string title,
             string buttonConfirmText = "OK",
-            string buttonCancelText = null,
-            Action<bool> afterHideInternal = null)
+            string buttonCancelText = null)
         {
-            var dialog = new MessageDialog(message, title);
-
-            dialog.Commands.Add(
-                new UICommand(
-                    buttonConfirmText,
-                    o =>
-                    {
-                        afterHideInternal?.Invoke(true);
-                    }));
-
-            dialog.DefaultCommandIndex = 0;
+            var dialog = new ContentDialog()
+            {
+                Title = title,
+                Content = message,
+                PrimaryButtonText = buttonConfirmText,
+                DefaultButton = ContentDialogButton.Primary
+            };
 
             if (!string.IsNullOrEmpty(buttonCancelText))
             {
-                dialog.Commands.Add(
-                    new UICommand(
-                        buttonCancelText,
-                        o =>
-                        {
-                            afterHideInternal?.Invoke(false);
-                        }));
-
-                dialog.CancelCommandIndex = 1;
+                dialog.SecondaryButtonText = buttonCancelText;
             }
 
             return dialog;

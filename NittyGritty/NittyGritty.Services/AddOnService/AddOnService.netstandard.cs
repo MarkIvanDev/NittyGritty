@@ -9,17 +9,7 @@ namespace NittyGritty.Services
 {
     public partial class AddOnService
     {
-        Task<ConsumableAddOn> PlatformGetConsumableAddOn(string key)
-        {
-            throw new NotImplementedException();
-        }
-
         Task<ReadOnlyCollection<ConsumableAddOn>> PlatformGetConsumableAddOns(params string[] keys)
-        {
-            throw new NotImplementedException();
-        }
-
-        Task<DurableAddOn> PlatformGetDurableAddOn(string key)
         {
             throw new NotImplementedException();
         }
@@ -29,17 +19,7 @@ namespace NittyGritty.Services
             throw new NotImplementedException();
         }
 
-        Task<SubscriptionAddOn> PlatformGetSubscriptionAddOn(string key)
-        {
-            throw new NotImplementedException();
-        }
-
         Task<ReadOnlyCollection<SubscriptionAddOn>> PlatformGetSubscriptionAddOns(params string[] keys)
-        {
-            throw new NotImplementedException();
-        }
-
-        Task<UnmanagedConsumableAddOn> PlatformGetUnmanagedConsumableAddOn(string key)
         {
             throw new NotImplementedException();
         }
@@ -49,42 +29,17 @@ namespace NittyGritty.Services
             throw new NotImplementedException();
         }
 
-        Task<bool> PlatformIsDurableActive(string key)
-        {
-            throw new NotImplementedException();
-        }
-
-        Task<bool> PlatformIsDurableActive(DurableAddOn addOn)
-        {
-            throw new NotImplementedException();
-        }
-
-        Task<bool> PlatformIsSubscriptionActive(string key)
-        {
-            throw new NotImplementedException();
-        }
-
-        Task<bool> PlatformIsSubscriptionActive(SubscriptionAddOn addOn)
-        {
-            throw new NotImplementedException();
-        }
-
         Task<bool> PlatformIsActive(IActiveAddOn addOn)
         {
             throw new NotImplementedException();
         }
 
-        Task PlatformPurchase(string key)
+        Task<bool> PlatformIsAnyActive(IEnumerable<IActiveAddOn> addOns)
         {
             throw new NotImplementedException();
         }
 
         Task PlatformPurchase(AddOn addOn)
-        {
-            throw new NotImplementedException();
-        }
-
-        Task<bool> PlatformTryPurchase(string key)
         {
             throw new NotImplementedException();
         }

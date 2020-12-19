@@ -8,7 +8,7 @@ using Windows.ApplicationModel;
 
 namespace NittyGritty.Platform.Launcher
 {
-    public class NGAppInfo : IAppInfo
+    public class NGAppInfo : ObservableObject, IAppInfo
     {
         public NGAppInfo(AppInfo appInfo)
         {
@@ -31,6 +31,14 @@ namespace NittyGritty.Platform.Launcher
         public string Description { get; }
 
         public string AppUserModelId { get; }
+
+        private Stream _logo;
+
+        public Stream Logo
+        {
+            get { return _logo; }
+            set { Set(ref _logo, value); }
+        }
 
         public async Task<Stream> GetLogo(Size size)
         {

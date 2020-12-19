@@ -19,6 +19,8 @@ namespace NittyGritty.Platform.Launcher
 
         string AppUserModelId { get; }
 
+        Stream Logo { get; set; }
+
         Task<Stream> GetLogo(Size size);
     }
 }

@@ -14,13 +14,18 @@ namespace NittyGritty.Services
         Task Purchase(AddOn addOn);
         Task<bool> TryPurchase(string key);
         Task<bool> TryPurchase(AddOn addOn);
+        Task<bool> IsActive(string key);
         Task<bool> IsActive(IActiveAddOn addOn);
+        Task<bool> IsAnyActive(IEnumerable<string> keys);
+        Task<bool> IsAnyActive(IEnumerable<IActiveAddOn> addOns);
 
         // Durable
         Task<DurableAddOn> GetDurableAddOn(string key);
         Task<ReadOnlyCollection<DurableAddOn>> GetDurableAddOns(params string[] keys);
         Task<bool> IsDurableActive(string key);
         Task<bool> IsDurableActive(DurableAddOn addOn);
+        Task<bool> IsAnyDurableActive(IEnumerable<string> keys);
+        Task<bool> IsAnyDurableActive(IEnumerable<DurableAddOn> addOns);
 
         // Consumable
         Task<ConsumableAddOn> GetConsumableAddOn(string key);
@@ -37,6 +42,8 @@ namespace NittyGritty.Services
         Task<ReadOnlyCollection<SubscriptionAddOn>> GetSubscriptionAddOns(params string[] keys);
         Task<bool> IsSubscriptionActive(string key);
         Task<bool> IsSubscriptionActive(SubscriptionAddOn addOn);
+        Task<bool> IsAnySubscriptionActive(IEnumerable<string> keys);
+        Task<bool> IsAnySubscriptionActive(IEnumerable<SubscriptionAddOn> addOns);
 
         // Helpers
         Task<bool> AccessFeature(string key, Func<bool, Task> feature, bool conditionWhenFree);
