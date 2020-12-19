@@ -55,5 +55,7 @@ namespace NittyGritty.Models
             set { Set(ref _children, value); }
         }
 
+        public static ShellItem Separator => new ShellItem() { Type = ShellItemType.Separator };
+
     }
 }
