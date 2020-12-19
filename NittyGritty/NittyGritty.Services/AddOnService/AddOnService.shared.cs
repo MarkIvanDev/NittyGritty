@@ -53,7 +53,8 @@ namespace NittyGritty.Services
 
         public async Task<ConsumableAddOn> GetConsumableAddOn(string key)
         {
-            return await PlatformGetConsumableAddOn(key);
+            var addOns = await PlatformGetConsumableAddOns(key);
+            return addOns.FirstOrDefault();
         }
 
         public async Task<ReadOnlyCollection<ConsumableAddOn>> GetConsumableAddOns(params string[] keys)
@@ -63,7 +64,8 @@ namespace NittyGritty.Services
 
         public async Task<DurableAddOn> GetDurableAddOn(string key)
         {
-            return await PlatformGetDurableAddOn(key);
+            var addOns = await PlatformGetDurableAddOns(key);
+            return addOns.FirstOrDefault();
         }
 
         public async Task<ReadOnlyCollection<DurableAddOn>> GetDurableAddOns(params string[] keys)
@@ -73,7 +75,8 @@ namespace NittyGritty.Services
 
         public async Task<SubscriptionAddOn> GetSubscriptionAddOn(string key)
         {
-            return await PlatformGetSubscriptionAddOn(key);
+            var addOns = await PlatformGetSubscriptionAddOns(key);
+            return addOns.FirstOrDefault();
         }
 
         public async Task<ReadOnlyCollection<SubscriptionAddOn>> GetSubscriptionAddOns(params string[] keys)
@@ -83,7 +86,8 @@ namespace NittyGritty.Services
 
         public async Task<UnmanagedConsumableAddOn> GetUnmanagedConsumableAddOn(string key)
         {
-            return await PlatformGetUnmanagedConsumableAddOn(key);
+            var addOns = await PlatformGetUnmanagedConsumableAddOns(key);
+            return addOns.FirstOrDefault();
         }
 
         public async Task<ReadOnlyCollection<UnmanagedConsumableAddOn>> GetUnmanagedConsumableAddOns(params string[] keys)
@@ -93,22 +97,47 @@ namespace NittyGritty.Services
 
         public async Task<bool> IsDurableActive(string key)
         {
-            return await PlatformIsDurableActive(key);
+            return await PlatformIsActive(_addOnsByKey[key] as DurableAddOn);
         }
 
         public async Task<bool> IsDurableActive(DurableAddOn addOn)
         {
-            return await PlatformIsDurableActive(addOn);
+            return await PlatformIsActive(addOn);
+        }
+
+        public async Task<bool> IsAnyDurableActive(IEnumerable<string> keys)
+        {
+            return await PlatformIsAnyActive(keys.Select(k => _addOnsByKey[k] as DurableAddOn));
+        }
+
+        public async Task<bool> IsAnyDurableActive(IEnumerable<DurableAddOn> addOns)
+        {
+            return await PlatformIsAnyActive(addOns);
         }
 
         public async Task<bool> IsSubscriptionActive(string key)
         {
-            return await PlatformIsSubscriptionActive(key);
+            return await PlatformIsActive(_addOnsByKey[key] as SubscriptionAddOn);
         }
 
         public async Task<bool> IsSubscriptionActive(SubscriptionAddOn addOn)
         {
-            return await PlatformIsSubscriptionActive(addOn);
+            return await PlatformIsActive(addOn);
+        }
+
+        public async Task<bool> IsAnySubscriptionActive(IEnumerable<string> keys)
+        {
+            return await PlatformIsAnyActive(keys.Select(k => _addOnsByKey[k] as SubscriptionAddOn));
+        }
+
+        public async Task<bool> IsAnySubscriptionActive(IEnumerable<SubscriptionAddOn> addOns)
+        {
+            return await PlatformIsAnyActive(addOns);
+        }
+
+        public async Task<bool> IsActive(string key)
+        {
+            return await PlatformIsActive(_addOnsByKey[key] as IActiveAddOn);
         }
 
         public async Task<bool> IsActive(IActiveAddOn addOn)
@@ -116,9 +145,19 @@ namespace NittyGritty.Services
             return await PlatformIsActive(addOn);
         }
 
+        public async Task<bool> IsAnyActive(IEnumerable<string> keys)
+        {
+            return await PlatformIsAnyActive(keys.Select(k => _addOnsByKey[k] as IActiveAddOn));
+        }
+
+        public async Task<bool> IsAnyActive(IEnumerable<IActiveAddOn> addOns)
+        {
+            return await PlatformIsAnyActive(addOns);
+        }
+
         public async Task Purchase(string key)
         {
-            await PlatformPurchase(key);
+            await PlatformPurchase(_addOnsByKey[key]);
         }
 
         public async Task Purchase(AddOn addOn)
@@ -128,7 +167,7 @@ namespace NittyGritty.Services
 
         public async Task<bool> TryPurchase(string key)
         {
-            return await PlatformTryPurchase(key);
+            return await PlatformTryPurchase(_addOnsByKey[key]);
         }
 
         public async Task<bool> TryPurchase(AddOn addOn)
