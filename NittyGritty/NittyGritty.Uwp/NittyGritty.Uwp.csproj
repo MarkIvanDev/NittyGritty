@@ -11,7 +11,7 @@
 
   <PropertyGroup>
     <PackageId>NittyGritty.Uwp</PackageId>
-    <PackageVersion>1.9.0</PackageVersion>
+    <PackageVersion>1.9.1</PackageVersion>
     <Title>NittyGritty.Uwp</Title>
     <Authors>markivan.basto</Authors>
     <Description>Boilerplate code that can speed up your development</Description>
@@ -22,6 +22,7 @@
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageTags>c# mvvm helpers extensions utilities view viewmodel model collections data nittygritty markivan</PackageTags>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
