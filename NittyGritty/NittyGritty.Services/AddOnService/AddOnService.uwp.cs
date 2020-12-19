@@ -15,12 +15,6 @@ namespace NittyGritty.Services
     {
         private StoreContext context = null;
 
-        async Task<ConsumableAddOn> PlatformGetConsumableAddOn(string key)
-        {
-            var addOns = await PlatformGetConsumableAddOns(key);
-            return addOns.FirstOrDefault();
-        }
-
         async Task<ReadOnlyCollection<ConsumableAddOn>> PlatformGetConsumableAddOns(params string[] keys)
         {
             if (context == null)
@@ -38,13 +32,13 @@ namespace NittyGritty.Services
             {
                 foreach (var key in keys)
                 {
-                    if(_addOnsByKey[key] is ConsumableAddOn cao)
+                    if (_addOnsByKey[key] is ConsumableAddOn cao)
                     {
                         consumables.Add(cao);
                     }
                 }
             }
-            
+
             var queryResult = await context.GetStoreProductsAsync(new List<string>() { "Consumable" }, consumables.Select(c => c.Id));
             if (queryResult.ExtendedError == null)
             {
@@ -61,12 +55,6 @@ namespace NittyGritty.Services
             }
 
             return new ReadOnlyCollection<ConsumableAddOn>(consumables);
-        }
-
-        async Task<DurableAddOn> PlatformGetDurableAddOn(string key)
-        {
-            var addOns = await PlatformGetDurableAddOns(key);
-            return addOns.FirstOrDefault();
         }
 
         async Task<ReadOnlyCollection<DurableAddOn>> PlatformGetDurableAddOns(params string[] keys)
@@ -86,7 +74,7 @@ namespace NittyGritty.Services
             {
                 foreach (var key in keys)
                 {
-                    if(_addOnsByKey[key] is DurableAddOn dao)
+                    if (_addOnsByKey[key] is DurableAddOn dao)
                     {
                         durables.Add(dao);
                     }
@@ -100,7 +88,7 @@ namespace NittyGritty.Services
                 foreach (var durable in durables)
                 {
                     var product = queryResult.Products[durable.Id];
-                    if(!product.Skus[0].IsSubscription)
+                    if (!product.Skus[0].IsSubscription)
                     {
                         durable.Title = product.Title;
                         durable.Description = product.Description;
@@ -112,12 +100,6 @@ namespace NittyGritty.Services
             }
 
             return new ReadOnlyCollection<DurableAddOn>(durables);
-        }
-
-        async Task<SubscriptionAddOn> PlatformGetSubscriptionAddOn(string key)
-        {
-            var addOns = await PlatformGetSubscriptionAddOns(key);
-            return addOns.FirstOrDefault();
         }
 
         async Task<ReadOnlyCollection<SubscriptionAddOn>> PlatformGetSubscriptionAddOns(params string[] keys)
@@ -137,7 +119,7 @@ namespace NittyGritty.Services
             {
                 foreach (var key in keys)
                 {
-                    if(_addOnsByKey[key] is SubscriptionAddOn sao)
+                    if (_addOnsByKey[key] is SubscriptionAddOn sao)
                     {
                         subscriptions.Add(sao);
                     }
@@ -151,7 +133,7 @@ namespace NittyGritty.Services
                 foreach (var subscription in subscriptions)
                 {
                     var product = queryResult.Products[subscription.Id];
-                    if(product.Skus[0].IsSubscription)
+                    if (product.Skus[0].IsSubscription)
                     {
                         subscription.Title = product.Title;
                         subscription.Description = product.Description;
@@ -167,12 +149,6 @@ namespace NittyGritty.Services
             }
 
             return new ReadOnlyCollection<SubscriptionAddOn>(subscriptions);
-        }
-
-        async Task<UnmanagedConsumableAddOn> PlatformGetUnmanagedConsumableAddOn(string key)
-        {
-            var addOns = await PlatformGetUnmanagedConsumableAddOns(key);
-            return addOns.FirstOrDefault();
         }
 
         async Task<ReadOnlyCollection<UnmanagedConsumableAddOn>> PlatformGetUnmanagedConsumableAddOns(params string[] keys)
@@ -192,7 +168,7 @@ namespace NittyGritty.Services
             {
                 foreach (var key in keys)
                 {
-                    if(_addOnsByKey[key] is UnmanagedConsumableAddOn ucao)
+                    if (_addOnsByKey[key] is UnmanagedConsumableAddOn ucao)
                     {
                         consumables.Add(ucao);
                     }
@@ -217,26 +193,6 @@ namespace NittyGritty.Services
             return new ReadOnlyCollection<UnmanagedConsumableAddOn>(consumables);
         }
 
-        async Task<bool> PlatformIsDurableActive(string key)
-        {
-            return await PlatformIsActive(_addOnsByKey[key] as DurableAddOn);
-        }
-
-        async Task<bool> PlatformIsDurableActive(DurableAddOn addOn)
-        {
-            return await PlatformIsActive(addOn);
-        }
-
-        async Task<bool> PlatformIsSubscriptionActive(string key)
-        {
-            return await PlatformIsActive(_addOnsByKey[key] as SubscriptionAddOn);
-        }
-
-        async Task<bool> PlatformIsSubscriptionActive(SubscriptionAddOn addOn)
-        {
-            return await PlatformIsActive(addOn);
-        }
-
         async Task<bool> PlatformIsActive(IActiveAddOn addOn)
         {
             if (!(addOn is AddOn storeAddOn))
@@ -254,9 +210,26 @@ namespace NittyGritty.Services
             return license.AddOnLicenses.TryGetValue(storeAddOn.Id, out var l) ? l.IsActive : false;
         }
 
-        async Task PlatformPurchase(string key)
+        async Task<bool> PlatformIsAnyActive(IEnumerable<IActiveAddOn> addOns)
         {
-            await PlatformPurchaseById(_addOnsByKey[key].Id);
+            if (context == null)
+            {
+                context = StoreContext.GetDefault();
+            }
+
+            var license = await context.GetAppLicenseAsync();
+            foreach (var item in addOns)
+            {
+                if (item is AddOn addOn)
+                {
+                    var isActive = license.AddOnLicenses.TryGetValue(addOn.Id, out var l) ? l.IsActive : false;
+                    if (isActive)
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
         }
 
         async Task PlatformPurchase(AddOn addOn)
@@ -286,11 +259,6 @@ namespace NittyGritty.Services
                 default:
                     throw new Exception("The purchase was unsuccessful due to an unknown error", purchaseResult.ExtendedError);
             }
-        }
-
-        async Task<bool> PlatformTryPurchase(string key)
-        {
-            return await PlatformTryPurchaseById(_addOnsByKey[key].Id);
         }
 
         async Task<bool> PlatformTryPurchase(AddOn addOn)
@@ -364,16 +332,12 @@ namespace NittyGritty.Services
 
         async Task<bool> PlatformAccessFeature(IEnumerable<IActiveAddOn> addOns, Func<bool, Task> feature, bool conditionWhenFree)
         {
-            var isActive = false;
-            foreach (var addOn in addOns)
+            if (addOns is null)
             {
-                isActive = await PlatformIsActive(addOn);
-                if (isActive)
-                {
-                    break;
-                }
+                throw new ArgumentNullException(nameof(addOns));
             }
 
+            var isActive = await PlatformIsAnyActive(addOns);
             if (isActive || conditionWhenFree)
             {
                 await feature.Invoke(isActive);
@@ -400,16 +364,12 @@ namespace NittyGritty.Services
 
         async Task<bool> PlatformAccessFeature(IEnumerable<IActiveAddOn> addOns, Action<bool> feature, bool conditionWhenFree)
         {
-            var isActive = false;
-            foreach (var addOn in addOns)
+            if (addOns is null)
             {
-                isActive = await PlatformIsActive(addOn);
-                if (isActive)
-                {
-                    break;
-                }
+                throw new ArgumentNullException(nameof(addOns));
             }
 
+            var isActive = await PlatformIsAnyActive(addOns);
             if (isActive || conditionWhenFree)
             {
                 feature.Invoke(isActive);
