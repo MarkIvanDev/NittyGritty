@@ -15,5 +15,9 @@ namespace NittyGritty.Models
             set { Set(ref _data, value); }
         }
 
+        public static implicit operator Item<T>(T data) => new Item<T> { Data = data };
+
+        public static implicit operator T(Item<T> item) => item.Data;
+
     }
 }
