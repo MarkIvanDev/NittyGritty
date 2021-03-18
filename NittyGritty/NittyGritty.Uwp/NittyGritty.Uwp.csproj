@@ -11,11 +11,11 @@
 
   <PropertyGroup>
     <PackageId>NittyGritty.Uwp</PackageId>
-    <PackageVersion>1.9.1</PackageVersion>
+    <PackageVersion>1.9.2</PackageVersion>
     <Title>NittyGritty.Uwp</Title>
     <Authors>markivan.basto</Authors>
     <Description>Boilerplate code that can speed up your development</Description>
-    <Copyright>(c) 2020 Mark Ivan Basto</Copyright>
+    <Copyright>(c) 2021 Mark Ivan Basto</Copyright>
     <PackageProjectUrl>https://github.com/MarkIvanDev/NittyGritty</PackageProjectUrl>
     <RepositoryUrl>https://github.com/MarkIvanDev/NittyGritty.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
