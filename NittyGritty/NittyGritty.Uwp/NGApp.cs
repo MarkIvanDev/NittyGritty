@@ -1,17 +1,11 @@
-﻿using NittyGritty.Uwp.Services;
-using NittyGritty.Uwp.Activation;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.ApplicationModel.Appointments.AppointmentsProvider;
 using Windows.Graphics.Printing.Workflow;
-using Windows.ApplicationModel.Core;
 
 namespace NittyGritty.Uwp
 {
@@ -307,7 +301,7 @@ namespace NittyGritty.Uwp
             return Task.CompletedTask;
         }
 
-        public virtual Task HandleActivation(VoiceCommandActivatedEventArgs args)
+        protected virtual Task HandleActivation(VoiceCommandActivatedEventArgs args)
         {
             return Task.CompletedTask;
         }
@@ -335,17 +329,17 @@ namespace NittyGritty.Uwp
             return Task.CompletedTask;
         }
 
-        public virtual Task HandleActivation(ContactPanelActivatedEventArgs args)
+        protected virtual Task HandleActivation(ContactPanelActivatedEventArgs args)
         {
             return Task.CompletedTask;
         }
 
-        public virtual Task HandleActivation(FileOpenPickerActivatedEventArgs args)
+        protected virtual Task HandleActivation(FileOpenPickerActivatedEventArgs args)
         {
             return Task.CompletedTask;
         }
 
-        public virtual Task HandleActivation(FileSavePickerActivatedEventArgs args)
+        protected virtual Task HandleActivation(FileSavePickerActivatedEventArgs args)
         {
             return Task.CompletedTask;
         }
@@ -360,12 +354,12 @@ namespace NittyGritty.Uwp
             return Task.CompletedTask;
         }
 
-        public virtual Task HandleActivation(ProtocolForResultsActivatedEventArgs args)
+        protected virtual Task HandleActivation(ProtocolForResultsActivatedEventArgs args)
         {
             return Task.CompletedTask;
         }
 
-        public virtual Task HandleActivation(ShareTargetActivatedEventArgs args)
+        protected virtual Task HandleActivation(ShareTargetActivatedEventArgs args)
         {
             return Task.CompletedTask;
         }

@@ -7,11 +7,9 @@ namespace NittyGritty.Platform.Payloads
 {
     public interface IProtocolForResultsPayload
     {
-        string Path { get; }
+        Uri Uri { get; }
 
         IReadOnlyDictionary<string, object> Data { get; }
-
-        QueryString Parameters { get; }
 
         void ReportResults(IDictionary<string, object> results);
     }
