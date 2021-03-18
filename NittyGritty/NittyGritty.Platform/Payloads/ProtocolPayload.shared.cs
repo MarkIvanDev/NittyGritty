@@ -12,18 +12,15 @@ namespace NittyGritty.Platform.Payloads
         /// Creates a Payload for the Protocol
         /// </summary>
         /// <param name="data">The data that the protocol passed. Can be null</param>
-        /// <param name="parameters">The query that the protocol passed. Can be empty</param>
-        public ProtocolPayload(string path, IDictionary<string, object> data, QueryString parameters)
+        public ProtocolPayload(Uri uri, IDictionary<string, object> data)
         {
-            Path = path;
+            Uri = uri;
             Data = data != null ? new ReadOnlyDictionary<string, object>(data) : null;
-            Parameters = parameters;
         }
 
-        public string Path { get; }
+        public Uri Uri { get; }
 
         public IReadOnlyDictionary<string, object> Data { get; }
 
-        public QueryString Parameters { get; }
     }
 }

@@ -45,7 +45,7 @@ namespace NittyGritty.Uwp.Activation.Operations
 
             var path = args.Uri.LocalPath;
             var parameters = QueryString.Parse(args.Uri.GetComponents(UriComponents.Query, UriFormat.UriEscaped));
-            var payload = new ProtocolForResultsPayload(path, args.Data, parameters, args.ProtocolForResultsOperation);
+            var payload = new ProtocolForResultsPayload(args.Uri, args.Data, args.ProtocolForResultsOperation);
 
             var configuration = GetConfiguration(path);
             configuration.View.Show(payload, frame);
