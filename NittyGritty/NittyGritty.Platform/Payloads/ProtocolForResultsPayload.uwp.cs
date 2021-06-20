@@ -15,13 +15,13 @@ namespace NittyGritty.Platform.Payloads
         public ProtocolForResultsPayload(Uri uri, IDictionary<string, object> data, ProtocolForResultsOperation operation)
         {
             Uri = uri;
-            Data = data != null ? new ReadOnlyDictionary<string, object>(data) : null;
+            Data = data;
             this.operation = operation;
         }
 
         public Uri Uri { get; }
 
-        public IReadOnlyDictionary<string, object> Data { get; }
+        public IDictionary<string, object> Data { get; }
 
         public void ReportResults(IDictionary<string, object> results)
         {
