@@ -9,7 +9,7 @@ namespace NittyGritty.Platform.Payloads
     {
         Uri Uri { get; }
 
-        IReadOnlyDictionary<string, object> Data { get; }
+        IDictionary<string, object> Data { get; }
 
         void ReportResults(IDictionary<string, object> results);
     }

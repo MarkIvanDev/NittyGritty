@@ -15,12 +15,12 @@ namespace NittyGritty.Platform.Payloads
         public ProtocolPayload(Uri uri, IDictionary<string, object> data)
         {
             Uri = uri;
-            Data = data != null ? new ReadOnlyDictionary<string, object>(data) : null;
+            Data = data;
         }
 
         public Uri Uri { get; }
 
-        public IReadOnlyDictionary<string, object> Data { get; }
+        public IDictionary<string, object> Data { get; }
 
     }
 }
