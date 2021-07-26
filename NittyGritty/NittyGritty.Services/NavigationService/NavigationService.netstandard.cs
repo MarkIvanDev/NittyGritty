@@ -6,11 +6,11 @@ namespace NittyGritty.Services
 {
     public partial class NavigationService
     {
-        public bool PlatformCanGoBack { get { throw new NotImplementedException(); } }
+        bool PlatformCanGoBack { get { throw new NotImplementedException(); } }
 
-        public bool PlatformCanGoForward { get { throw new NotImplementedException(); } }
+        bool PlatformCanGoForward { get { throw new NotImplementedException(); } }
 
-        public string PlatformCurrentKey { get { throw new NotImplementedException(); } }
+        string PlatformCurrentKey { get { throw new NotImplementedException(); } }
 
         void PlatformGoBack()
             => throw new NotImplementedException();
