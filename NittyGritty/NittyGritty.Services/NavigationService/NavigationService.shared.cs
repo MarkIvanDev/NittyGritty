@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using System.Text;
 
 namespace NittyGritty.Services
 {
-    public partial class NavigationService : INavigationService
+    public partial class NavigationService : INavigationService, INotifyPropertyChanged
     {
         private const string RootKey = "-- ROOT --";
         private const string UnknownKey = "-- UNKNOWN -- ";
@@ -35,5 +37,16 @@ namespace NittyGritty.Services
         {
             PlatformNavigateTo(key, parameter);
         }
+
+        #region INPC
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public void RaisePropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        #endregion
     }
 }

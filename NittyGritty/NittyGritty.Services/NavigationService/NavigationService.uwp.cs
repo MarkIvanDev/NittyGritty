@@ -22,6 +22,10 @@ namespace NittyGritty.Services
             set
             {
                 _context = value;
+                RaisePropertyChanged();
+                RaisePropertyChanged(nameof(CanGoBack));
+                RaisePropertyChanged(nameof(CanGoForward));
+                RaisePropertyChanged(nameof(CurrentKey));
             }
         }
         #endregion
@@ -66,11 +70,11 @@ namespace NittyGritty.Services
         }
         #endregion
 
-        public bool PlatformCanGoBack { get { return Context.CanGoBack; } }
+        bool PlatformCanGoBack { get { return Context.CanGoBack; } }
 
-        public bool PlatformCanGoForward { get { return Context.CanGoForward; } }
+        bool PlatformCanGoForward { get { return Context.CanGoForward; } }
 
-        public string PlatformCurrentKey
+        string PlatformCurrentKey
         {
             get
             {
