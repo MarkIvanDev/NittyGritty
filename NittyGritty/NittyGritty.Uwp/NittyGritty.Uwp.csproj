@@ -7,11 +7,14 @@
     <RootNamespace>NittyGritty.Uwp</RootNamespace>
     <Owners>markivan.basto</Owners>
     <LangVersion>7.3</LangVersion>
+	<TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
+	<TargetPlatformVersion>10.0.19041.0</TargetPlatformVersion>
+	<TargetPlatformMinVersion>10.0.16299.0</TargetPlatformMinVersion>
   </PropertyGroup>
 
   <PropertyGroup>
     <PackageId>NittyGritty.Uwp</PackageId>
-    <PackageVersion>1.9.5</PackageVersion>
+    <PackageVersion>1.9.6</PackageVersion>
     <Title>NittyGritty.Uwp</Title>
     <Authors>markivan.basto</Authors>
     <Description>Boilerplate code that can speed up your development</Description>

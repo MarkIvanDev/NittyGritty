@@ -9,7 +9,7 @@
 
   <PropertyGroup>
     <PackageId>NittyGritty</PackageId>
-    <PackageVersion>1.9.5</PackageVersion>
+    <PackageVersion>1.9.6</PackageVersion>
     <Title>NittyGritty</Title>
     <Authors>markivan.basto</Authors>
     <Description>Boilerplate code that can speed up your development</Description>
