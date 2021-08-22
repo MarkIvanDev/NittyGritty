@@ -11,7 +11,7 @@
 
   <PropertyGroup>
     <PackageId>NittyGritty.Services</PackageId>
-    <PackageVersion>1.9.6</PackageVersion>
+    <PackageVersion>1.9.7</PackageVersion>
     <Title>NittyGritty.Services</Title>
     <Authors>markivan.basto</Authors>
     <Description>Boilerplate code that can speed up your development</Description>
