@@ -5,7 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using NittyGritty.Platform.Storage;
 
-namespace NittyGritty.Services
+namespace NittyGritty.Services.Core
 {
     public interface IDownloadService
     {

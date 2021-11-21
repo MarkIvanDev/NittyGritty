@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using NittyGritty.Platform.Store;
 
-namespace NittyGritty.Services
+namespace NittyGritty.Services.Core
 {
     public interface IAddOnService
     {

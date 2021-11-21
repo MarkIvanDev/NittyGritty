@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NittyGritty.Services
+namespace NittyGritty.Services.Core
 {
     public interface IDialogService
     {

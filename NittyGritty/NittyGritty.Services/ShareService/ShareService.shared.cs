@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using NittyGritty.Platform.Data;
+using NittyGritty.Services.Core;
 
 namespace NittyGritty.Services
 {

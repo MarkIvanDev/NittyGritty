@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using NittyGritty.Platform.Launcher;
 using NittyGritty.Platform.Storage;
 
-namespace NittyGritty.Services
+namespace NittyGritty.Services.Core
 {
     public interface ILauncherService
     {

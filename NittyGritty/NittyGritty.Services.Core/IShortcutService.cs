@@ -4,7 +4,7 @@ using System.Text;
 using System.Threading.Tasks;
 using NittyGritty.Platform.Shortcut;
 
-namespace NittyGritty.Services
+namespace NittyGritty.Services.Core
 {
     public interface IShortcutService
     {

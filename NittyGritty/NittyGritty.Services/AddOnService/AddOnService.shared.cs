@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using NittyGritty.Platform.Store;
+using NittyGritty.Services.Core;
 
 namespace NittyGritty.Services
 {

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using NittyGritty.Services.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 

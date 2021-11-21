@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using NittyGritty.Platform.Theme;
 
-namespace NittyGritty.Services
+namespace NittyGritty.Services.Core
 {
     public interface IThemeService
     {
