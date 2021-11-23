@@ -19,5 +19,9 @@ namespace NittyGritty.Services.Core
         void NavigateTo(string key);
 
         void NavigateTo(string key, object parameter);
+
+        void ClearBackStack();
+
+        void ClearForwardStack();
     }
 }
