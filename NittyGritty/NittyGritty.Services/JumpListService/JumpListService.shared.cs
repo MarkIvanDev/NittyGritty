@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using NittyGritty.Platform.JumpList;
+using NittyGritty.Services.Core;
 
 namespace NittyGritty.Services
 {

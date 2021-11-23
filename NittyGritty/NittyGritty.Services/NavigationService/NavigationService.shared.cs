@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Text;
+using NittyGritty.Services.Core;
 
 namespace NittyGritty.Services
 {
@@ -36,6 +37,16 @@ namespace NittyGritty.Services
         public void NavigateTo(string key, object parameter)
         {
             PlatformNavigateTo(key, parameter);
+        }
+
+        public void ClearBackStack()
+        {
+            PlatformClearBackStack();
+        }
+
+        public void ClearForwardStack()
+        {
+            PlatformClearForwardStack();
         }
 
         #region INPC

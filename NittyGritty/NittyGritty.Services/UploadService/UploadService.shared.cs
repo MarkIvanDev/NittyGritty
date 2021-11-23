@@ -4,6 +4,7 @@ using System.Text;
 using System.Threading.Tasks;
 using NittyGritty.Platform.Storage;
 using NittyGritty.Platform.Upload;
+using NittyGritty.Services.Core;
 
 namespace NittyGritty.Services
 {

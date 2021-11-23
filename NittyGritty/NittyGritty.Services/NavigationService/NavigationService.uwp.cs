@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using NittyGritty.Services.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
@@ -141,6 +142,16 @@ namespace NittyGritty.Services
 
                 Context.Navigate(_viewsByKey[key], parameter);
             }
+        }
+
+        void PlatformClearBackStack()
+        {
+            Context.BackStack.Clear();
+        }
+
+        void PlatformClearForwardStack()
+        {
+            Context.ForwardStack.Clear();
         }
     }
 }

@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using NittyGritty.Platform.Download;
 using NittyGritty.Platform.Storage;
+using NittyGritty.Services.Core;
 
 namespace NittyGritty.Services
 {
