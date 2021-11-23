@@ -50,11 +50,11 @@ namespace NittyGritty.Uno
         {
             await Initialization(args);
 
-            var rootFrame = Window.Current.Content as Frame;
+            var rootFrame = Windows.UI.Xaml.Window.Current.Content as Frame;
             if (rootFrame is null)
             {
                 rootFrame = new Frame();
-                Window.Current.Content = rootFrame;
+                Windows.UI.Xaml.Window.Current.Content = rootFrame;
             }
 
             if (rootFrame.Content is null)
@@ -79,7 +79,7 @@ namespace NittyGritty.Uno
                     break;
             }
 
-            Window.Current.Activate();
+            Windows.UI.Xaml.Window.Current.Activate();
 
             await Startup(args);
         }
