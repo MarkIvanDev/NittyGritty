@@ -60,11 +60,11 @@ namespace NittyGritty.UI.Converters
             }
         }
 
+        public object When { get; set; }
+
         public object Value { get; set; }
 
         public object Otherwise { get; set; }
-
-        public object When { get; set; }
 
         public object OtherwiseValueBack { get; set; }
     }
