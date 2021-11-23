@@ -143,5 +143,15 @@ namespace NittyGritty.Services
                 Context.Navigate(_viewsByKey[key], parameter);
             }
         }
+
+        void PlatformClearBackStack()
+        {
+            Context.BackStack.Clear();
+        }
+
+        void PlatformClearForwardStack()
+        {
+            Context.ForwardStack.Clear();
+        }
     }
 }

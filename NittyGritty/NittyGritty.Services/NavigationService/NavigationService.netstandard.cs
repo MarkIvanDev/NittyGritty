@@ -23,5 +23,11 @@ namespace NittyGritty.Services
 
         void PlatformNavigateTo(string key, object parameter)
             => throw new NotImplementedException();
+
+        void PlatformClearBackStack()
+            => throw new NotImplementedException();
+
+        void PlatformClearForwardStack()
+            => throw new NotImplementedException();
     }
 }

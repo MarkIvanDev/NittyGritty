@@ -39,6 +39,16 @@ namespace NittyGritty.Services
             PlatformNavigateTo(key, parameter);
         }
 
+        public void ClearBackStack()
+        {
+            PlatformClearBackStack();
+        }
+
+        public void ClearForwardStack()
+        {
+            PlatformClearForwardStack();
+        }
+
         #region INPC
 
         public event PropertyChangedEventHandler PropertyChanged;
