@@ -12,7 +12,7 @@ using Windows.UI.Xaml;
 namespace NittyGritty.Uno.Converters
 {
     [ContentProperty(Name = nameof(Bindings))]
-    public abstract class AsyncMultiConverter<T> : DependencyObject
+    public abstract partial class AsyncMultiConverter : DependencyObject
     {
         public AsyncMultiConverter()
         {
@@ -27,11 +27,11 @@ namespace NittyGritty.Uno.Converters
 
         // Using a DependencyProperty as the backing store for Bindings.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty BindingsProperty =
-            DependencyProperty.Register("Bindings", typeof(ObservableCollection<Binding>), typeof(AsyncMultiConverter<T>), new PropertyMetadata(null, OnBindingsChanged));
+            DependencyProperty.Register("Bindings", typeof(ObservableCollection<Binding>), typeof(AsyncMultiConverter), new PropertyMetadata(null, OnBindingsChanged));
 
         private static void OnBindingsChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (d is AsyncMultiConverter<T> converter)
+            if (d is AsyncMultiConverter converter)
             {
                 if (e.OldValue is ObservableCollection<Binding> oldValue)
                 {
@@ -83,16 +83,16 @@ namespace NittyGritty.Uno.Converters
             }
         }
 
-        public T Output
+        public object Output
         {
-            get { return (T)GetValue(OutputProperty); }
+            get { return (object)GetValue(OutputProperty); }
             set { SetValue(OutputProperty, value); }
         }
 
         // Using a DependencyProperty as the backing store for Output.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty OutputProperty =
-            DependencyProperty.Register("Output", typeof(T), typeof(AsyncMultiConverter<T>), new PropertyMetadata(default(T)));
+            DependencyProperty.Register("Output", typeof(object), typeof(AsyncMultiConverter), new PropertyMetadata(default(object)));
 
-        public abstract Task<T> Convert();
+        public abstract Task<object> Convert();
     }
 }

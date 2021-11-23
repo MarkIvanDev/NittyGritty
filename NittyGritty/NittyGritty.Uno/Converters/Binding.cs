@@ -7,7 +7,7 @@ using Windows.UI.Xaml;
 
 namespace NittyGritty.Uno.Converters
 {
-    public class Binding : DependencyObject
+    public partial class Binding : DependencyObject
     {
         public object Value
         {

@@ -12,7 +12,7 @@ using Windows.UI.Xaml.Markup;
 namespace NittyGritty.Uno.Converters
 {
     [ContentProperty(Name = nameof(Bindings))]
-    public abstract class MultiConverter<T> : DependencyObject
+    public abstract partial class MultiConverter : DependencyObject
     {
         public MultiConverter()
         {
@@ -28,11 +28,11 @@ namespace NittyGritty.Uno.Converters
 
         // Using a DependencyProperty as the backing store for Bindings.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty BindingsProperty =
-            DependencyProperty.Register("Bindings", typeof(ObservableCollection<Binding>), typeof(MultiConverter<T>), new PropertyMetadata(null, OnBindingsChanged));
+            DependencyProperty.Register("Bindings", typeof(ObservableCollection<Binding>), typeof(MultiConverter), new PropertyMetadata(null, OnBindingsChanged));
 
         private static void OnBindingsChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (d is MultiConverter<T> converter)
+            if (d is MultiConverter converter)
             {
                 if (e.OldValue is ObservableCollection<Binding> oldValue)
                 {
@@ -84,17 +84,17 @@ namespace NittyGritty.Uno.Converters
             Output = Convert();
         }
 
-        public T Output
+        public object Output
         {
-            get { return (T)GetValue(OutputProperty); }
+            get { return (object)GetValue(OutputProperty); }
             protected set { SetValue(OutputProperty, value); }
         }
 
         // Using a DependencyProperty as the backing store for Output.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty OutputProperty =
-            DependencyProperty.Register("Output", typeof(T), typeof(MultiConverter<T>), new PropertyMetadata(default(T)));
+            DependencyProperty.Register("Output", typeof(object), typeof(MultiConverter), new PropertyMetadata(default(object)));
 
 
-        public abstract T Convert();
+        public abstract object Convert();
     }
 }

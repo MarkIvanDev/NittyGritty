@@ -10,22 +10,22 @@ using Windows.UI.Xaml;
 namespace NittyGritty.Uno.Converters
 {
     [ContentProperty(Name = nameof(Dictionary))]
-    public class KeyValueConverter<T> : DependencyObject, IValueConverter
+    public partial class KeyValueConverter : DependencyObject, IValueConverter
     {
         public KeyValueConverter()
         {
-            Dictionary = new Dictionary<string, T>();
+            Dictionary = new Dictionary<string, object>();
         }
 
-        public IDictionary<string, T> Dictionary
+        public IDictionary<string, object> Dictionary
         {
-            get { return (IDictionary<string, T>)GetValue(DictionaryProperty); }
+            get { return (IDictionary<string, object>)GetValue(DictionaryProperty); }
             set { SetValue(DictionaryProperty, value); }
         }
 
         // Using a DependencyProperty as the backing store for Dictionary.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty DictionaryProperty =
-            DependencyProperty.Register("Dictionary", typeof(IDictionary<string, T>), typeof(KeyValueConverter<T>), new PropertyMetadata(null));
+            DependencyProperty.Register("Dictionary", typeof(IDictionary<string, object>), typeof(KeyValueConverter), new PropertyMetadata(null));
 
 
 

@@ -7,7 +7,7 @@ using Windows.UI.Xaml;
 
 namespace NittyGritty.Uno.Converters
 {
-    public class StringInterpolationConverter : MultiConverter<string>
+    public class StringInterpolationConverter : MultiConverter
     {
         public string Format
         {
@@ -19,7 +19,7 @@ namespace NittyGritty.Uno.Converters
         public static readonly DependencyProperty FormatProperty =
             DependencyProperty.Register("Format", typeof(string), typeof(StringInterpolationConverter), new PropertyMetadata(null));
 
-        public override string Convert()
+        public override object Convert()
         {
             return string.Format(Format, Bindings.Select(b => b.Value).ToArray());
         }
