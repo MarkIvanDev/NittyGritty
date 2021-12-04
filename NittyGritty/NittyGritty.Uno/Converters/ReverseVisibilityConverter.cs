@@ -17,7 +17,7 @@ namespace NittyGritty.Uno.Converters
                 return visibility == Visibility.Visible ?
                     Visibility.Collapsed : Visibility.Visible;
             }
-            return DependencyProperty.UnsetValue;
+            return Visibility.Collapsed;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)
@@ -27,7 +27,7 @@ namespace NittyGritty.Uno.Converters
                 return visibility == Visibility.Visible ?
                     Visibility.Collapsed : Visibility.Visible;
             }
-            return DependencyProperty.UnsetValue;
+            return Visibility.Collapsed;
         }
     }
 }

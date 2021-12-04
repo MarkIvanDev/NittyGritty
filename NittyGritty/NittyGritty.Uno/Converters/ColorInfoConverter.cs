@@ -18,7 +18,7 @@ namespace NittyGritty.Uno.Converters
             {
                 return Color.FromArgb(colorInfo.A, colorInfo.R, colorInfo.G, colorInfo.B);
             }
-            return DependencyProperty.UnsetValue;
+            return null;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)

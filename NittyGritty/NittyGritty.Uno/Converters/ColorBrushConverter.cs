@@ -18,7 +18,7 @@ namespace NittyGritty.Uno.Converters
             {
                 return new SolidColorBrush(color);
             }
-            return DependencyProperty.UnsetValue;
+            return null;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)
