@@ -16,11 +16,7 @@ namespace NittyGritty.Uno.Converters
 
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            if (bool.TryParse(value?.ToString(), out var result))
-            {
-                return result ? TrueValue : FalseValue;
-            }
-            return DependencyProperty.UnsetValue;
+            return bool.TryParse(value?.ToString(), out var result) && result ? TrueValue : FalseValue;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)
