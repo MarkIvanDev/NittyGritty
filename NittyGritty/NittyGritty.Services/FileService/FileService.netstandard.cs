@@ -33,27 +33,27 @@ namespace NittyGritty.Services
             throw new NotImplementedException();
         }
 
-        Task<IFile> PlatformCreateFile(IFolder destination, string name, CreationCollisionOption option)
+        Task<IFile> PlatformCreateFile(IFolder destination, string name, CreationOption option)
         {
             throw new NotImplementedException();
         }
 
-        Task<IFolder> PlatformCreateFolder(IFolder destination, string name, CreationCollisionOption option)
+        Task<IFolder> PlatformCreateFolder(IFolder destination, string name, CreationOption option)
         {
             throw new NotImplementedException();
         }
 
-        Task<IFile> PlatformCopy(IFile file, IFolder destination, string newName, NameCollisionOption option)
+        Task<IFile> PlatformCopy(IFile file, IFolder destination, string newName, RenameOption option)
         {
             throw new NotImplementedException();
         }
 
-        Task PlatformMove(IFile file, IFolder destination, string newName, NameCollisionOption option)
+        Task PlatformMove(IFile file, IFolder destination, string newName, RenameOption option)
         {
             throw new NotImplementedException();
         }
 
-        Task PlatformRename(IStorageItem item, string newName, NameCollisionOption option)
+        Task PlatformRename(IStorageItem item, string newName, RenameOption option)
         {
             throw new NotImplementedException();
         }

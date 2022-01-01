@@ -4,12 +4,13 @@ using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
+using System.Threading.Tasks;
 using NittyGritty.Services.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 
-namespace NittyGritty.Uno.Services
+namespace NittyGritty.Uwp.Services
 {
     public class NavigationService : ConfigurableService<Type>, INavigationService, INavigationContext<Frame>, INotifyPropertyChanged
     {
@@ -88,16 +89,18 @@ namespace NittyGritty.Uno.Services
         public void ClearBackStack()
         {
             Context.BackStack.Clear();
+            RaisePropertyChanged(nameof(CanGoBack));
         }
 
         public void ClearForwardStack()
         {
             Context.ForwardStack.Clear();
+            RaisePropertyChanged(nameof(CanGoForward));
         }
 
         #endregion
 
-        #region INPC
+        #region INotifyPropertyChanged
 
         public event PropertyChangedEventHandler PropertyChanged;
 

@@ -18,15 +18,15 @@ namespace NittyGritty.Services.Core
 
         Task<IFolder> GetFolderFromPath(string path);
 
-        Task<IFile> CreateFile(IFolder destination, string name, CreationCollisionOption option);
+        Task<IFile> CreateFile(IFolder destination, string name, CreationOption option);
 
-        Task<IFolder> CreateFolder(IFolder destination, string name, CreationCollisionOption option);
+        Task<IFolder> CreateFolder(IFolder destination, string name, CreationOption option);
 
-        Task<IFile> Copy(IFile file, IFolder destination, string newName, NameCollisionOption option);
+        Task<IFile> Copy(IFile file, IFolder destination, string newName, RenameOption option);
 
-        Task Move(IFile file, IFolder destination, string newName, NameCollisionOption option);
+        Task Move(IFile file, IFolder destination, string newName, RenameOption option);
 
-        Task Rename(IStorageItem item, string newName, NameCollisionOption option);
+        Task Rename(IStorageItem item, string newName, RenameOption option);
 
         Task Delete(IStorageItem item, bool deletePermanently);
     }

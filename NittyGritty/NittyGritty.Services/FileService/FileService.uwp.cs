@@ -6,8 +6,8 @@ using NittyGritty.Platform.Storage;
 using Windows.Storage;
 using Windows.System;
 using NGIStorageItem = NittyGritty.Platform.Storage.IStorageItem;
-using NGNameCollisionOption = NittyGritty.Platform.Storage.NameCollisionOption;
-using NGCreationCollisionOption = NittyGritty.Platform.Storage.CreationCollisionOption;
+using NGNameCollisionOption = NittyGritty.Platform.Storage.RenameOption;
+using NGCreationCollisionOption = NittyGritty.Platform.Storage.CreationOption;
 
 namespace NittyGritty.Services
 {

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace NittyGritty.Platform.Storage
 {
-    public enum NameCollisionOption
+    public enum RenameOption
     {
         GenerateUniqueName = 0,
         ReplaceExisting = 1,

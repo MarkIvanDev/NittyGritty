@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Text;
 using System.Threading.Tasks;
 using NittyGritty.Platform.Launcher;
@@ -26,12 +25,12 @@ namespace NittyGritty.Services.Core
 
         Task<bool> QueryAppUriSupport(Uri uri);
 
-        Task<ReadOnlyCollection<IAppInfo>> FindFileHandlers(string extension);
+        Task<IList<IAppInfo>> FindFileHandlers(string extension);
 
-        Task<ReadOnlyCollection<IAppInfo>> FindUriSchemeHandlers(string scheme);
+        Task<IList<IAppInfo>> FindUriSchemeHandlers(string scheme);
 
-        Task<ReadOnlyCollection<IAppInfo>> FindUriSchemeHandlers(string scheme, LaunchType launchType);
+        Task<IList<IAppInfo>> FindUriSchemeHandlers(string scheme, LaunchType launchType);
 
-        Task<ReadOnlyCollection<IAppInfo>> FindAppUriHandlers(Uri uri);
+        Task<IList<IAppInfo>> FindAppUriHandlers(Uri uri);
     }
 }

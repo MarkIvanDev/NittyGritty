@@ -7,8 +7,6 @@ namespace NittyGritty.Services.Core
 {
     public interface IStoreService
     {
-        string AppId { get; }
-
         Task RequestRating();
 
         Task<bool> CheckForUpdates();
