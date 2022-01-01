@@ -8,7 +8,7 @@ using Windows.ApplicationModel.Background;
 using NittyGritty.Extensions;
 using NittyGritty.Uwp.Activation.Operations;
 
-namespace NittyGritty.Uwp.Services
+namespace NittyGritty.Uwp.Activation.Services
 {
     public class BackgroundTaskService
     {

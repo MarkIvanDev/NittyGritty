@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Windows.UI.Xaml.Controls;
 
-namespace NittyGritty.Uwp
+namespace NittyGritty.Uwp.Activation.Operations.Configurations
 {
     public class SingleViewConfiguration<T>
     {

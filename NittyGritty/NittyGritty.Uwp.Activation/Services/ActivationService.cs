@@ -11,7 +11,7 @@ using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
-namespace NittyGritty.Uwp.Services
+namespace NittyGritty.Uwp.Activation.Services
 {
     public class ActivationService
     {
