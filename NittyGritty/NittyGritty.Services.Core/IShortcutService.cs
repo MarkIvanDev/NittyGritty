@@ -16,7 +16,7 @@ namespace NittyGritty.Services.Core
 
         bool Exists(string shortcutId);
 
-        Task<IReadOnlyList<ShortcutItem>> GetShortcuts();
+        Task<IList<ShortcutItem>> GetShortcuts();
 
     }
 }

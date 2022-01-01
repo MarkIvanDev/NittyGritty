@@ -8,8 +8,12 @@ namespace NittyGritty.Services.Core
 {
     public interface IPickerService
     {
-        Task<IFile> Open(IList<string> fileTypes);
+        Task<IFile> OpenFile(IList<string> fileTypes);
 
-        Task<IFile> Save(IDictionary<string, IList<string>> fileTypes);
+        Task<IList<IFile>> OpenFiles(IList<string> fileTypes);
+
+        Task<IFile> SaveFile(IDictionary<string, IList<string>> fileTypes);
+
+        Task<IFolder> OpenFolder();
     }
 }

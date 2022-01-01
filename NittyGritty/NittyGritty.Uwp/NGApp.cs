@@ -9,7 +9,7 @@ using Windows.Graphics.Printing.Workflow;
 
 namespace NittyGritty.Uwp
 {
-    public abstract class NGApp : Application, INGApp
+    public abstract class NGApp : Application
     {
         public NGApp()
         {

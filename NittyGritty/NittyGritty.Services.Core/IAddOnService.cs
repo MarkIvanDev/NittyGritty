@@ -21,29 +21,25 @@ namespace NittyGritty.Services.Core
 
         // Durable
         Task<DurableAddOn> GetDurableAddOn(string key);
-        Task<ReadOnlyCollection<DurableAddOn>> GetDurableAddOns(params string[] keys);
-        Task<bool> IsDurableActive(string key);
-        Task<bool> IsDurableActive(DurableAddOn addOn);
-        Task<bool> IsAnyDurableActive(IEnumerable<string> keys);
-        Task<bool> IsAnyDurableActive(IEnumerable<DurableAddOn> addOns);
+        Task<IList<DurableAddOn>> GetDurableAddOns();
+        Task<IList<DurableAddOn>> GetDurableAddOns(IEnumerable<string> keys);
 
         // Consumable
         Task<ConsumableAddOn> GetConsumableAddOn(string key);
-        Task<ReadOnlyCollection<ConsumableAddOn>> GetConsumableAddOns(params string[] keys);
+        Task<IList<ConsumableAddOn>> GetConsumableAddOns();
+        Task<IList<ConsumableAddOn>> GetConsumableAddOns(IEnumerable<string> keys);
         Task UpdateConsumableBalance(string key, uint quantity, string trackingId);
 
         // UnmanagedConsumable
         Task<UnmanagedConsumableAddOn> GetUnmanagedConsumableAddOn(string key);
-        Task<ReadOnlyCollection<UnmanagedConsumableAddOn>> GetUnmanagedConsumableAddOns(params string[] keys);
+        Task<IList<UnmanagedConsumableAddOn>> GetUnmanagedConsumableAddOns();
+        Task<IList<UnmanagedConsumableAddOn>> GetUnmanagedConsumableAddOns(IEnumerable<string> keys);
         Task ReportUnmanagedConsumableFulfillment(string key, string trackingId);
 
         // Subscription
         Task<SubscriptionAddOn> GetSubscriptionAddOn(string key);
-        Task<ReadOnlyCollection<SubscriptionAddOn>> GetSubscriptionAddOns(params string[] keys);
-        Task<bool> IsSubscriptionActive(string key);
-        Task<bool> IsSubscriptionActive(SubscriptionAddOn addOn);
-        Task<bool> IsAnySubscriptionActive(IEnumerable<string> keys);
-        Task<bool> IsAnySubscriptionActive(IEnumerable<SubscriptionAddOn> addOns);
+        Task<IList<SubscriptionAddOn>> GetSubscriptionAddOns();
+        Task<IList<SubscriptionAddOn>> GetSubscriptionAddOns(IEnumerable<string> keys);
 
         // Helpers
         Task<bool> AccessFeature(string key, Func<bool, Task> feature, bool conditionWhenFree);

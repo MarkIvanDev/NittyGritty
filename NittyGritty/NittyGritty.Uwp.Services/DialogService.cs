@@ -8,12 +8,12 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
 
-namespace NittyGritty.Uno.Services
+namespace NittyGritty.Uwp.Services
 {
     public class DialogService : ConfigurableService<Type>, IDialogService
     {
-        
-        public void HideAll()
+
+        public  void HideAll()
         {
             var popups = VisualTreeHelper.GetOpenPopups(Window.Current);
             foreach (var popup in popups)
@@ -29,6 +29,7 @@ namespace NittyGritty.Uno.Services
             }
         }
 
+
         public async Task<bool> Show(string key)
         {
             return await Show<object>(key, null, null);
@@ -37,28 +38,6 @@ namespace NittyGritty.Uno.Services
         public async Task<bool> Show<T>(string key, T parameter)
         {
             return await Show(key, parameter, null);
-        }
-
-        public async Task<bool> Show<T>(string key, T parameter, Func<T, Task> onOpened)
-        {
-            var instance = Activator.CreateInstance(GetValue(key));
-            if (instance is ContentDialog dialog)
-            {
-                if (onOpened != null)
-                {
-                    dialog.Opened += async (sender, e) =>
-                    {
-                        await onOpened.Invoke(parameter);
-                    };
-                }
-                dialog.DataContext = parameter;
-                var result = await dialog.ShowAsync();
-                if (result == ContentDialogResult.Primary)
-                {
-                    return true;
-                }
-            }
-            return false;
         }
 
         public async Task ShowMessage(string message, string title)
@@ -82,6 +61,28 @@ namespace NittyGritty.Uno.Services
 
             var result = await dialog.ShowAsync();
             return result == ContentDialogResult.Primary;
+        }
+
+        public async Task<bool> Show<T>(string key, T parameter, Func<T, Task> onOpened)
+        {
+            var instance = Activator.CreateInstance(GetValue(key));
+            if (instance is ContentDialog dialog)
+            {
+                if (onOpened != null)
+                {
+                    dialog.Opened += async (sender, e) =>
+                    {
+                        await onOpened.Invoke(parameter);
+                    };
+                }
+                dialog.DataContext = parameter;
+                var result = await dialog.ShowAsync();
+                if (result == ContentDialogResult.Primary)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         private ContentDialog CreateDialog(
