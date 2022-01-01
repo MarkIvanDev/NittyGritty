@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using NittyGritty.Platform.Payloads;
-using NittyGritty.Uwp.Activation.Operations.Jobs;
+using NittyGritty.Uwp.Activation.Operations.Configurations;
 using Windows.ApplicationModel.Activation;
 using Windows.Storage;
 using Windows.UI.Xaml.Controls;

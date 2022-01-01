@@ -3,7 +3,7 @@ using System.IO;
 using System.Text;
 using NittyGritty.Platform.Payloads;
 
-namespace NittyGritty.Uwp.Activation.Operations.Jobs
+namespace NittyGritty.Uwp.Activation.Operations.Configurations
 {
     public class FileConfiguration
     {

@@ -2,6 +2,7 @@
 using System.Text;
 using System.Threading.Tasks;
 using NittyGritty.Platform.Payloads;
+using NittyGritty.Uwp.Activation.Operations.Configurations;
 using Windows.ApplicationModel.Activation;
 using Windows.ApplicationModel.Core;
 using Windows.UI.ViewManagement;

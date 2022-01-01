@@ -31,6 +31,7 @@
   <ItemGroup>
     <ProjectReference Include="..\NittyGritty\NittyGritty.csproj" />
 	<ProjectReference Include="..\NittyGritty.Platform\NittyGritty.Platform.csproj" />
+	<ProjectReference Include="..\NittyGritty.Uwp.Services\NittyGritty.Uwp.Services.csproj" />
   </ItemGroup>
 
 </Project>

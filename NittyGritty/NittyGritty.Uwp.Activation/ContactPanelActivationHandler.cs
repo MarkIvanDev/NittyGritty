@@ -1,6 +1,4 @@
-﻿using NittyGritty.Models;
-using NittyGritty.Services;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,6 +10,8 @@ using Windows.UI;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using NittyGritty.Models;
+using NittyGritty.Uwp.Services;
 
 namespace NittyGritty.Uwp.Activation
 {
