@@ -25,15 +25,6 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
 
-  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-    <DebugType>full</DebugType>
-    <DebugSymbols>true</DebugSymbols>
-  </PropertyGroup>
-
-  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
-    <DebugType>pdbonly</DebugType>
-  </PropertyGroup>
-
   <PropertyGroup Condition=" $(TargetFramework.StartsWith('uap10.0')) ">
 	<TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
 	<TargetPlatformVersion>10.0.19041.0</TargetPlatformVersion>

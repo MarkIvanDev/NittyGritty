@@ -14,11 +14,11 @@
 
   <PropertyGroup>
     <PackageId>NittyGritty.Uwp</PackageId>
-    <PackageVersion>1.9.7</PackageVersion>
+    <PackageVersion>2.0.0</PackageVersion>
     <Title>NittyGritty.Uwp</Title>
     <Authors>markivan.basto</Authors>
     <Description>Boilerplate code that can speed up your development</Description>
-    <Copyright>(c) 2021 Mark Ivan Basto</Copyright>
+    <Copyright>(c) 2022 Mark Ivan Basto</Copyright>
     <PackageProjectUrl>https://github.com/MarkIvanDev/NittyGritty</PackageProjectUrl>
     <RepositoryUrl>https://github.com/MarkIvanDev/NittyGritty.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
@@ -28,21 +28,7 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
 
-  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-    <DebugType>full</DebugType>
-    <DebugSymbols>true</DebugSymbols>
-  </PropertyGroup>
-  
-  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
-    <DebugType>pdbonly</DebugType>
-  </PropertyGroup>
-
-  <PropertyGroup Condition=" $(TargetFramework.StartsWith('uap10.0')) ">
-    <DefineConstants>$(DefineConstants);UWP</DefineConstants>
-  </PropertyGroup>
-
   <ItemGroup>
-    <ProjectReference Include="..\NittyGritty.Services\NittyGritty.Services.csproj" />
     <ProjectReference Include="..\NittyGritty\NittyGritty.csproj" />
     <ProjectReference Include="..\NittyGritty.Platform\NittyGritty.Platform.csproj" />
   </ItemGroup>

@@ -11,7 +11,7 @@
 
   <PropertyGroup>
     <PackageId>NittyGritty.Services</PackageId>
-    <PackageVersion>1.9.7</PackageVersion>
+    <PackageVersion>2.0.0-prerelease.11232021</PackageVersion>
     <Title>NittyGritty.Services</Title>
     <Authors>markivan.basto</Authors>
     <Description>Boilerplate code that can speed up your development</Description>
@@ -25,15 +25,6 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
 
-  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-    <DebugType>full</DebugType>
-    <DebugSymbols>true</DebugSymbols>
-  </PropertyGroup>
-
-  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
-    <DebugType>pdbonly</DebugType>
-  </PropertyGroup>
-  
   <PropertyGroup Condition=" $(TargetFramework.StartsWith('netstandard')) ">
     <DefineConstants>$(DefineConstants);NETSTANDARD</DefineConstants>
   </PropertyGroup>
@@ -62,6 +53,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\NittyGritty.Platform\NittyGritty.Platform.csproj" />
+    <ProjectReference Include="..\NittyGritty.Services.Core\NittyGritty.Services.Core.csproj" />
   </ItemGroup>
 
 </Project>

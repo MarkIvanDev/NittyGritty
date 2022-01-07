@@ -1,0 +1,37 @@
+﻿<Project Sdk="MSBuild.Sdk.Extras/3.0.23">
+
+  <PropertyGroup>
+    <TargetFramework>uap10.0.17763</TargetFramework>
+	<DefaultLanguage>en-US</DefaultLanguage>
+	<AssemblyName>NittyGritty.Uwp.Activation</AssemblyName>
+	<RootNamespace>NittyGritty.Uwp.Activation</RootNamespace>
+	<Owners>markivan.basto</Owners>
+	<LangVersion>7.3</LangVersion>
+	<TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
+	<TargetPlatformVersion>10.0.19041.0</TargetPlatformVersion>
+	<TargetPlatformMinVersion>10.0.17763.0</TargetPlatformMinVersion>
+  </PropertyGroup>
+	
+  <PropertyGroup>
+    <PackageId>NittyGritty.Uwp.Activation</PackageId>
+    <PackageVersion>2.0.0</PackageVersion>
+    <Title>NittyGritty.Uwp.Activation</Title>
+    <Authors>markivan.basto</Authors>
+    <Description>Boilerplate code that can speed up your development</Description>
+    <Copyright>(c) 2022 Mark Ivan Basto</Copyright>
+    <PackageProjectUrl>https://github.com/MarkIvanDev/NittyGritty</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/MarkIvanDev/NittyGritty.git</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageTags>c# uwp activation nittygritty markivan</PackageTags>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\NittyGritty\NittyGritty.csproj" />
+	<ProjectReference Include="..\NittyGritty.Platform\NittyGritty.Platform.csproj" />
+	<ProjectReference Include="..\NittyGritty.Uwp.Services\NittyGritty.Uwp.Services.csproj" />
+  </ItemGroup>
+
+</Project>
