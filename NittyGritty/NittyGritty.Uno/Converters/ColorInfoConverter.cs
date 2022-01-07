@@ -25,7 +25,7 @@ namespace NittyGritty.Uno.Converters
         {
             if (value is Color color)
             {
-                return new ColorInfo((byte)color.A, (byte)color.R, (byte)color.G, (byte)color.B);
+                return new ColorInfo(color.A, color.R, color.G, color.B);
             }
             return null;
         }
