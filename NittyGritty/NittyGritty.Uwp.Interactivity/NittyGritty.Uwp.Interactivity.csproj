@@ -3,8 +3,8 @@
   <PropertyGroup>
     <TargetFramework>uap10.0.17763</TargetFramework>
     <DefaultLanguage>en-US</DefaultLanguage>
-    <AssemblyName>NittyGritty.Uwp</AssemblyName>
-    <RootNamespace>NittyGritty.Uwp</RootNamespace>
+    <AssemblyName>NittyGritty.Uwp.Interactivity</AssemblyName>
+    <RootNamespace>NittyGritty.Uwp.Interactivity</RootNamespace>
     <Owners>markivan.basto</Owners>
     <LangVersion>7.3</LangVersion>
 	<TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
@@ -13,9 +13,9 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <PackageId>NittyGritty.Uwp</PackageId>
+    <PackageId>NittyGritty.Uwp.Interactivity</PackageId>
     <PackageVersion>1.9.7</PackageVersion>
-    <Title>NittyGritty.Uwp</Title>
+    <Title>NittyGritty.Uwp.Interactivity</Title>
     <Authors>markivan.basto</Authors>
     <Description>Boilerplate code that can speed up your development</Description>
     <Copyright>(c) 2021 Mark Ivan Basto</Copyright>
@@ -24,13 +24,13 @@
     <RepositoryType>git</RepositoryType>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageTags>c# mvvm helpers extensions utilities view viewmodel model collections data nittygritty markivan</PackageTags>
+    <PackageTags>c# uwp interactivity behaviors actions nittygritty markivan</PackageTags>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\NittyGritty\NittyGritty.csproj" />
-    <ProjectReference Include="..\NittyGritty.Platform\NittyGritty.Platform.csproj" />
+    <ProjectReference Include="..\NittyGritty.Uwp\NittyGritty.Uwp.csproj" />
+	<PackageReference Include="Microsoft.Xaml.Behaviors.Uwp.Managed" Version="2.0.1" />
   </ItemGroup>
 
 </Project>
