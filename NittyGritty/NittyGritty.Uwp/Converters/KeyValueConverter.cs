@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Markup;
-using Windows.UI.Xaml;
 
-namespace NittyGritty.Uno.Converters
+namespace NittyGritty.Uwp.Converters
 {
     [ContentProperty(Name = nameof(Dictionary))]
     public abstract class KeyValueConverter<T> : IValueConverter
@@ -25,7 +25,7 @@ namespace NittyGritty.Uno.Converters
         public object Convert(object value, Type targetType, object parameter, string language)
         {
             return Dictionary.TryGetValue(value?.ToString(), out var result) ?
-                result : default;
+                result : Default;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)
