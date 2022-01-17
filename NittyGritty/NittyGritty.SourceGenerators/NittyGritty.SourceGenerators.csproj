@@ -4,7 +4,7 @@
     <TargetFramework>netstandard2.0</TargetFramework>
 	  <LangVersion>9.0</LangVersion>
     <Owners>markivan.basto</Owners>
-    <AssemblyVersion>1.0.0</AssemblyVersion>
+    <AssemblyVersion>1.0.1</AssemblyVersion>
   </PropertyGroup>
 	
   <PropertyGroup>
@@ -20,6 +20,7 @@
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageTags>c# mvvm helpers source generators nittygritty markivan</PackageTags>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
 	
@@ -32,6 +33,7 @@
   <ItemGroup>
     <None Include="$(OutputPath)\$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
     <None Include="NittyGritty.SourceGenerators.props" Pack="true" PackagePath="build" Visible="false" />
+    <None Include="README.md" Pack="true" PackagePath="\"/>
   </ItemGroup>
 
 </Project>
