@@ -1,0 +1,37 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+	  <LangVersion>9.0</LangVersion>
+    <Owners>markivan.basto</Owners>
+    <AssemblyVersion>1.0.0</AssemblyVersion>
+  </PropertyGroup>
+	
+  <PropertyGroup>
+    <PackageId>NittyGritty.SourceGenerators</PackageId>
+    <PackageVersion>$(AssemblyVersion)</PackageVersion>
+    <Title>NittyGritty.SourceGenerators</Title>
+    <Authors>markivan.basto</Authors>
+    <Description>Source Generators to simplify development when using NittyGritty</Description>
+    <Copyright>(c) 2022 Mark Ivan Basto</Copyright>
+    <PackageProjectUrl>https://github.com/MarkIvanDev/NittyGritty</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/MarkIvanDev/NittyGritty.git</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageTags>c# mvvm helpers source generators nittygritty markivan</PackageTags>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+  </PropertyGroup>
+	
+  <ItemGroup>
+    <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="3.3.3" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.0.1" PrivateAssets="all" />
+	  <PackageReference Include="NittyGritty" Version="2.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="$(OutputPath)\$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
+    <None Include="NittyGritty.SourceGenerators.props" Pack="true" PackagePath="build" Visible="false" />
+  </ItemGroup>
+
+</Project>
