@@ -1,8 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
-<Project>
-  <ItemGroup>
-    <CompilerVisibleProperty Include="NG_DevelopmentMode" />
-    <CompilerVisibleProperty Include="NG_ViewModelKeysNamespace" />
-    <CompilerVisibleProperty Include="NG_DialogKeysNamespace" />
-  </ItemGroup>
-</Project>
