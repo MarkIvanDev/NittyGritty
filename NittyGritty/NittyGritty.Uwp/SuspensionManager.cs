@@ -123,12 +123,27 @@ namespace NittyGritty.Uwp
             }
         }
 
-        private static DependencyProperty FrameSessionStateKeyProperty =
-            DependencyProperty.RegisterAttached("_FrameSessionStateKey", typeof(string), typeof(SuspensionManager), null);
-        private static DependencyProperty FrameSessionBaseKeyProperty =
-            DependencyProperty.RegisterAttached("_FrameSessionBaseKeyParams", typeof(string), typeof(SuspensionManager), null);
-        private static DependencyProperty FrameSessionStateProperty =
-            DependencyProperty.RegisterAttached("_FrameSessionState", typeof(Dictionary<string, object>), typeof(SuspensionManager), null);
+        private static readonly DependencyProperty FrameSessionStateKeyProperty =
+            DependencyProperty.RegisterAttached("FrameSessionStateKey", typeof(string), typeof(SuspensionManager), null);
+        
+        public static void SetFrameSessionStateKey(Frame frame, string value)
+        {
+            frame.SetValue(FrameSessionStateKeyProperty, value);
+        }
+        
+        public static string GetFrameSessionStateKey(Frame frame)
+        {
+            return (string)frame.GetValue(FrameSessionStateKeyProperty);
+        }
+
+        private static readonly DependencyProperty FrameSessionBaseKeyProperty =
+            DependencyProperty.RegisterAttached("FrameSessionBaseKey", typeof(string), typeof(SuspensionManager), null);
+
+
+        private static readonly DependencyProperty FrameSessionStateProperty =
+            DependencyProperty.RegisterAttached("FrameSessionState", typeof(Dictionary<string, object>), typeof(SuspensionManager), null);
+
+
         private static List<WeakReference<Frame>> _registeredFrames = new List<WeakReference<Frame>>();
 
         /// <summary>
@@ -205,6 +220,7 @@ namespace NittyGritty.Uwp
         /// <see cref="SessionState"/>.</returns>
         public static Dictionary<string, object> SessionStateForFrame(Frame frame)
         {
+            if (frame is null) return null;
             var frameState = (Dictionary<string, object>)frame.GetValue(FrameSessionStateProperty);
 
             if (frameState == null)
