@@ -115,7 +115,7 @@ namespace NittyGritty.Uwp
             var frameState = SuspensionManager.SessionStateForFrame(this.Frame);
             var pageState = new Dictionary<string, object>();
             this.SaveState?.Invoke(this, new SaveStateEventArgs(pageState));
-            frameState[_pageKey] = pageState;
+            if (frameState != null) frameState[_pageKey] = pageState;
 
             currentView.BackRequested -= SystemNavigationManager_BackRequested;
         }
