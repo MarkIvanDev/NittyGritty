@@ -20,25 +20,10 @@ namespace NittyGritty.Uno
         }
 
         private string _pageKey;
-        private SystemNavigationManager currentView;
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-
-            currentView = SystemNavigationManager.GetForCurrentView();
-            currentView.BackRequested += OnBackRequested;
-
-#if WINDOWS_UWP || __WASM__
-            // Toggle the visibility of back button based on if the frame can navigate back.
-            // Setting it to visible has the follow effect on the platform:
-            // - uwp: add a `<-` back button on the title bar
-            // - wasm: add a dummy entry in the browser back stack
-            currentView.AppViewBackButtonVisibility = Frame.CanGoBack
-                ? AppViewBackButtonVisibility.Visible
-                : AppViewBackButtonVisibility.Collapsed;
-#endif
-
 
             this._pageKey = "Page-" + this.Frame.BackStackDepth;
 
@@ -76,19 +61,7 @@ namespace NittyGritty.Uno
             var pageState = new Dictionary<string, object>();
             PageViewModel?.SaveState(pageState);
             CacheManager.SaveCache(Path.Combine(ApplicationData.Current.LocalCacheFolder.Path, this._pageKey), pageState);
-
-            currentView.BackRequested -= OnBackRequested;
         }
 
-        private void OnBackRequested(object sender, BackRequestedEventArgs e)
-        {
-#if NETFX_CORE || __ANDROID__ || __WASM__
-            if (this.Frame.CanGoBack)
-            {
-                this.Frame.GoBack();
-                e.Handled = true;
-            }
-#endif
-        }
     }
 }
