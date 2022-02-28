@@ -22,47 +22,6 @@ namespace NittyGritty.Uwp
         private string _pageKey;
         private SystemNavigationManager currentView;
 
-        public NGPage()
-        {
-            if(!DesignMode.DesignModeEnabled)
-            {
-                this.LoadState += ViewBase_LoadState;
-                this.SaveState += ViewBase_SaveState;
-            }
-        }
-
-
-        void ViewBase_SaveState(object sender, SaveStateEventArgs e)
-        {
-            if (PageViewModel != null)
-            {
-                PageViewModel.SaveState(e.State);
-            }
-        }
-
-        void ViewBase_LoadState(object sender, LoadStateEventArgs e)
-        {
-            if (PageViewModel != null)
-            {
-                PageViewModel.LoadState(e.Parameter, e.State);
-            }
-        }
-
-        /// <summary>
-        /// Register this event on the current page to populate the page
-        /// with content passed during navigation as well as any saved
-        /// state provided when recreating a page from a prior session.
-        /// </summary>
-        public event LoadStateEventHandler LoadState;
-
-        /// <summary>
-        /// Register this event on the current page to preserve
-        /// state associated with the current page in case the
-        /// application is suspended or the page is discarded from
-        /// the navigaqtion cache.
-        /// </summary>
-        public event SaveStateEventHandler SaveState;
-
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
@@ -83,14 +42,14 @@ namespace NittyGritty.Uwp
                 }
 
                 // Pass the navigation parameter to the new page
-                this.LoadState?.Invoke(this, new LoadStateEventArgs(e.Parameter, null));
+                PageViewModel?.LoadState(e.Parameter, null);
             }
             else
             {
                 // Pass the navigation parameter and preserved page state to the page, using
                 // the same strategy for loading suspended state and recreating pages discarded
                 // from cache
-                this.LoadState?.Invoke(this, new LoadStateEventArgs(e.Parameter, (Dictionary<string, object>)frameState[this._pageKey]));
+                PageViewModel?.LoadState(e.Parameter, (Dictionary<string, object>)frameState[this._pageKey]);
             }
 
 
@@ -114,7 +73,7 @@ namespace NittyGritty.Uwp
 
             var frameState = SuspensionManager.SessionStateForFrame(this.Frame);
             var pageState = new Dictionary<string, object>();
-            this.SaveState?.Invoke(this, new SaveStateEventArgs(pageState));
+            PageViewModel?.SaveState(pageState);
             frameState[_pageKey] = pageState;
 
             currentView.BackRequested -= SystemNavigationManager_BackRequested;
