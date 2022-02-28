@@ -12,6 +12,7 @@ using Windows.UI.Xaml.Navigation;
 using System.IO;
 using Windows.Storage;
 using NittyGritty.Data;
+using NittyGritty.Uwp.Extensions;
 
 namespace NittyGritty.Uwp
 {
@@ -29,7 +30,8 @@ namespace NittyGritty.Uwp
         {
             base.OnNavigatedTo(e);
 
-            this._pageKey = "Page-" + this.Frame.BackStackDepth;
+            var frameKey = FrameExtensions.GetKey(this.Frame);
+            this._pageKey = $"{frameKey}-Page{Frame.BackStackDepth}";
 
             if (e.NavigationMode == NavigationMode.New)
             {
@@ -42,7 +44,7 @@ namespace NittyGritty.Uwp
                 {
                     File.Delete(cachePath);
                     nextPageIndex++;
-                    nextPageKey = "Page-" + nextPageIndex;
+                    nextPageKey = $"{frameKey}-Page{nextPageIndex}";
                     cachePath = Path.Combine(ApplicationData.Current.LocalCacheFolder.Path, nextPageKey);
                 }
 

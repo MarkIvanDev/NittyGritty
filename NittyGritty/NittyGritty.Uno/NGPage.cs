@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using NittyGritty.Data;
+using NittyGritty.Uno.Extensions;
 using NittyGritty.ViewModels;
 using Windows.Storage;
 using Windows.UI.Core;
@@ -25,7 +26,8 @@ namespace NittyGritty.Uno
         {
             base.OnNavigatedTo(e);
 
-            this._pageKey = "Page-" + this.Frame.BackStackDepth;
+            var frameKey = FrameExtensions.GetKey(this.Frame);
+            this._pageKey = $"{frameKey}-Page{this.Frame.BackStackDepth}";
 
             if (e.NavigationMode == NavigationMode.New)
             {
@@ -38,7 +40,7 @@ namespace NittyGritty.Uno
                 {
                     File.Delete(cachePath);
                     nextPageIndex++;
-                    nextPageKey = "Page-" + nextPageIndex;
+                    nextPageKey = $"{frameKey}-Page{nextPageIndex}";
                     cachePath = Path.Combine(ApplicationData.Current.LocalCacheFolder.Path, nextPageKey);
                 }
 
@@ -54,9 +56,9 @@ namespace NittyGritty.Uno
             }
         }
 
-        protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
+        protected override void OnNavigatedFrom(NavigationEventArgs e)
         {
-            base.OnNavigatingFrom(e);
+            base.OnNavigatedFrom(e);
 
             var pageState = new Dictionary<string, object>();
             PageViewModel?.SaveState(pageState);
