@@ -21,7 +21,7 @@ namespace NittyGritty.Data
             var cache = new Dictionary<string, object>();
             
             // Get the input stream for the SessionState file
-            using (var inStream = File.OpenRead(path))
+            using (var inStream = File.Open(path, FileMode.OpenOrCreate, FileAccess.Read))
             {
                 // Deserialize the Session State
                 var serializer = new DataContractSerializer(typeof(Dictionary<string, object>), KnownTypes);
