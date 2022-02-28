@@ -9,6 +9,10 @@ using Windows.ApplicationModel;
 using Windows.UI.Core;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
+using System.IO;
+using Windows.Storage;
+using NittyGritty.Data;
+using NittyGritty.Uwp.Extensions;
 
 namespace NittyGritty.Uwp
 {
@@ -22,53 +26,12 @@ namespace NittyGritty.Uwp
         private string _pageKey;
         private SystemNavigationManager currentView;
 
-        public NGPage()
-        {
-            if(!DesignMode.DesignModeEnabled)
-            {
-                this.LoadState += ViewBase_LoadState;
-                this.SaveState += ViewBase_SaveState;
-            }
-        }
-
-
-        void ViewBase_SaveState(object sender, SaveStateEventArgs e)
-        {
-            if (PageViewModel != null)
-            {
-                PageViewModel.SaveState(e.State);
-            }
-        }
-
-        void ViewBase_LoadState(object sender, LoadStateEventArgs e)
-        {
-            if (PageViewModel != null)
-            {
-                PageViewModel.LoadState(e.Parameter, e.State);
-            }
-        }
-
-        /// <summary>
-        /// Register this event on the current page to populate the page
-        /// with content passed during navigation as well as any saved
-        /// state provided when recreating a page from a prior session.
-        /// </summary>
-        public event LoadStateEventHandler LoadState;
-
-        /// <summary>
-        /// Register this event on the current page to preserve
-        /// state associated with the current page in case the
-        /// application is suspended or the page is discarded from
-        /// the navigaqtion cache.
-        /// </summary>
-        public event SaveStateEventHandler SaveState;
-
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
 
-            var frameState = SuspensionManager.SessionStateForFrame(this.Frame);
-            this._pageKey = "Page-" + this.Frame.BackStackDepth;
+            var frameKey = FrameExtensions.GetKey(this.Frame);
+            this._pageKey = $"{frameKey}-Page{Frame.BackStackDepth}";
 
             if (e.NavigationMode == NavigationMode.New)
             {
@@ -76,26 +39,27 @@ namespace NittyGritty.Uwp
                 // navigation stack
                 var nextPageKey = this._pageKey;
                 int nextPageIndex = this.Frame.BackStackDepth;
-                while (frameState.Remove(nextPageKey))
+                var cachePath = Path.Combine(ApplicationData.Current.LocalCacheFolder.Path, nextPageKey);
+                while (File.Exists(cachePath))
                 {
+                    File.Delete(cachePath);
                     nextPageIndex++;
-                    nextPageKey = "Page-" + nextPageIndex;
+                    nextPageKey = $"{frameKey}-Page{nextPageIndex}";
+                    cachePath = Path.Combine(ApplicationData.Current.LocalCacheFolder.Path, nextPageKey);
                 }
 
                 // Pass the navigation parameter to the new page
-                this.LoadState?.Invoke(this, new LoadStateEventArgs(e.Parameter, null));
+                PageViewModel?.LoadState(e.Parameter, null);
             }
             else
             {
                 // Pass the navigation parameter and preserved page state to the page, using
                 // the same strategy for loading suspended state and recreating pages discarded
                 // from cache
-                this.LoadState?.Invoke(this, new LoadStateEventArgs(e.Parameter, (Dictionary<string, object>)frameState[this._pageKey]));
+                PageViewModel?.LoadState(e.Parameter, CacheManager.LoadCache(Path.Combine(ApplicationData.Current.LocalCacheFolder.Path, this._pageKey)));
             }
 
-
             currentView = SystemNavigationManager.GetForCurrentView();
-
             currentView.BackRequested += SystemNavigationManager_BackRequested;
         }
 
@@ -112,12 +76,12 @@ namespace NittyGritty.Uwp
         {
             base.OnNavigatedFrom(e);
 
-            var frameState = SuspensionManager.SessionStateForFrame(this.Frame);
             var pageState = new Dictionary<string, object>();
-            this.SaveState?.Invoke(this, new SaveStateEventArgs(pageState));
-            frameState[_pageKey] = pageState;
+            PageViewModel?.SaveState(pageState);
+            CacheManager.SaveCache(Path.Combine(ApplicationData.Current.LocalCacheFolder.Path, this._pageKey), pageState);
 
             currentView.BackRequested -= SystemNavigationManager_BackRequested;
+            currentView = null;
         }
     }
 }

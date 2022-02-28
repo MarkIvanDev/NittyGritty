@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using NittyGritty.Data;
+using NittyGritty.Uno.Extensions;
 using NittyGritty.ViewModels;
 using Windows.Storage;
 using Windows.UI.Core;
@@ -26,21 +27,8 @@ namespace NittyGritty.Uno
         {
             base.OnNavigatedTo(e);
 
-            currentView = SystemNavigationManager.GetForCurrentView();
-            currentView.BackRequested += OnBackRequested;
-
-#if WINDOWS_UWP || __WASM__
-            // Toggle the visibility of back button based on if the frame can navigate back.
-            // Setting it to visible has the follow effect on the platform:
-            // - uwp: add a `<-` back button on the title bar
-            // - wasm: add a dummy entry in the browser back stack
-            currentView.AppViewBackButtonVisibility = Frame.CanGoBack
-                ? AppViewBackButtonVisibility.Visible
-                : AppViewBackButtonVisibility.Collapsed;
-#endif
-
-
-            this._pageKey = "Page-" + this.Frame.BackStackDepth;
+            var frameKey = FrameExtensions.GetKey(this.Frame);
+            this._pageKey = $"{frameKey}-Page{this.Frame.BackStackDepth}";
 
             if (e.NavigationMode == NavigationMode.New)
             {
@@ -53,7 +41,7 @@ namespace NittyGritty.Uno
                 {
                     File.Delete(cachePath);
                     nextPageIndex++;
-                    nextPageKey = "Page-" + nextPageIndex;
+                    nextPageKey = $"{frameKey}-Page{nextPageIndex}";
                     cachePath = Path.Combine(ApplicationData.Current.LocalCacheFolder.Path, nextPageKey);
                 }
 
@@ -67,17 +55,21 @@ namespace NittyGritty.Uno
                 // from cache
                 PageViewModel?.LoadState(e.Parameter, CacheManager.LoadCache(Path.Combine(ApplicationData.Current.LocalCacheFolder.Path, this._pageKey)));
             }
+
+            currentView = SystemNavigationManager.GetForCurrentView();
+            currentView.BackRequested += OnBackRequested;
         }
 
-        protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
+        protected override void OnNavigatedFrom(NavigationEventArgs e)
         {
-            base.OnNavigatingFrom(e);
+            base.OnNavigatedFrom(e);
 
             var pageState = new Dictionary<string, object>();
             PageViewModel?.SaveState(pageState);
             CacheManager.SaveCache(Path.Combine(ApplicationData.Current.LocalCacheFolder.Path, this._pageKey), pageState);
 
             currentView.BackRequested -= OnBackRequested;
+            currentView = null;
         }
 
         private void OnBackRequested(object sender, BackRequestedEventArgs e)
@@ -90,5 +82,6 @@ namespace NittyGritty.Uno
             }
 #endif
         }
+
     }
 }
