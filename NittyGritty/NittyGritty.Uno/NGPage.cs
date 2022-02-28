@@ -21,6 +21,7 @@ namespace NittyGritty.Uno
         }
 
         private string _pageKey;
+        private SystemNavigationManager currentView;
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
@@ -54,6 +55,9 @@ namespace NittyGritty.Uno
                 // from cache
                 PageViewModel?.LoadState(e.Parameter, CacheManager.LoadCache(Path.Combine(ApplicationData.Current.LocalCacheFolder.Path, this._pageKey)));
             }
+
+            currentView = SystemNavigationManager.GetForCurrentView();
+            currentView.BackRequested += OnBackRequested;
         }
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)
@@ -63,6 +67,20 @@ namespace NittyGritty.Uno
             var pageState = new Dictionary<string, object>();
             PageViewModel?.SaveState(pageState);
             CacheManager.SaveCache(Path.Combine(ApplicationData.Current.LocalCacheFolder.Path, this._pageKey), pageState);
+
+            currentView.BackRequested -= OnBackRequested;
+            currentView = null;
+        }
+
+        private void OnBackRequested(object sender, BackRequestedEventArgs e)
+        {
+#if NETFX_CORE || __ANDROID__ || __WASM__
+            if (this.Frame.CanGoBack)
+            {
+                this.Frame.GoBack();
+                e.Handled = true;
+            }
+#endif
         }
 
     }
