@@ -3,29 +3,15 @@
   <PropertyGroup>
     <TargetFramework>uap10.0.17763</TargetFramework>
     <DefaultLanguage>en-US</DefaultLanguage>
-    <AssemblyName>NittyGritty.Uwp</AssemblyName>
-    <RootNamespace>NittyGritty.Uwp</RootNamespace>
-    <Owners>markivan.basto</Owners>
-    <LangVersion>7.3</LangVersion>
-	<TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
-	<TargetPlatformVersion>10.0.19041.0</TargetPlatformVersion>
-	<TargetPlatformMinVersion>10.0.17763.0</TargetPlatformMinVersion>
+	  <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
+	  <TargetPlatformVersion>10.0.19041.0</TargetPlatformVersion>
+	  <TargetPlatformMinVersion>10.0.17763.0</TargetPlatformMinVersion>
   </PropertyGroup>
 
   <PropertyGroup>
     <PackageId>NittyGritty.Uwp</PackageId>
-    <PackageVersion>2.0.0</PackageVersion>
-    <Title>NittyGritty.Uwp</Title>
-    <Authors>markivan.basto</Authors>
     <Description>Boilerplate code that can speed up your development</Description>
-    <Copyright>(c) 2022 Mark Ivan Basto</Copyright>
-    <PackageProjectUrl>https://github.com/MarkIvanDev/NittyGritty</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/MarkIvanDev/NittyGritty.git</RepositoryUrl>
-    <RepositoryType>git</RepositoryType>
-    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageTags>c# mvvm helpers extensions utilities view viewmodel model collections data nittygritty markivan</PackageTags>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
 
   <ItemGroup>

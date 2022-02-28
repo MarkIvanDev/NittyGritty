@@ -4,25 +4,14 @@
     <TargetFrameworks>uap10.0.17763;Xamarin.iOS10;MonoAndroid81;MonoAndroid90</TargetFrameworks>
     <DefaultLanguage>en-US</DefaultLanguage>
     <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
-    <AssemblyName>NittyGritty.UI.Interactivity</AssemblyName>
-    <RootNamespace>NittyGritty.UI.Interactivity</RootNamespace>
-    <Owners>markivan.basto</Owners>
   </PropertyGroup>
 
   <PropertyGroup>
     <PackageId>NittyGritty.UI.Interactivity</PackageId>
     <PackageVersion>1.9.7</PackageVersion>
-    <Title>NittyGritty.UI.Interactivity</Title>
-    <Authors>markivan.basto</Authors>
     <Description>Boilerplate code that can speed up your development</Description>
-    <Copyright>(c) 2021 Mark Ivan Basto</Copyright>
-    <PackageProjectUrl>https://github.com/MarkIvanDev/NittyGritty</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/MarkIvanDev/NittyGritty.git</RepositoryUrl>
-    <RepositoryType>git</RepositoryType>
-    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageTags>c# mvvm helpers extensions utilities view viewmodel model collections data nittygritty markivan</PackageTags>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
   </PropertyGroup>
 
   <PropertyGroup Condition=" $(TargetFramework.StartsWith('uap10.0')) ">

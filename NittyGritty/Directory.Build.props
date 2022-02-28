@@ -1,0 +1,14 @@
+﻿<Project>
+  <PropertyGroup>
+    <LangVersion>7.3</LangVersion>
+    <PackageVersion>2.1.0-prerelease.02282022</PackageVersion>
+    <Authors>markivan.basto</Authors>
+    <Copyright>(c) 2022 Mark Ivan Basto</Copyright>
+    <PackageProjectUrl>https://github.com/MarkIvanDev/NittyGritty</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/MarkIvanDev/NittyGritty.git</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+  </PropertyGroup>
+</Project>

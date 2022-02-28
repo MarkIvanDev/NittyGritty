@@ -10,6 +10,9 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NittyGritty.Platform", "NittyGritty.Platform\NittyGritty.Platform.csproj", "{9F764D3A-893F-4B2D-A560-2E03419763DD}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{FD0C72EF-E28A-4212-9A1B-37089933A97F}"
+	ProjectSection(SolutionItems) = preProject
+		Directory.Build.props = Directory.Build.props
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UI", "UI", "{1D5ECDAF-F356-4155-A64A-DA9A6B70B6CA}"
 EndProject
@@ -27,7 +30,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{9D
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NittyGritty.Services", "NittyGritty.Services\NittyGritty.Services.csproj", "{870C6CCC-63D5-480E-A725-9C1BB2533B39}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Source", "Source", "{1C9E9621-BDD4-4E0A-A9A6-31F4A08BE410}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Library", "Library", "{1C9E9621-BDD4-4E0A-A9A6-31F4A08BE410}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "helpers", "helpers", "{17DC55E8-B662-4D1C-A86F-7BA99D3C976D}"
 	ProjectSection(SolutionItems) = preProject
@@ -59,7 +62,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NittyGritty.Uwp.Services", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NittyGritty.Uwp.Activation", "NittyGritty.Uwp.Activation\NittyGritty.Uwp.Activation.csproj", "{E703B2B7-0ED6-4DF5-A2A0-8BBFD664BCA2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NittyGritty.Uwp.Interactivity", "NittyGritty.Uwp.Interactivity\NittyGritty.Uwp.Interactivity.csproj", "{74F78DE0-C526-4812-A154-959CF68C213E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NittyGritty.Uwp.Interactivity", "NittyGritty.Uwp.Interactivity\NittyGritty.Uwp.Interactivity.csproj", "{74F78DE0-C526-4812-A154-959CF68C213E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
