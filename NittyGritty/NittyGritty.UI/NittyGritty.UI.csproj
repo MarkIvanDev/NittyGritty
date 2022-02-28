@@ -11,7 +11,7 @@
 
   <PropertyGroup>
     <PackageId>NittyGritty.UI</PackageId>
-    <PackageVersion>2.0.0-prerelease.11232021</PackageVersion>
+    <PackageVersion>2.0.0-prerelease11232021</PackageVersion>
     <Description>Boilerplate code that can speed up your development</Description>
     <PackageTags>c# mvvm helpers extensions utilities view viewmodel model collections data nittygritty markivan</PackageTags>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
