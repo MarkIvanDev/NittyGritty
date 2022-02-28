@@ -9,6 +9,9 @@ using Windows.ApplicationModel;
 using Windows.UI.Core;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
+using System.IO;
+using Windows.Storage;
+using NittyGritty.Data;
 
 namespace NittyGritty.Uwp
 {
@@ -26,7 +29,6 @@ namespace NittyGritty.Uwp
         {
             base.OnNavigatedTo(e);
 
-            var frameState = SuspensionManager.SessionStateForFrame(this.Frame);
             this._pageKey = "Page-" + this.Frame.BackStackDepth;
 
             if (e.NavigationMode == NavigationMode.New)
@@ -35,10 +37,13 @@ namespace NittyGritty.Uwp
                 // navigation stack
                 var nextPageKey = this._pageKey;
                 int nextPageIndex = this.Frame.BackStackDepth;
-                while (frameState.Remove(nextPageKey))
+                var cachePath = Path.Combine(ApplicationData.Current.LocalCacheFolder.Path, nextPageKey);
+                while (File.Exists(cachePath))
                 {
+                    File.Delete(cachePath);
                     nextPageIndex++;
                     nextPageKey = "Page-" + nextPageIndex;
+                    cachePath = Path.Combine(ApplicationData.Current.LocalCacheFolder.Path, nextPageKey);
                 }
 
                 // Pass the navigation parameter to the new page
@@ -49,12 +54,10 @@ namespace NittyGritty.Uwp
                 // Pass the navigation parameter and preserved page state to the page, using
                 // the same strategy for loading suspended state and recreating pages discarded
                 // from cache
-                PageViewModel?.LoadState(e.Parameter, (Dictionary<string, object>)frameState[this._pageKey]);
+                PageViewModel?.LoadState(e.Parameter, CacheManager.LoadCache(Path.Combine(ApplicationData.Current.LocalCacheFolder.Path, this._pageKey)));
             }
 
-
             currentView = SystemNavigationManager.GetForCurrentView();
-
             currentView.BackRequested += SystemNavigationManager_BackRequested;
         }
 
@@ -71,12 +74,12 @@ namespace NittyGritty.Uwp
         {
             base.OnNavigatedFrom(e);
 
-            var frameState = SuspensionManager.SessionStateForFrame(this.Frame);
             var pageState = new Dictionary<string, object>();
             PageViewModel?.SaveState(pageState);
-            frameState[_pageKey] = pageState;
+            CacheManager.SaveCache(Path.Combine(ApplicationData.Current.LocalCacheFolder.Path, this._pageKey), pageState);
 
             currentView.BackRequested -= SystemNavigationManager_BackRequested;
+            currentView = null;
         }
     }
 }
