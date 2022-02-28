@@ -13,17 +13,10 @@ namespace NittyGritty.Uwp
     {
         public NGApp()
         {
-            Suspending += App_Suspending;
+            
         }
 
         public static NGApp Instance { get { return Current as NGApp; } }
-
-        private async void App_Suspending(object sender, SuspendingEventArgs e)
-        {
-            var deferral = e.SuspendingOperation.GetDeferral();
-            await SuspensionManager.SaveAsync();
-            deferral.Complete();
-        }
 
         #region ActivationService Initialization Requirements
 
