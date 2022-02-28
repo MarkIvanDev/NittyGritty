@@ -10,6 +10,9 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NittyGritty.Platform", "NittyGritty.Platform\NittyGritty.Platform.csproj", "{9F764D3A-893F-4B2D-A560-2E03419763DD}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{FD0C72EF-E28A-4212-9A1B-37089933A97F}"
+	ProjectSection(SolutionItems) = preProject
+		Directory.Build.props = Directory.Build.props
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UI", "UI", "{1D5ECDAF-F356-4155-A64A-DA9A6B70B6CA}"
 EndProject

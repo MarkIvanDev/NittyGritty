@@ -11,23 +11,13 @@
 	
   <PropertyGroup>
     <PackageId>NittyGritty.Uno</PackageId>
-    <PackageVersion>2.0.0</PackageVersion>
-    <Title>NittyGritty.Uno</Title>
-    <Authors>markivan.basto</Authors>
     <Description>Boilerplate code that can speed up your development</Description>
-    <Copyright>(c) 2022 Mark Ivan Basto</Copyright>
-    <PackageProjectUrl>https://github.com/MarkIvanDev/NittyGritty</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/MarkIvanDev/NittyGritty.git</RepositoryUrl>
-    <RepositoryType>git</RepositoryType>
-    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageTags>c# mvvm helpers extensions utilities uno converters nittygritty markivan</PackageTags>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
 	
   <ItemGroup>
     <PackageReference Include="Uno.UI" Version="4.0.8" />
-	<ProjectReference Include="..\NittyGritty\NittyGritty.csproj" />
+	  <ProjectReference Include="..\NittyGritty\NittyGritty.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Page Include="**\*.xaml" Exclude="bin\**\*.xaml;obj\**\*.xaml" />
