@@ -20,8 +20,11 @@ namespace NittyGritty.Uno.Services
         {
             get
             {
-                if (_context is null) _context = Window.Current.Content as Frame;
-                if (_context != null) _context.Navigated += OnContextNavigated;
+                if (_context is null)
+                {
+                    _context = Window.Current.Content as Frame;
+                    if (_context != null) _context.Navigated += OnContextNavigated;
+                }
                 return _context;
             }
             set
