@@ -9,7 +9,7 @@ namespace NittyGritty.Uno.Converters
 {
     public class IsLessThanConverter : IValueConverter
     {
-        public object Value { get; set; }
+        public object Value { get; set; } = 0;
 
         public object Convert(object value, Type targetType, object parameter, string language)
         {
