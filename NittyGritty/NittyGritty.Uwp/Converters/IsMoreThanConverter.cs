@@ -7,9 +7,9 @@ using Windows.UI.Xaml.Data;
 
 namespace NittyGritty.Uwp.Converters
 {
-    public class IsMoreThanZeroConverter : IValueConverter
+    public class IsMoreThanConverter : IValueConverter
     {
-        public object Value { get; set; }
+        public object Value { get; set; } = 0;
 
         public object Convert(object value, Type targetType, object parameter, string language)
         {

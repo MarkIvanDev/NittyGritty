@@ -5,9 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using Windows.UI.Xaml.Data;
 
-namespace NittyGritty.Uno.Converters
+namespace NittyGritty.Uwp.Converters
 {
-    public class IsLessThanConverter : IValueConverter
+    public class IsEqualConverter : IValueConverter
     {
         public object Value { get; set; } = 0;
 
@@ -16,7 +16,7 @@ namespace NittyGritty.Uno.Converters
             try
             {
                 return value is IComparable comparable &&
-                    comparable.CompareTo(System.Convert.ChangeType(Value, comparable.GetType())) < 0;
+                    comparable.CompareTo(System.Convert.ChangeType(Value, comparable.GetType())) == 0;
             }
             catch (Exception)
             {
