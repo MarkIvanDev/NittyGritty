@@ -15,7 +15,7 @@ namespace NittyGritty.Utilities
         {
             var enums = (TEnum[])Enum.GetValues(typeof(TEnum));
             values = new HashSet<TEnum>(enums);
-            names = enums.ToDictionary(i => i.ToString(), i => i, StringComparer.OrdinalIgnoreCase);
+            names = enums.ToDictionary(i => i.ToString(), i => i, StringComparer.Ordinal);
             UnderlyingType = Enum.GetUnderlyingType(typeof(TEnum));
             Values = new ReadOnlyCollection<TEnum>(enums);
             Names = new ReadOnlyCollection<string>(names.Keys.ToList());
@@ -32,19 +32,49 @@ namespace NittyGritty.Utilities
             return values.Contains(value);
         }
 
-        public static bool IsDefined(string name)
+        public static bool IsDefined(string name, bool ignoreCase = false)
         {
-            return names.ContainsKey(name);
+            return !ignoreCase ? names.ContainsKey(name) : names.Keys.Any(k => k.Equals(name, StringComparison.OrdinalIgnoreCase));
         }
 
-        public static TEnum ParseOrDefault(string value, TEnum defaultValue = default)
+        public static TEnum ParseOrDefault(string value, TEnum defaultValue = default, bool ignoreCase = false)
         {
-            return names.TryGetValue(value, out var item) ? item : defaultValue;
+            if (!ignoreCase)
+            {
+                return names.TryGetValue(value, out var item) ? item : defaultValue;
+            }
+            else
+            {
+                foreach (var item in names)
+                {
+                    if (item.Key.Equals(value, StringComparison.OrdinalIgnoreCase))
+                    {
+                        return item.Value;
+                    }
+                }
+                return defaultValue;
+            }
         }
 
-        public static bool TryParse(string value, out TEnum result)
+        public static bool TryParse(string value, out TEnum result, bool ignoreCase = false)
         {
-            return names.TryGetValue(value, out result);
+            if (!ignoreCase)
+            {
+                return names.TryGetValue(value, out result);
+            }
+            else
+            {
+                foreach (var item in names)
+                {
+                    if (item.Key.Equals(value, StringComparison.OrdinalIgnoreCase))
+                    {
+                        result = item.Value;
+                        return true;
+                    }
+                }
+                result = default;
+                return false;
+            }
         }
 
     }
