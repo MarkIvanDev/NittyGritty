@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net.Http;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace NittyGritty.Utilities
@@ -19,9 +20,19 @@ namespace NittyGritty.Utilities
             httpClient = new HttpClient();
         }
 
-        public static async Task Download(Uri onlinePath, string localPath, IProgress<ProgressInfo> progressCallback = null)
+        public static async Task Download(Uri onlinePath, string localPath)
         {
-            using (var response = await httpClient.GetAsync(onlinePath, HttpCompletionOption.ResponseContentRead))
+            await Download(onlinePath, localPath, CancellationToken.None, null).ConfigureAwait(false);
+        }
+
+        public static async Task Download(Uri onlinePath, string localPath, CancellationToken token)
+        {
+            await Download(onlinePath, localPath, token, null).ConfigureAwait(false);
+        }
+
+        public static async Task Download(Uri onlinePath, string localPath, CancellationToken token, IProgress<ProgressInfo> progressCallback)
+        {
+            using (var response = await httpClient.GetAsync(onlinePath, HttpCompletionOption.ResponseContentRead, token).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -33,7 +44,7 @@ namespace NittyGritty.Utilities
                     progressInfo.Update(totalBytes, 0, name);
                     progressCallback?.Report(progressInfo);
 
-                    using (var contentStream = await response.Content.ReadAsStreamAsync())
+                    using (var contentStream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false))
                     {
                         var totalBytesRead = 0L;
                         var buffer = new byte[4096];
@@ -43,7 +54,8 @@ namespace NittyGritty.Utilities
                         {
                             do
                             {
-                                var bytesRead = await contentStream.ReadAsync(buffer, 0, buffer.Length);
+                                token.ThrowIfCancellationRequested();
+                                var bytesRead = await contentStream.ReadAsync(buffer, 0, buffer.Length, token).ConfigureAwait(false);
                                 if (bytesRead == 0)
                                 {
                                     isMoreToRead = false;
@@ -52,7 +64,7 @@ namespace NittyGritty.Utilities
                                     continue;
                                 }
 
-                                await fileStream.WriteAsync(buffer, 0, bytesRead);
+                                await fileStream.WriteAsync(buffer, 0, bytesRead, token).ConfigureAwait(false);
 
                                 totalBytesRead += bytesRead;
                                 progressInfo.Update(totalBytes ?? 0, totalBytesRead, name);
@@ -62,6 +74,7 @@ namespace NittyGritty.Utilities
                         }
                     }
                     progressInfo.Stop();
+                    progressCallback?.Report(progressInfo);
                 }
             }
         }
