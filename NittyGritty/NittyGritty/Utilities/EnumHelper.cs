@@ -16,14 +16,20 @@ namespace NittyGritty.Utilities
             var enums = (TEnum[])Enum.GetValues(typeof(TEnum));
             values = new HashSet<TEnum>(enums);
             names = enums.ToDictionary(i => i.ToString(), i => i, StringComparer.Ordinal);
+            var nonZeroEnums = new List<TEnum>(enums);
+            nonZeroEnums.Remove((TEnum)(object)0);
+
             UnderlyingType = Enum.GetUnderlyingType(typeof(TEnum));
             Values = new ReadOnlyCollection<TEnum>(enums);
+            NonZeroValues = new ReadOnlyCollection<TEnum>(nonZeroEnums);
             Names = new ReadOnlyCollection<string>(names.Keys.ToList());
         }
 
         public static Type UnderlyingType { get; }
 
         public static IReadOnlyList<TEnum> Values { get; }
+
+        public static IReadOnlyList<TEnum> NonZeroValues { get; }
 
         public static IReadOnlyList<string> Names { get; }
 
