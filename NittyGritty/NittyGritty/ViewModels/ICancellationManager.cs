@@ -8,7 +8,7 @@ namespace NittyGritty.ViewModels
 {
     public interface ICancellationManager
     {
-        Collection<CancellationTokenSource> CancellationTokenSources { get; }
+        IList<CancellationTokenSource> CancellationTokenSources { get; }
 
         void RegisterCancellationTokenSource(CancellationTokenSource cancellationTokenSource);
 

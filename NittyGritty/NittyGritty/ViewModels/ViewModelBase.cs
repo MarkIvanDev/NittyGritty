@@ -32,9 +32,9 @@ namespace NittyGritty.ViewModels
             set
             {
                 if (value)
-                    _loadingCounter++;
+                    _loadingCounter += 1;
                 else if (_loadingCounter > 0)
-                    _loadingCounter--;
+                    _loadingCounter -= 1;
 
                 RaisePropertyChanged();
             }
@@ -42,15 +42,12 @@ namespace NittyGritty.ViewModels
 
         #region Cancellation Manager
 
-        public Collection<CancellationTokenSource> CancellationTokenSources { get; private set; }
+        public IList<CancellationTokenSource> CancellationTokenSources { get; } = new List<CancellationTokenSource>();
 
         /// <summary>Registers a <see cref="CancellationTokenSource"/> which will be cancelled when cleaning up the view model. </summary>
         /// <param name="cancellationTokenSource"></param>
         public void RegisterCancellationTokenSource(CancellationTokenSource cancellationTokenSource)
         {
-            if (CancellationTokenSources == null)
-                CancellationTokenSources = new Collection<CancellationTokenSource>();
-
             CancellationTokenSources.Add(cancellationTokenSource);
         }
 
@@ -78,42 +75,41 @@ namespace NittyGritty.ViewModels
 
         public void CancelAll()
         {
-            if (CancellationTokenSources != null)
-            {
-                foreach (var cancellationTokenSource in CancellationTokenSources.ToArray())
-                    DeregisterCancellationTokenSource(cancellationTokenSource);
-            }
+            foreach (var cancellationTokenSource in CancellationTokenSources.ToArray())
+                DeregisterCancellationTokenSource(cancellationTokenSource);
         }
 
         #endregion
 
         #region Task Manager
 
+        public async Task<TResult> Run<TResult>(Func<CancellationToken, Task<TResult>> task)
+        {
+            return await Run(task, null);
+        }
+
         /// <summary>Runs a task and correctly updates the <see cref="IsLoading"/> property, 
         /// throws exceptions that are caught, 
         /// and automatically creates and registers a cancellation token source. </summary>
         /// <param name="task">The task to run. </param>
         /// <returns>The awaitable task. </returns>
-        public async Task<TResult> Run<TResult>(Func<CancellationToken, Task<TResult>> task)
+        public async Task<TResult> Run<TResult>(Func<CancellationToken, Task<TResult>> task, CancellationTokenSource tokenSource)
         {
-            TResult result = default(TResult);
-            var tokenSource = CreateCancellationTokenSource();
+            TResult result = default;
+            var ts = tokenSource ?? CreateCancellationTokenSource();
             try
             {
                 IsLoading = true;
-                result = await task(tokenSource.Token);
-                IsLoading = false;
+                result = await task(ts.Token);
             }
             catch (OperationCanceledException)
             {
-                IsLoading = false;
             }
-            catch (Exception)
+            finally
             {
                 IsLoading = false;
-                throw;
             }
-            DeregisterCancellationTokenSource(tokenSource);
+            DeregisterCancellationTokenSource(ts);
             return result;
         }
 
@@ -123,23 +119,22 @@ namespace NittyGritty.ViewModels
         /// <returns>The awaitable task. </returns>
         public async Task<TResult> Run<TResult>(Task<TResult> task)
         {
-            TResult result = default(TResult);
+            TResult result = default;
             try
             {
                 IsLoading = true;
                 result = await task;
-                IsLoading = false;
             }
-            catch (OperationCanceledException)
+            finally
             {
                 IsLoading = false;
-            }
-            catch (Exception)
-            {
-                IsLoading = false;
-                throw;
             }
             return result;
+        }
+
+        public async Task Run(Func<CancellationToken, Task> task)
+        {
+            await Run(task, null);
         }
 
         /// <summary>Runs a task and correctly updates the <see cref="IsLoading"/> property, 
@@ -147,25 +142,22 @@ namespace NittyGritty.ViewModels
         /// and automatically creates and registers a cancellation token source. </summary>
         /// <param name="task">The task to run. </param>
         /// <returns>The awaitable task. </returns>
-        public async Task Run(Func<CancellationToken, Task> task)
+        public async Task Run(Func<CancellationToken, Task> task, CancellationTokenSource tokenSource)
         {
-            var tokenSource = CreateCancellationTokenSource();
+            var ts = tokenSource ?? CreateCancellationTokenSource();
             try
             {
                 IsLoading = true;
-                await task(tokenSource.Token);
-                IsLoading = false;
+                await task(ts.Token);
             }
             catch (OperationCanceledException)
             {
-                IsLoading = false;
             }
-            catch (Exception)
+            finally
             {
                 IsLoading = false;
-                throw;
             }
-            DeregisterCancellationTokenSource(tokenSource);
+            DeregisterCancellationTokenSource(ts);
         }
 
         /// <summary>Runs a task and correctly updates the <see cref="IsLoading"/> property, 
@@ -178,16 +170,10 @@ namespace NittyGritty.ViewModels
             {
                 IsLoading = true;
                 await task;
-                IsLoading = false;
             }
-            catch (OperationCanceledException)
+            finally
             {
                 IsLoading = false;
-            }
-            catch (Exception)
-            {
-                IsLoading = false;
-                throw;
             }
         }
 

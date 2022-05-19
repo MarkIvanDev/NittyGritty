@@ -8,11 +8,11 @@ namespace NittyGritty.ViewModels
 {
     public interface ITaskManager
     {
-        Task<TResult> Run<TResult>(Func<CancellationToken, Task<TResult>> task);
+        Task<TResult> Run<TResult>(Func<CancellationToken, Task<TResult>> task, CancellationTokenSource tokenSource = null);
 
         Task<TResult> Run<TResult>(Task<TResult> task);
 
-        Task Run(Func<CancellationToken, Task> task);
+        Task Run(Func<CancellationToken, Task> task, CancellationTokenSource tokenSource = null);
 
         Task Run(Task task);
     }
