@@ -85,6 +85,46 @@ namespace NittyGritty.Uwp.Services
             return await dataPackage.GetData();
         }
 
+        public bool ContainsText()
+        {
+            return ContainsData(StandardDataFormats.Text);
+        }
+
+        public bool ContainsBitmap()
+        {
+            return ContainsData(StandardDataFormats.Bitmap);
+        }
+
+        public bool ContainsHtml()
+        {
+            return ContainsData(StandardDataFormats.Html);
+        }
+
+        public bool ContainsRtf()
+        {
+            return ContainsData(StandardDataFormats.Rtf);
+        }
+
+        public bool ContainsStorageItems()
+        {
+            return ContainsData(StandardDataFormats.StorageItems);
+        }
+
+        public bool ContainsAppLink()
+        {
+            return ContainsData(StandardDataFormats.ApplicationLink);
+        }
+
+        public bool ContainsWebLink()
+        {
+            return ContainsData(StandardDataFormats.WebLink);
+        }
+
+        public bool ContainsData(string formatId)
+        {
+            return Clipboard.GetContent().Contains(formatId);
+        }
+
         public void Clear()
         {
             Clipboard.Clear();
