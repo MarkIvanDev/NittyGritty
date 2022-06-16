@@ -18,6 +18,22 @@ namespace NittyGritty.Services.Core
 
         Task<DataPayload> GetData();
 
+        bool ContainsText();
+
+        bool ContainsBitmap();
+
+        bool ContainsHtml();
+
+        bool ContainsRtf();
+
+        bool ContainsStorageItems();
+
+        bool ContainsAppLink();
+
+        bool ContainsWebLink();
+
+        bool ContainsData(string formatId);
+
         void Clear();
 
         event EventHandler ContentChanged;
