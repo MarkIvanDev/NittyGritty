@@ -9,10 +9,12 @@ using NittyGritty.Utilities;
 using NittyGritty.ViewModels;
 using Windows.Storage;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Navigation;
 
 namespace NittyGritty.Uno
 {
+    [Bindable]
     public partial class NGPage : Page
     {
         private IStateManager PageViewModel

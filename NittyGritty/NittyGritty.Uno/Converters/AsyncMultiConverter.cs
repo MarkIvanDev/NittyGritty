@@ -11,6 +11,7 @@ using Windows.UI.Xaml;
 
 namespace NittyGritty.Uno.Converters
 {
+    [Windows.UI.Xaml.Data.Bindable]
     [ContentProperty(Name = nameof(Bindings))]
     public abstract partial class AsyncMultiConverter : DependencyObject
     {
