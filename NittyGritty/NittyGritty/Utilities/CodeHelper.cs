@@ -32,5 +32,31 @@ namespace NittyGritty.Utilities
             }
         }
 
+        public static bool TryInvoke(Action action)
+        {
+            try
+            {
+                action();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
+        public static async Task<bool> TryInvoke(Func<Task> func)
+        {
+            try
+            {
+                await func();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
     }
 }

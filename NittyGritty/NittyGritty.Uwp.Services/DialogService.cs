@@ -88,14 +88,14 @@ namespace NittyGritty.Uwp.Services
         private ContentDialog CreateDialog(
             string message,
             string title,
-            string buttonConfirmText = "OK",
+            string buttonConfirmText = null,
             string buttonCancelText = null)
         {
             var dialog = new ContentDialog()
             {
                 Title = title,
                 Content = message,
-                PrimaryButtonText = buttonConfirmText,
+                PrimaryButtonText = !string.IsNullOrEmpty(buttonConfirmText) ? buttonConfirmText : "OK",
                 DefaultButton = ContentDialogButton.Primary
             };
 

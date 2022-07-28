@@ -9,6 +9,7 @@ using System.Text;
 
 namespace NittyGritty
 {
+    [Bindable(BindableSupport.Default)]
     public class ObservableObject : INotifyPropertyChanged
     {
         /// <summary>Occurs when a property value changes. </summary>
