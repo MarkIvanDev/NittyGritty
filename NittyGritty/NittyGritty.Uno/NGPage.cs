@@ -5,14 +5,16 @@ using System.Linq;
 using System.Text;
 using NittyGritty.Data;
 using NittyGritty.Uno.Extensions;
+using NittyGritty.Utilities;
 using NittyGritty.ViewModels;
 using Windows.Storage;
-using Windows.UI.Core;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Navigation;
 
 namespace NittyGritty.Uno
 {
+    [Bindable]
     public partial class NGPage : Page
     {
         private IStateManager PageViewModel
@@ -21,7 +23,6 @@ namespace NittyGritty.Uno
         }
 
         private string _pageKey;
-        private SystemNavigationManager currentView;
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
@@ -39,7 +40,7 @@ namespace NittyGritty.Uno
                 var cachePath = Path.Combine(ApplicationData.Current.LocalCacheFolder.Path, nextPageKey);
                 while (File.Exists(cachePath))
                 {
-                    File.Delete(cachePath);
+                    CodeHelper.TryInvoke(() => File.Delete(cachePath));
                     nextPageIndex++;
                     nextPageKey = $"{frameKey}-Page{nextPageIndex}";
                     cachePath = Path.Combine(ApplicationData.Current.LocalCacheFolder.Path, nextPageKey);
@@ -53,11 +54,8 @@ namespace NittyGritty.Uno
                 // Pass the navigation parameter and preserved page state to the page, using
                 // the same strategy for loading suspended state and recreating pages discarded
                 // from cache
-                PageViewModel?.LoadState(e.Parameter, CacheManager.LoadCache(Path.Combine(ApplicationData.Current.LocalCacheFolder.Path, this._pageKey)));
+                PageViewModel?.LoadState(e.Parameter, CodeHelper.InvokeOrDefault(() => CacheManager.LoadCache(Path.Combine(ApplicationData.Current.LocalCacheFolder.Path, this._pageKey)), new Dictionary<string, object>()));
             }
-
-            currentView = SystemNavigationManager.GetForCurrentView();
-            currentView.BackRequested += OnBackRequested;
         }
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)
@@ -66,21 +64,7 @@ namespace NittyGritty.Uno
 
             var pageState = new Dictionary<string, object>();
             PageViewModel?.SaveState(pageState);
-            CacheManager.SaveCache(Path.Combine(ApplicationData.Current.LocalCacheFolder.Path, this._pageKey), pageState);
-
-            currentView.BackRequested -= OnBackRequested;
-            currentView = null;
-        }
-
-        private void OnBackRequested(object sender, BackRequestedEventArgs e)
-        {
-#if NETFX_CORE || __ANDROID__ || __WASM__
-            if (this.Frame.CanGoBack)
-            {
-                this.Frame.GoBack();
-                e.Handled = true;
-            }
-#endif
+            CodeHelper.TryInvoke(() => CacheManager.SaveCache(Path.Combine(ApplicationData.Current.LocalCacheFolder.Path, this._pageKey), pageState));
         }
 
     }
