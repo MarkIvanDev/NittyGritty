@@ -40,18 +40,23 @@ namespace NittyGritty.Uwp.Services
         public async Task<bool> IsAnyActive(IEnumerable<IActiveAddOn> addOns)
         {
             var license = await context.GetAppLicenseAsync();
+            if (license == null) return false;
+
             foreach (var item in addOns)
             {
                 if (item is AddOn addOn)
                 {
-                    var isActive = license.AddOnLicenses.TryGetValue(addOn.Id, out var l) && l.IsActive;
-                    if (isActive)
-                    {
-                        return true;
-                    }
+                    return IsLicenseActive(license, addOn.Id);
                 }
             }
             return false;
+        }
+
+        private bool IsLicenseActive(StoreAppLicense license, string addOnId)
+        {
+            if (license == null) return false;
+            var lic = license.AddOnLicenses.FirstOrDefault(l => l.Key.StartsWith(addOnId, StringComparison.OrdinalIgnoreCase)).Value;
+            return lic != null && lic.IsActive;
         }
 
         #endregion
@@ -183,7 +188,7 @@ namespace NittyGritty.Uwp.Services
                         durable.Description = product.Description;
                         durable.Price = product.Price.FormattedPrice;
                         durable.CustomData = product.Skus[0].CustomDeveloperData;
-                        durable.IsActive = license.AddOnLicenses.TryGetValue(product.StoreId, out var l) && l.IsActive;
+                        durable.IsActive = IsLicenseActive(license, product.StoreId);
                     }
                 }
             }
@@ -222,7 +227,7 @@ namespace NittyGritty.Uwp.Services
                         subscription.BillingPeriodUnit = (DurationUnit)product.Skus[0].SubscriptionInfo.BillingPeriodUnit;
                         subscription.TrialPeriod = product.Skus[0].SubscriptionInfo.TrialPeriod;
                         subscription.TrialPeriodUnit = (DurationUnit)product.Skus[0].SubscriptionInfo.TrialPeriodUnit;
-                        subscription.IsActive = license.AddOnLicenses.TryGetValue(product.StoreId, out var l) && l.IsActive;
+                        subscription.IsActive = IsLicenseActive(license, product.StoreId);
                     }
                 }
             }
